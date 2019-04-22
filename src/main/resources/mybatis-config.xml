@@ -11,12 +11,12 @@
 		<package name="com.qy.entity"/>
 	</typeAliases>
 	
-	<!--<plugins>
-		&lt;!&ndash;<plugin interceptor="com.github.pagehelper.PageInterceptor">
-			&lt;!&ndash;分页参数合理化  &ndash;&gt;
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor">
+			<!--分页参数合理化  -->
 			<property name="reasonable" value="true"/>
-		</plugin>&ndash;&gt;
-	</plugins>-->
+		</plugin>
+	</plugins>
 
 </configuration>
 

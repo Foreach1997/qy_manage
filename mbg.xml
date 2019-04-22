@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<!-- 配置数据库连接 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://47.107.55.207:3306/qy" userId="root"
+			password="luo520">
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- 指定javaBean生成的位置 -->
+		<javaModelGenerator targetPackage="com.qy.entity"
+			targetProject=".\src\main\java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!--指定sql映射文件生成的位置 -->
+		<sqlMapGenerator targetPackage="mapper" targetProject=".\src\main\resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 指定dao接口生成的位置，mapper接口 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.qy.dao" targetProject=".\src\main\java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+
+		<!-- table指定每个表的生成策略 -->
+		<table tableName="task_book" domainObjectName="TaskBook">
+			<columnOverride column="task_note" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<!--<columnOverride column="plan_org" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="plan_work" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="plan_milepost" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="plan_relation" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="risk" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="measures" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>-->
+		</table>
+		<!--<table tableName="user" domainObjectName="User"></table>
+		<table tableName="user_page_permission" domainObjectName="UserPagePermission"></table>
+		<table tableName="department" domainObjectName="Department"></table>
+		<table tableName="permission" domainObjectName="Permission"></table>-->
+	</context>
+</generatorConfiguration>

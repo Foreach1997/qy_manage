@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qy.dao.CurrencyMapper">
+    <resultMap id="reportBookMap" type="com.qy.entity.ReportBook">
+        <id column="report_book_id" jdbcType="INTEGER" property="reportBookId" />
+        <result column="report_book_file" jdbcType="VARCHAR" property="reportBookFile" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="pro_source" jdbcType="VARCHAR" property="proSource" />
+        <result column="pro_background" jdbcType="VARCHAR" property="proBackground" />
+        <result column="pro_describe" jdbcType="VARCHAR" property="proDescribe" />
+        <result column="pro_feasibility" jdbcType="VARCHAR" property="proFeasibility" />
+        <result column="pro_money" jdbcType="REAL" property="proMoney" />
+        <result column="pro_benefit" jdbcType="VARCHAR" property="proBenefit" />
+        <result column="pro_risk" jdbcType="VARCHAR" property="proRisk" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="pro_code" jdbcType="VARCHAR" property="proCode" />
+    </resultMap>
+    <sql id="reportBookMapSql">
+    report_book_id, report_book_file, status, user_id, pro_source, pro_background, pro_describe,
+    pro_feasibility, pro_money, pro_benefit, pro_risk, create_time, pro_code
+    </sql>
+
+    <select id="findReportBookList" parameterType="java.util.List" resultMap="reportBookMap">
+      select <include refid="reportBookMapSql"/> FROM report_book
+        user_id IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findUserIdByDepId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT user_id from  user  where  dep_id = #{_parameter};
+    </select>
+
+<!--
+    <resultMap id="userMap" type="com.qy.entity.User">
+        <id column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="role_id" jdbcType="INTEGER" property="roleId" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="dep_id" jdbcType="INTEGER" property="depId" />
+        <result column="sex" jdbcType="INTEGER" property="sex" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>-->
+
+    <select id="findUserList" parameterType="com.qy.entity.User" resultType="com.qy.entity.User">
+        SELECT * FROM  user
+        <where>
+            <if test="userId != '' and userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="email != '' and email != null">
+                email = #{email}
+            </if>
+            <if test="password != '' and password != null">
+                password = #{password}
+            </if>
+            <if test="roleId != '' and roleId != null">
+             <if test="roleId == 1">
+                 role_id != #{roleId}
+              </if>
+              <if test="roleId == 2">
+                role_id = 3
+              </if>
+            </if>
+            <if test="phone != '' and phone != null">
+                phone = #{phone}
+            </if>
+            <if test="depId != '' and depId != null">
+                    dep_id = #{depId}
+            </if>
+            <if test="sex != '' and sex != null">
+                sex = #{sex}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+</mapper>
