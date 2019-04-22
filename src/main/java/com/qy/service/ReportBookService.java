@@ -22,6 +22,6 @@ public interface ReportBookService {
     /**
      * 查看立项项目
      */
-    Object findReportBookList(ReportBook reportBook, HttpServletRequest request, SupportPage supportPage);
+    Object findReportBookList(ReportBook reportBook,Integer depId,HttpServletRequest request, SupportPage supportPage);
 
 }

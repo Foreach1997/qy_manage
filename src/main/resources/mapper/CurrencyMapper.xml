@@ -21,12 +21,40 @@
     pro_feasibility, pro_money, pro_benefit, pro_risk, create_time, pro_code
     </sql>
 
-    <select id="findReportBookList" parameterType="java.util.List" resultMap="reportBookMap">
+    <select id="findReportBookList" parameterType="java.util.Map" resultMap="reportBookMap">
       select <include refid="reportBookMapSql"/> FROM report_book
-        user_id IN
+        <if test="list != null">
+            user_id IN
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
+        </if>
+        <if test="userId != null and userId !=''">
+         and   user_id = #{userId}
+        </if>
+        <if test="proCode != null and proCode !=''">
+            and   pro_code LIKE '%'#{proCode}'%'
+        </if>
+        <if test="currentPage != null and currentPage !='' or
+                        pageSize != null and pageSize !=''">
+            LIMIT #{pageSize} OFFSET #{currentPage}
+        </if>
+    </select>
+
+    <select id="findReportBookListCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*) FROM report_book
+        <if test="list != null">
+            user_id IN
+            <foreach collection="list" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="userId != null and userId !=''">
+            and   user_id = #{userId}
+        </if>
+        <if test="proCode != null and proCode !=''">
+            and   pro_code LIKE '%'#{proCode}'%'
+        </if>
     </select>
 
     <select id="findUserIdByDepId" parameterType="java.lang.Integer" resultType="java.lang.Integer">

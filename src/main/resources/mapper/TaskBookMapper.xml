@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qy.dao.TaskBookMapper">
+  <resultMap id="BaseResultMap" type="com.qy.entity.TaskBook">
+    <id column="task_book_id" jdbcType="INTEGER" property="taskBookId" />
+    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
+    <result column="pro_time_start" jdbcType="TIMESTAMP" property="proTimeStart" />
+    <result column="pro_money" jdbcType="REAL" property="proMoney" />
+    <result column="pro_time_end" jdbcType="TIMESTAMP" property="proTimeEnd" />
+    <result column="task_note" jdbcType="VARCHAR" property="taskNote" />
+    <result column="work_id" jdbcType="INTEGER" property="workId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="report_book_id" jdbcType="INTEGER" property="reportBookId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    task_book_id, pro_name, pro_time_start, pro_money, pro_time_end, task_note, work_id, 
+    status, report_book_id
+  </sql>
+  <select id="selectByExample" parameterType="com.qy.entity.TaskBookExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from task_book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task_book
+    where task_book_id = #{taskBookId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from task_book
+    where task_book_id = #{taskBookId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qy.entity.TaskBookExample">
+    delete from task_book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qy.entity.TaskBook">
+    insert into task_book (task_book_id, pro_name, pro_time_start, 
+      pro_money, pro_time_end, task_note, 
+      work_id, status, report_book_id
+      )
+    values (#{taskBookId,jdbcType=INTEGER}, #{proName,jdbcType=VARCHAR}, #{proTimeStart,jdbcType=TIMESTAMP}, 
+      #{proMoney,jdbcType=REAL}, #{proTimeEnd,jdbcType=TIMESTAMP}, #{taskNote,jdbcType=VARCHAR}, 
+      #{workId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{reportBookId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qy.entity.TaskBook">
+    insert into task_book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskBookId != null">
+        task_book_id,
+      </if>
+      <if test="proName != null">
+        pro_name,
+      </if>
+      <if test="proTimeStart != null">
+        pro_time_start,
+      </if>
+      <if test="proMoney != null">
+        pro_money,
+      </if>
+      <if test="proTimeEnd != null">
+        pro_time_end,
+      </if>
+      <if test="taskNote != null">
+        task_note,
+      </if>
+      <if test="workId != null">
+        work_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="reportBookId != null">
+        report_book_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskBookId != null">
+        #{taskBookId,jdbcType=INTEGER},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proTimeStart != null">
+        #{proTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="proMoney != null">
+        #{proMoney,jdbcType=REAL},
+      </if>
+      <if test="proTimeEnd != null">
+        #{proTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskNote != null">
+        #{taskNote,jdbcType=VARCHAR},
+      </if>
+      <if test="workId != null">
+        #{workId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="reportBookId != null">
+        #{reportBookId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qy.entity.TaskBookExample" resultType="java.lang.Long">
+    select count(*) from task_book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update task_book
+    <set>
+      <if test="record.taskBookId != null">
+        task_book_id = #{record.taskBookId,jdbcType=INTEGER},
+      </if>
+      <if test="record.proName != null">
+        pro_name = #{record.proName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proTimeStart != null">
+        pro_time_start = #{record.proTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.proMoney != null">
+        pro_money = #{record.proMoney,jdbcType=REAL},
+      </if>
+      <if test="record.proTimeEnd != null">
+        pro_time_end = #{record.proTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskNote != null">
+        task_note = #{record.taskNote,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workId != null">
+        work_id = #{record.workId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.reportBookId != null">
+        report_book_id = #{record.reportBookId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update task_book
+    set task_book_id = #{record.taskBookId,jdbcType=INTEGER},
+      pro_name = #{record.proName,jdbcType=VARCHAR},
+      pro_time_start = #{record.proTimeStart,jdbcType=TIMESTAMP},
+      pro_money = #{record.proMoney,jdbcType=REAL},
+      pro_time_end = #{record.proTimeEnd,jdbcType=TIMESTAMP},
+      task_note = #{record.taskNote,jdbcType=VARCHAR},
+      work_id = #{record.workId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      report_book_id = #{record.reportBookId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qy.entity.TaskBook">
+    update task_book
+    <set>
+      <if test="proName != null">
+        pro_name = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proTimeStart != null">
+        pro_time_start = #{proTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="proMoney != null">
+        pro_money = #{proMoney,jdbcType=REAL},
+      </if>
+      <if test="proTimeEnd != null">
+        pro_time_end = #{proTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskNote != null">
+        task_note = #{taskNote,jdbcType=VARCHAR},
+      </if>
+      <if test="workId != null">
+        work_id = #{workId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="reportBookId != null">
+        report_book_id = #{reportBookId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where task_book_id = #{taskBookId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qy.entity.TaskBook">
+    update task_book
+    set pro_name = #{proName,jdbcType=VARCHAR},
+      pro_time_start = #{proTimeStart,jdbcType=TIMESTAMP},
+      pro_money = #{proMoney,jdbcType=REAL},
+      pro_time_end = #{proTimeEnd,jdbcType=TIMESTAMP},
+      task_note = #{taskNote,jdbcType=VARCHAR},
+      work_id = #{workId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      report_book_id = #{reportBookId,jdbcType=INTEGER}
+    where task_book_id = #{taskBookId,jdbcType=INTEGER}
+  </update>
+</mapper>
