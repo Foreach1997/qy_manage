@@ -605,63 +605,193 @@ public class TaskBookExample {
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdIsNull() {
-            addCriterion("report_book_id is null");
+        public Criteria andReportCodeIsNull() {
+            addCriterion("report_code is null");
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdIsNotNull() {
-            addCriterion("report_book_id is not null");
+        public Criteria andReportCodeIsNotNull() {
+            addCriterion("report_code is not null");
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdEqualTo(Integer value) {
-            addCriterion("report_book_id =", value, "reportBookId");
+        public Criteria andReportCodeEqualTo(String value) {
+            addCriterion("report_code =", value, "reportCode");
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdNotEqualTo(Integer value) {
-            addCriterion("report_book_id <>", value, "reportBookId");
+        public Criteria andReportCodeNotEqualTo(String value) {
+            addCriterion("report_code <>", value, "reportCode");
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdGreaterThan(Integer value) {
-            addCriterion("report_book_id >", value, "reportBookId");
+        public Criteria andReportCodeGreaterThan(String value) {
+            addCriterion("report_code >", value, "reportCode");
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("report_book_id >=", value, "reportBookId");
+        public Criteria andReportCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("report_code >=", value, "reportCode");
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdLessThan(Integer value) {
-            addCriterion("report_book_id <", value, "reportBookId");
+        public Criteria andReportCodeLessThan(String value) {
+            addCriterion("report_code <", value, "reportCode");
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdLessThanOrEqualTo(Integer value) {
-            addCriterion("report_book_id <=", value, "reportBookId");
+        public Criteria andReportCodeLessThanOrEqualTo(String value) {
+            addCriterion("report_code <=", value, "reportCode");
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdIn(List<Integer> values) {
-            addCriterion("report_book_id in", values, "reportBookId");
+        public Criteria andReportCodeLike(String value) {
+            addCriterion("report_code like", value, "reportCode");
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdNotIn(List<Integer> values) {
-            addCriterion("report_book_id not in", values, "reportBookId");
+        public Criteria andReportCodeNotLike(String value) {
+            addCriterion("report_code not like", value, "reportCode");
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdBetween(Integer value1, Integer value2) {
-            addCriterion("report_book_id between", value1, value2, "reportBookId");
+        public Criteria andReportCodeIn(List<String> values) {
+            addCriterion("report_code in", values, "reportCode");
             return (Criteria) this;
         }
 
-        public Criteria andReportBookIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("report_book_id not between", value1, value2, "reportBookId");
+        public Criteria andReportCodeNotIn(List<String> values) {
+            addCriterion("report_code not in", values, "reportCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportCodeBetween(String value1, String value2) {
+            addCriterion("report_code between", value1, value2, "reportCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportCodeNotBetween(String value1, String value2) {
+            addCriterion("report_code not between", value1, value2, "reportCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIsNull() {
+            addCriterion("create_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIsNotNull() {
+            addCriterion("create_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeEqualTo(Date value) {
+            addCriterion("create_time =", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotEqualTo(Date value) {
+            addCriterion("create_time <>", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThan(Date value) {
+            addCriterion("create_time >", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("create_time >=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThan(Date value) {
+            addCriterion("create_time <", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            addCriterion("create_time <=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIn(List<Date> values) {
+            addCriterion("create_time in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotIn(List<Date> values) {
+            addCriterion("create_time not in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeBetween(Date value1, Date value2) {
+            addCriterion("create_time between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            addCriterion("create_time not between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIsNull() {
+            addCriterion("user_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIsNotNull() {
+            addCriterion("user_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdEqualTo(Integer value) {
+            addCriterion("user_id =", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotEqualTo(Integer value) {
+            addCriterion("user_id <>", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThan(Integer value) {
+            addCriterion("user_id >", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("user_id >=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThan(Integer value) {
+            addCriterion("user_id <", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThanOrEqualTo(Integer value) {
+            addCriterion("user_id <=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIn(List<Integer> values) {
+            addCriterion("user_id in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotIn(List<Integer> values) {
+            addCriterion("user_id not in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdBetween(Integer value1, Integer value2) {
+            addCriterion("user_id between", value1, value2, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("user_id not between", value1, value2, "userId");
             return (Criteria) this;
         }
     }

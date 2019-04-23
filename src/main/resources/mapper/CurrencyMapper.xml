@@ -61,6 +61,84 @@
         SELECT user_id from  user  where  dep_id = #{_parameter};
     </select>
 
+    <select id="findPlanBookList" parameterType="java.util.Map" resultType="com.alibaba.fastjson.JSONObject">
+        select plan_book_id AS "planBookId", plan_target AS  "planTarget",plan_org AS "planOrg", plan_work AS "planWork",plan_milepost AS "planMilepost", gantt_chart as "ganttChart",plan_relation as "planRelation",
+        risk, measures,create_time as "createTime",user_id as "userId",report_code as "reportCode",status as "status" FROM plan_book
+        <if test="list != null">
+            user_id IN
+            <foreach collection="list" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="userId != null and userId !=''">
+            and   user_id = #{userId}
+        </if>
+        <if test="reportCode != null and reportCode !=''">
+            and   report_code LIKE '%'#{reportCode}'%'
+        </if>
+        <if test="currentPage != null and currentPage !='' or
+                        pageSize != null and pageSize !=''">
+            LIMIT #{pageSize} OFFSET #{currentPage}
+        </if>
+    </select>
+
+    <select id="findPlanBookListCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) FROM plan_book
+    <if test="list != null">
+        user_id IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </if>
+    <if test="userId != null and userId !=''">
+        and   user_id = #{userId}
+    </if>
+    <if test="reportCode != null and reportCode !=''">
+        and   report_code LIKE '%'#{reportCode}'%'
+    </if>
+</select>
+
+
+    <select id="findTaskBookList" parameterType="java.util.Map" resultType="com.alibaba.fastjson.JSONObject">
+        select task_book_id  as "taskBookId",pro_name as "proName",pro_time_start as "proTimeStart",
+        pro_money as "proMoney", pro_time_end as "proTimeEnd",task_note as "taskNote",
+        work_id as "workId",status as "status",report_code as "reportCode",
+        create_time as "createTime", user_id as "userId" FROM task_book
+        <if test="list != null">
+            user_id IN
+            <foreach collection="list" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="userId != null and userId !=''">
+            and   user_id = #{userId}
+        </if>
+        <if test="reportCode != null and reportCode !=''">
+            and   report_code LIKE '%'#{reportCode}'%'
+        </if>
+        <if test="currentPage != null and currentPage !='' or
+                        pageSize != null and pageSize !=''">
+            LIMIT #{pageSize} OFFSET #{currentPage}
+        </if>
+    </select>
+
+    <select id="findTaskBookListCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*) FROM task_book
+        <if test="list != null">
+            user_id IN
+            <foreach collection="list" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="userId != null and userId !=''">
+            and   user_id = #{userId}
+        </if>
+        <if test="reportCode != null and reportCode !=''">
+            and   report_code LIKE '%'#{reportCode}'%'
+        </if>
+    </select>
+
+
 <!--
     <resultMap id="userMap" type="com.qy.entity.User">
         <id column="user_id" jdbcType="INTEGER" property="userId" />

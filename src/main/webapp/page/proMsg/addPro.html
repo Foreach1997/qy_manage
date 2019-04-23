@@ -58,6 +58,23 @@
 </body>
 </html>
 <script>
+    
+    
+    $(function () {
+            var data= parent.dataRowJson;
+            if (!!data) {
+                $('#proSource').val(data.proSource);
+                $('#proBackground').val(data.proBackground);
+                $('#proDescribe').val(data.proDescribe);
+                $('#proFeasibility').val(data.proFeasibility);
+                $('#proMoney').val(data.proMoney);
+                $('#proBenefit').val(data.proBenefit);
+                $('#confirm').hide();
+                $('#address').hide();
+            }
+    })
+    
+    
     layui.use('upload', function(){
         var upload = layui.upload;
         var uploadInst = upload.render({

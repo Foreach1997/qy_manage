@@ -3,12 +3,8 @@ package com.qy.service.serviceImpl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.qy.dao.CurrencyMapper;
-import com.qy.dao.ReportBookMapper;
-import com.qy.dao.UserMapper;
-import com.qy.entity.ReportBook;
-import com.qy.entity.ReportBookExample;
-import com.qy.entity.User;
+import com.qy.dao.*;
+import com.qy.entity.*;
 import com.qy.service.ReportBookService;
 import com.qy.util.ResultRespose;
 import com.qy.util.SupportPage;
@@ -40,6 +36,10 @@ public class ReportBookServiceImpl implements ReportBookService {
     private UserMapper userMapper;
     @Resource
     private CurrencyMapper currencyMapper;
+    @Resource
+    private PlanBookMapper planBookMapper;
+    @Resource
+    private TaskBookMapper taskBookMapper;
 
 
     @Override
@@ -82,16 +82,21 @@ public class ReportBookServiceImpl implements ReportBookService {
     @Override
     public Object updatePro(ReportBook reportBook) {
 
-        User u = userMapper.selectByPrimaryKey(reportBook.getUserId());
+//        User u = userMapper.selectByPrimaryKey(reportBook.getUserId());
+//
+//        if (u.getRoleId()==1){
+//            reportBook.setStatus(3);
+//            reportBook.setProCode(String.valueOf(System.currentTimeMillis()));
+//        }else if (u.getUserId()==2){
+//            reportBook.setStatus(2);
+//        }
+         if (reportBook.getStatus()==3){
+             reportBook.setProCode(String.valueOf(System.currentTimeMillis()));
+             //FIXME 插入项目经理
 
-        if (u.getRoleId()==1){
-            reportBook.setStatus(3);
-            reportBook.setProCode(String.valueOf(System.currentTimeMillis()));
-        }else if (u.getUserId()==2){
-            reportBook.setStatus(2);
-        }
+         }
          int val =  reportBookMapper.updateByPrimaryKeySelective(reportBook);
-        if (val>0){
+        if (val!=0){
             return ResultRespose.rsult(200,"成功",null);
         }
         return ResultRespose.rsult(200,"失败",null);
@@ -152,4 +157,138 @@ public class ReportBookServiceImpl implements ReportBookService {
         }
         return ResultRespose.rsultRespose(200,"请求成功",res,count);
     }
+
+    @Override
+    public Object findPlanBookList(PlanBook planBook,Integer depId,HttpServletRequest request, SupportPage supportPage) {
+        User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
+
+        List<Integer> list = null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("reportCode",planBook.getReportCode());
+        if (u.getRoleId()==3){
+            map.put("userId",u.getUserId());
+        }
+        if (u.getRoleId()==2){
+            list =  currencyMapper.findUserIdByDepId(u.getDepId());
+        }
+        if (u.getRoleId() ==1){
+            list =  currencyMapper.findUserIdByDepId(depId);
+        }
+        if (!list.isEmpty()){
+            map.put("list",list);
+        }
+
+        if (supportPage.getCurrentPage()!=null&&supportPage.getPageSize()!=null) {
+            map.put("currentPage", (supportPage.getCurrentPage() - 1) * supportPage.getPageSize());
+            map.put("pageSize", supportPage.getPageSize());
+        }
+        List<JSONObject> planBookExampleList =  currencyMapper.findPlanBookList(map);
+        int count = currencyMapper.findPlanBookListCount(map);
+
+        for (JSONObject jsonObject : planBookExampleList){
+            jsonObject.put("createTime",format.format(jsonObject.getString("createTime")));
+            jsonObject.put("roleId",u.getRoleId());
+        }
+        return ResultRespose.rsultRespose(200,"请求成功",planBookExampleList,count);
+    }
+
+    @Override
+    public Object insertPlanBook(MultipartFile file, PlanBook planBook, HttpServletRequest request) {
+
+        String path = SystemContent.path;
+        String name = UUID.randomUUID().toString() +file.getOriginalFilename();
+        planBook.setCreateTime(new Date());
+        if (!file.isEmpty()) {
+            File newPath = new File(path,name);
+            if (!file.isEmpty()){
+                try {
+                    InputStream in = file.getInputStream();
+                    FileOutputStream out = new FileOutputStream(newPath);
+                    byte buffer[] = new byte[1024];
+                    int len = 0;
+                    while ((len = in.read(buffer)) > 0) {
+
+                        out.write(buffer, 0, len);
+                    }
+                    in.close();
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return ResultRespose.rsult(200,"申请失败",null);
+                }
+            }
+            planBook.setUserId((int)request.getSession().getAttribute("userId"));
+
+            planBook.setStatus(1);
+            planBook.setGanttChart(newPath.toString());
+            planBookMapper.insert(planBook);
+            return ResultRespose.rsult(200,"申请成功",null);
+        }else {
+            return ResultRespose.rsult(200,"申请失败",null);
+        }
+    }
+
+    @Override
+    public Object updatePlan(PlanBook planBook) {
+
+        int val =  planBookMapper.updateByPrimaryKeySelective(planBook);
+        if (val!=0){
+            return ResultRespose.rsult(200,"成功",null);
+        }
+        return ResultRespose.rsult(200,"失败",null);
+    }
+
+    @Override
+    public Object findTaskBookList(TaskBook taskBook, Integer depId, HttpServletRequest request, SupportPage supportPage) {
+        User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
+
+        List<Integer> list = null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("reportCode",taskBook.getReportCode());
+        if (u.getRoleId()==3){
+            map.put("userId",u.getUserId());
+        }
+        if (u.getRoleId()==2){
+            list =  currencyMapper.findUserIdByDepId(u.getDepId());
+        }
+        if (u.getRoleId() ==1){
+            list =  currencyMapper.findUserIdByDepId(depId);
+        }
+        if (!list.isEmpty()){
+            map.put("list",list);
+        }
+
+        if (supportPage.getCurrentPage()!=null&&supportPage.getPageSize()!=null) {
+            map.put("currentPage", (supportPage.getCurrentPage() - 1) * supportPage.getPageSize());
+            map.put("pageSize", supportPage.getPageSize());
+        }
+        List<JSONObject> taskBookExampleList =  currencyMapper.findTaskBookList(map);
+        int count = currencyMapper.findTaskBookListCount(map);
+
+        for (JSONObject jsonObject : taskBookExampleList){
+            jsonObject.put("createTime",format.format(jsonObject.getString("createTime")));
+            jsonObject.put("roleId",u.getRoleId());
+        }
+        return ResultRespose.rsultRespose(200,"请求成功",taskBookExampleList,count);
+
+    }
+
+    @Override
+    public Object insertTaskBook(TaskBook taskBook, HttpServletRequest request) {
+        int val =  taskBookMapper.insert(taskBook);
+        if (val!=0){
+            return ResultRespose.rsult(200,"成功",null);
+        }
+        return ResultRespose.rsult(200,"失败",null);
+    }
+
+    @Override
+    public Object updateTask(TaskBook taskBook) {
+        int val =  taskBookMapper.updateByPrimaryKeySelective(taskBook);
+        if (val!=0){
+            return ResultRespose.rsult(200,"成功",null);
+        }
+        return ResultRespose.rsult(200,"失败",null);
+    }
+
 }

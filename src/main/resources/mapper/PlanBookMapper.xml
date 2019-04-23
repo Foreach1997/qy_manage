@@ -13,7 +13,7 @@
     <result column="measures" jdbcType="VARCHAR" property="measures" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="report_book_id" jdbcType="INTEGER" property="reportBookId" />
+    <result column="report_code" jdbcType="VARCHAR" property="reportCode" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -76,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     plan_book_id, plan_target, plan_org, plan_work, plan_milepost, gantt_chart, plan_relation, 
-    risk, measures, create_time, user_id, report_book_id, status
+    risk, measures, create_time, user_id, report_code, status
   </sql>
   <select id="selectByExample" parameterType="com.qy.entity.PlanBookExample" resultMap="BaseResultMap">
     select
@@ -112,12 +112,12 @@
     insert into plan_book (plan_book_id, plan_target, plan_org, 
       plan_work, plan_milepost, gantt_chart, 
       plan_relation, risk, measures, 
-      create_time, user_id, report_book_id, 
+      create_time, user_id, report_code, 
       status)
     values (#{planBookId,jdbcType=INTEGER}, #{planTarget,jdbcType=VARCHAR}, #{planOrg,jdbcType=VARCHAR}, 
       #{planWork,jdbcType=VARCHAR}, #{planMilepost,jdbcType=VARCHAR}, #{ganttChart,jdbcType=VARCHAR}, 
       #{planRelation,jdbcType=VARCHAR}, #{risk,jdbcType=VARCHAR}, #{measures,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}, #{reportBookId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}, #{reportCode,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.qy.entity.PlanBook">
@@ -156,8 +156,8 @@
       <if test="userId != null">
         user_id,
       </if>
-      <if test="reportBookId != null">
-        report_book_id,
+      <if test="reportCode != null">
+        report_code,
       </if>
       <if test="status != null">
         status,
@@ -197,8 +197,8 @@
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="reportBookId != null">
-        #{reportBookId,jdbcType=INTEGER},
+      <if test="reportCode != null">
+        #{reportCode,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -247,8 +247,8 @@
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
-      <if test="record.reportBookId != null">
-        report_book_id = #{record.reportBookId,jdbcType=INTEGER},
+      <if test="record.reportCode != null">
+        report_code = #{record.reportCode,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
@@ -271,7 +271,7 @@
       measures = #{record.measures,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       user_id = #{record.userId,jdbcType=INTEGER},
-      report_book_id = #{record.reportBookId,jdbcType=INTEGER},
+      report_code = #{record.reportCode,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -310,8 +310,8 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="reportBookId != null">
-        report_book_id = #{reportBookId,jdbcType=INTEGER},
+      <if test="reportCode != null">
+        report_code = #{reportCode,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
@@ -331,7 +331,7 @@
       measures = #{measures,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       user_id = #{userId,jdbcType=INTEGER},
-      report_book_id = #{reportBookId,jdbcType=INTEGER},
+      report_code = #{reportCode,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER}
     where plan_book_id = #{planBookId,jdbcType=INTEGER}
   </update>

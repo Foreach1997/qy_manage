@@ -25,7 +25,7 @@ public class PlanBook {
 
     private Integer userId;
 
-    private Integer reportBookId;
+    private String reportCode;
 
     private Integer status;
 
@@ -117,12 +117,12 @@ public class PlanBook {
         this.userId = userId;
     }
 
-    public Integer getReportBookId() {
-        return reportBookId;
+    public String getReportCode() {
+        return reportCode;
     }
 
-    public void setReportBookId(Integer reportBookId) {
-        this.reportBookId = reportBookId;
+    public void setReportCode(String reportCode) {
+        this.reportCode = reportCode == null ? null : reportCode.trim();
     }
 
     public Integer getStatus() {

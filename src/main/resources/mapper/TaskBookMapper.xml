@@ -10,7 +10,9 @@
     <result column="task_note" jdbcType="VARCHAR" property="taskNote" />
     <result column="work_id" jdbcType="INTEGER" property="workId" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="report_book_id" jdbcType="INTEGER" property="reportBookId" />
+    <result column="report_code" jdbcType="VARCHAR" property="reportCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List">
     task_book_id, pro_name, pro_time_start, pro_money, pro_time_end, task_note, work_id, 
-    status, report_book_id
+    status, report_code, create_time, user_id
   </sql>
   <select id="selectByExample" parameterType="com.qy.entity.TaskBookExample" resultMap="BaseResultMap">
     select
@@ -107,12 +109,12 @@
   <insert id="insert" parameterType="com.qy.entity.TaskBook">
     insert into task_book (task_book_id, pro_name, pro_time_start, 
       pro_money, pro_time_end, task_note, 
-      work_id, status, report_book_id
-      )
+      work_id, status, report_code, 
+      create_time, user_id)
     values (#{taskBookId,jdbcType=INTEGER}, #{proName,jdbcType=VARCHAR}, #{proTimeStart,jdbcType=TIMESTAMP}, 
       #{proMoney,jdbcType=REAL}, #{proTimeEnd,jdbcType=TIMESTAMP}, #{taskNote,jdbcType=VARCHAR}, 
-      #{workId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{reportBookId,jdbcType=INTEGER}
-      )
+      #{workId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{reportCode,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.qy.entity.TaskBook">
     insert into task_book
@@ -141,8 +143,14 @@
       <if test="status != null">
         status,
       </if>
-      <if test="reportBookId != null">
-        report_book_id,
+      <if test="reportCode != null">
+        report_code,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="userId != null">
+        user_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -170,8 +178,14 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="reportBookId != null">
-        #{reportBookId,jdbcType=INTEGER},
+      <if test="reportCode != null">
+        #{reportCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -208,8 +222,14 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
-      <if test="record.reportBookId != null">
-        report_book_id = #{record.reportBookId,jdbcType=INTEGER},
+      <if test="record.reportCode != null">
+        report_code = #{record.reportCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -226,7 +246,9 @@
       task_note = #{record.taskNote,jdbcType=VARCHAR},
       work_id = #{record.workId,jdbcType=INTEGER},
       status = #{record.status,jdbcType=INTEGER},
-      report_book_id = #{record.reportBookId,jdbcType=INTEGER}
+      report_code = #{record.reportCode,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      user_id = #{record.userId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -255,8 +277,14 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="reportBookId != null">
-        report_book_id = #{reportBookId,jdbcType=INTEGER},
+      <if test="reportCode != null">
+        report_code = #{reportCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
       </if>
     </set>
     where task_book_id = #{taskBookId,jdbcType=INTEGER}
@@ -270,7 +298,9 @@
       task_note = #{taskNote,jdbcType=VARCHAR},
       work_id = #{workId,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
-      report_book_id = #{reportBookId,jdbcType=INTEGER}
+      report_code = #{reportCode,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER}
     where task_book_id = #{taskBookId,jdbcType=INTEGER}
   </update>
 </mapper>

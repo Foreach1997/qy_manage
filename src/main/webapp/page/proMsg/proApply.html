@@ -47,13 +47,29 @@
         </div>
     </div>
 </div>
-<div id="info"></div>
+<div id="info" lay-filter="info"></div>
 </body>
 </html>
 <script type="text/html" id="barDemo">
-    <a href="javascript:editUser('{{d.userId}}');" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">编辑</a>
+    {{#  if(d.status == 1 && d.roleId == 2){ }}
+    <a href="javascript:proStatus('{{d.reportBookId}}',2);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
+    {{#  } else if(d.status == 2 && d.roleId == 1){ }}
+    <a href="javascript:proStatus('{{d.reportBookId}}',3);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
+    {{#  } }}
+</script>
+<script type="text/html" id="status">
+    {{#  if(d.status == 1){ }}
+     部门经理审批中
+    {{#  } else if(d.status == 2){ }}
+     总经理审批中
+    {{#  } else if(d.status == 3){ }}
+     审批完成
+    {{#  } }}
 </script>
 <script>
+
+    var dataRowJson;
+
     function editUser(userId){
         layui.use('layer',function () {
             layer.open({
@@ -66,6 +82,22 @@
             });
         });
     }
+
+    function proStatus(reportBookId,status){
+        $.ajax({
+            type: "POST",
+            url: directory+"report/updatePro",
+            async:false,
+            data: {
+                reportBookId:reportBookId,
+                status:status
+            },
+            success: function(res) {
+                layer.msg(res.msg)
+            }
+        })
+    }
+
 
     function reload(){
         var depId = $('#dep').val();
@@ -137,6 +169,7 @@
                 {field:'proSource',  width: tableWidth*0.2, title: '项目来源'}
                 ,{field:'proDescribe',  width: tableWidth*0.2, title: '项目目标描述'}
                 ,{field:'proMoney', width:tableWidth*0.1, title: '项目申请金额'}
+                ,{field:'status', title: '状态', width: tableWidth*0.1,toolbar:'#status'}
                 ,{field:'proCode', title: '项目编号',width: tableWidth*0.15}
                 ,{field:'createTime', title: '创建时间', width: tableWidth*0.15}
                 ,{field:'zz',title:'操作',width:tableWidth*0.15,toolbar:'#barDemo'}
@@ -144,4 +177,23 @@
             ,page: true
         });
     });
+    layui.use('table', function() {
+        var table = layui.table;
+        table.on('rowDouble(info)', function (obj) {
+             dataRowJson = obj.data;
+            layui.use('layer',function () {
+                layer.open({
+                    type: 2,
+                    title: '申请项目',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: false, //开启最大化最小化按钮
+                    area: ['100%','100%'],
+                    anim: 2,
+                    content: 'addPro.html'
+                });
+            })
+
+        });
+    })
 </script>

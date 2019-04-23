@@ -1,5 +1,7 @@
 package com.qy.dao;
 
+import com.alibaba.fastjson.JSONObject;
+import com.qy.entity.PlanBook;
 import com.qy.entity.ReportBook;
 import com.qy.entity.User;
 
@@ -23,5 +25,16 @@ public interface CurrencyMapper {
      * 员工信息查询
      */
     public List<User> findUserList(User user);
+    /**
+     * 查出当前部门下面所有立项的计划
+     */
+    public List<JSONObject> findPlanBookList(Map<String,Object> map);
 
+    public  int  findPlanBookListCount(Map<String,Object> map);
+    /**
+     * 查出当前部门下面所有立项的任务
+     */
+    public List<JSONObject> findTaskBookList(Map<String,Object> map);
+
+    public  int  findTaskBookListCount(Map<String,Object> map);
 }

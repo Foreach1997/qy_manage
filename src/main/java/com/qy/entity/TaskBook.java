@@ -19,7 +19,11 @@ public class TaskBook {
 
     private Integer status;
 
-    private Integer reportBookId;
+    private String reportCode;
+
+    private Date createTime;
+
+    private Integer userId;
 
     public Integer getTaskBookId() {
         return taskBookId;
@@ -85,11 +89,27 @@ public class TaskBook {
         this.status = status;
     }
 
-    public Integer getReportBookId() {
-        return reportBookId;
+    public String getReportCode() {
+        return reportCode;
     }
 
-    public void setReportBookId(Integer reportBookId) {
-        this.reportBookId = reportBookId;
+    public void setReportCode(String reportCode) {
+        this.reportCode = reportCode == null ? null : reportCode.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }
