@@ -40,6 +40,10 @@ public class ReportBookServiceImpl implements ReportBookService {
     private PlanBookMapper planBookMapper;
     @Resource
     private TaskBookMapper taskBookMapper;
+    @Resource
+    private WorkMapper workMapper;
+    @Resource
+    private WorkStaffMapper workStaffMapper;
 
 
     @Override
@@ -92,8 +96,13 @@ public class ReportBookServiceImpl implements ReportBookService {
 //        }
          if (reportBook.getStatus()==3){
              reportBook.setProCode(String.valueOf(System.currentTimeMillis()));
-             //FIXME 插入项目经理
-
+             //FIXME 插入项目经理表信息
+             Work work = new Work();
+             work.setCreateTime(new Date());
+             work.setWorkRoleName("项目经理");
+             work.setProCode(reportBook.getProCode());
+             //work.setStatus();
+             workMapper.insert(work);
          }
          int val =  reportBookMapper.updateByPrimaryKeySelective(reportBook);
         if (val!=0){
@@ -195,6 +204,12 @@ public class ReportBookServiceImpl implements ReportBookService {
     @Override
     public Object insertPlanBook(MultipartFile file, PlanBook planBook, HttpServletRequest request) {
 
+        PlanBookExample planBookExample = new PlanBookExample();
+        planBookExample.createCriteria().andReportCodeEqualTo(planBook.getReportCode());
+        long count = planBookMapper.countByExample(planBookExample);
+        if (count>0){
+            return ResultRespose.rsult(200,"该项目已有计划书",null);
+        }
         String path = SystemContent.path;
         String name = UUID.randomUUID().toString() +file.getOriginalFilename();
         planBook.setCreateTime(new Date());
@@ -275,6 +290,12 @@ public class ReportBookServiceImpl implements ReportBookService {
 
     @Override
     public Object insertTaskBook(TaskBook taskBook, HttpServletRequest request) {
+        TaskBookExample taskBookExample = new TaskBookExample();
+        taskBookExample.createCriteria().andReportCodeEqualTo(taskBook.getReportCode());
+        long count = taskBookMapper.countByExample(taskBookExample);
+        if (count>0){
+            return ResultRespose.rsult(200,"该项目已有任务书",null);
+        }
         int val =  taskBookMapper.insert(taskBook);
         if (val!=0){
             return ResultRespose.rsult(200,"成功",null);
@@ -284,6 +305,10 @@ public class ReportBookServiceImpl implements ReportBookService {
 
     @Override
     public Object updateTask(TaskBook taskBook) {
+        WorkExample workExample = new WorkExample();
+        workExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
+        List<Work> works = workMapper.selectByExample(workExample);
+        taskBook.setWorkId(works.get(0).getWorkId());
         int val =  taskBookMapper.updateByPrimaryKeySelective(taskBook);
         if (val!=0){
             return ResultRespose.rsult(200,"成功",null);
