@@ -23,18 +23,22 @@
 
     <select id="findReportBookList" parameterType="java.util.Map" resultMap="reportBookMap">
       select <include refid="reportBookMapSql"/> FROM report_book
-        <if test="list != null">
-            user_id IN
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-        </if>
+        <where>
+        <trim prefix="and" prefixOverrides="and">
         <if test="userId != null and userId !=''">
-         and   user_id = #{userId}
+            user_id = #{userId}
         </if>
         <if test="proCode != null and proCode !=''">
-            and   pro_code LIKE '%'#{proCode}'%'
+               pro_code LIKE '%'#{proCode}'%'
         </if>
+        <if test="list != null">
+                user_id IN
+                <foreach collection="list" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+        </if>
+        </trim>
+        </where>
         <if test="currentPage != null and currentPage !='' or
                         pageSize != null and pageSize !=''">
             LIMIT #{pageSize} OFFSET #{currentPage}
@@ -43,6 +47,8 @@
 
     <select id="findReportBookListCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(*) FROM report_book
+        <where>
+        <trim prefix="and" prefixOverrides="and">
         <if test="list != null">
             user_id IN
             <foreach collection="list" item="item" open="(" close=")" separator=",">
@@ -50,11 +56,13 @@
             </foreach>
         </if>
         <if test="userId != null and userId !=''">
-            and   user_id = #{userId}
+               user_id = #{userId}
         </if>
         <if test="proCode != null and proCode !=''">
-            and   pro_code LIKE '%'#{proCode}'%'
+            pro_code LIKE '%'#{proCode}'%'
         </if>
+        </trim>
+        </where>
     </select>
 
     <select id="findUserIdByDepId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
@@ -64,6 +72,8 @@
     <select id="findPlanBookList" parameterType="java.util.Map" resultType="com.alibaba.fastjson.JSONObject">
         select plan_book_id AS "planBookId", plan_target AS  "planTarget",plan_org AS "planOrg", plan_work AS "planWork",plan_milepost AS "planMilepost", gantt_chart as "ganttChart",plan_relation as "planRelation",
         risk, measures,create_time as "createTime",user_id as "userId",report_code as "reportCode",status as "status" FROM plan_book
+        <where>
+        <trim prefix="and" prefixOverrides="and">
         <if test="list != null">
             user_id IN
             <foreach collection="list" item="item" open="(" close=")" separator=",">
@@ -71,11 +81,13 @@
             </foreach>
         </if>
         <if test="userId != null and userId !=''">
-            and   user_id = #{userId}
+               user_id = #{userId}
         </if>
         <if test="reportCode != null and reportCode !=''">
-            and   report_code LIKE '%'#{reportCode}'%'
+               report_code LIKE '%'#{reportCode}'%'
         </if>
+        </trim>
+        </where>
         <if test="currentPage != null and currentPage !='' or
                         pageSize != null and pageSize !=''">
             LIMIT #{pageSize} OFFSET #{currentPage}
@@ -84,6 +96,8 @@
 
     <select id="findPlanBookListCount" parameterType="java.util.Map" resultType="java.lang.Integer">
     select count(*) FROM plan_book
+        <where>
+        <trim prefix="and" prefixOverrides="and">
     <if test="list != null">
         user_id IN
         <foreach collection="list" item="item" open="(" close=")" separator=",">
@@ -91,11 +105,13 @@
         </foreach>
     </if>
     <if test="userId != null and userId !=''">
-        and   user_id = #{userId}
+           user_id = #{userId}
     </if>
     <if test="reportCode != null and reportCode !=''">
-        and   report_code LIKE '%'#{reportCode}'%'
+           report_code LIKE '%'#{reportCode}'%'
     </if>
+        </trim>
+        </where>
 </select>
 
 
@@ -104,6 +120,8 @@
         pro_money as "proMoney", pro_time_end as "proTimeEnd",task_note as "taskNote",
         work_id as "workId",status as "status",report_code as "reportCode",
         create_time as "createTime", user_id as "userId" FROM task_book
+        <where>
+            <trim prefix="and" prefixOverrides="and">
         <if test="list != null">
             user_id IN
             <foreach collection="list" item="item" open="(" close=")" separator=",">
@@ -111,11 +129,13 @@
             </foreach>
         </if>
         <if test="userId != null and userId !=''">
-            and   user_id = #{userId}
+               user_id = #{userId}
         </if>
         <if test="reportCode != null and reportCode !=''">
-            and   report_code LIKE '%'#{reportCode}'%'
+               report_code LIKE '%'#{reportCode}'%'
         </if>
+            </trim>
+        </where>
         <if test="currentPage != null and currentPage !='' or
                         pageSize != null and pageSize !=''">
             LIMIT #{pageSize} OFFSET #{currentPage}
@@ -124,6 +144,8 @@
 
     <select id="findTaskBookListCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(*) FROM task_book
+        <where>
+            <trim prefix="and" prefixOverrides="and">
         <if test="list != null">
             user_id IN
             <foreach collection="list" item="item" open="(" close=")" separator=",">
@@ -131,11 +153,13 @@
             </foreach>
         </if>
         <if test="userId != null and userId !=''">
-            and   user_id = #{userId}
+               user_id = #{userId}
         </if>
         <if test="reportCode != null and reportCode !=''">
-            and   report_code LIKE '%'#{reportCode}'%'
+               report_code LIKE '%'#{reportCode}'%'
         </if>
+            </trim>
+        </where>
     </select>
 
 
@@ -155,6 +179,7 @@
     <select id="findUserList" parameterType="com.qy.entity.User" resultType="com.qy.entity.User">
         SELECT * FROM  user
         <where>
+            <trim prefix="and" prefixOverrides="and">
             <if test="userId != '' and userId != null">
                 user_id = #{userId}
             </if>
@@ -162,26 +187,90 @@
                 email = #{email}
             </if>
             <if test="password != '' and password != null">
-                password = #{password}
+                  password = #{password}
             </if>
             <if test="roleId != '' and roleId != null">
              <if test="roleId == 1">
-                 role_id != #{roleId}
+                   role_id != #{roleId}
               </if>
               <if test="roleId == 2">
-                role_id = 3
+                   role_id = 3
               </if>
             </if>
             <if test="phone != '' and phone != null">
-                phone = #{phone}
+                  phone = #{phone}
             </if>
             <if test="depId != '' and depId != null">
-                    dep_id = #{depId}
+                      dep_id = #{depId}
             </if>
             <if test="sex != '' and sex != null">
-                sex = #{sex}
+                  sex = #{sex}
             </if>
+            </trim>
         </where>
         ORDER BY create_time DESC
+    </select>
+
+    <select id="findWorkStaffList" resultType="com.alibaba.fastjson.JSONObject" parameterType="java.util.Map">
+        select  work_staff_id as "workStaffId", user_id as "userId", work_lead_id as "workLeadId",
+        work_id as "workId", create_tiem as "createTiem", pro_code as "proCode",
+        plan_money as "planMoney", real_money as "realMoney", status,
+        report_note as "reportNote", review, small_task,
+        dep_id  as  "depId" from work_staff
+        <where>
+            <trim prefix="and" prefixOverrides="and">
+                <if test="list != null">
+                      user_id IN
+                    <foreach collection="list" item="item" open="(" close=")" separator=",">
+                        #{item}
+                    </foreach>
+                </if>
+            <if test="proCode != null">
+                pro_code like '%'#{proCode}'%'
+            </if>
+            <if test="smallTask != null">
+                small_task = #{smallTask}
+            </if>
+            <if test="userId != null">
+                    user_id = #{userId}
+            </if>
+            <if test="workLeadId != null">
+                work_lead_id = #{workLeadId}
+             </if>
+             <if test="depId != null">
+                    dep_id = #{depId}
+             </if>
+            </trim>
+        </where>
+        <if test="currentPage != null and currentPage !='' or
+                        pageSize != null and pageSize !=''">
+            LIMIT #{pageSize} OFFSET #{currentPage}
+        </if>
+    </select>
+
+    <select id="findWorkStaffListCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select  count(*) from work_staff
+        <where>
+            <trim prefix="and" prefixOverrides="and">
+                <if test="list != null">
+                  and  user_id IN
+                    <foreach collection="list" item="item" open="(" close=")" separator=",">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="proCode != null">
+                    pro_code LIKE #{proCode}
+                </if>
+                <if test="smallTask != null">
+                    small_task = #{smallTask}
+                </if>
+                <if test="userId != null">
+                    user_id = #{userId}
+                </if>
+                <if test="report_book != null">
+                    work_lead_id = #{workLeadId}
+                </if>
+            </trim>
+        </where>
     </select>
 </mapper>

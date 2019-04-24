@@ -42,8 +42,8 @@ public class ReportBookServiceImpl implements ReportBookService {
     private TaskBookMapper taskBookMapper;
     @Resource
     private WorkMapper workMapper;
-    @Resource
-    private WorkStaffMapper workStaffMapper;
+   // @Resource
+    //private WorkStaffMapper workStaffMapper;
 
 
     @Override
@@ -125,10 +125,10 @@ public class ReportBookServiceImpl implements ReportBookService {
           if (u.getRoleId()==2){
                list =  currencyMapper.findUserIdByDepId(u.getDepId());
           }
-          if (u.getRoleId() ==1){
+          if (u.getRoleId() ==1 && depId!=null){
                list =  currencyMapper.findUserIdByDepId(depId);
           }
-          if (!list.isEmpty()){
+          if ( list!=null){
               map.put("list",list);
           }
 //        List<ReportBook> reportBookExampleList = null;
@@ -181,10 +181,10 @@ public class ReportBookServiceImpl implements ReportBookService {
         if (u.getRoleId()==2){
             list =  currencyMapper.findUserIdByDepId(u.getDepId());
         }
-        if (u.getRoleId() ==1){
+        if (u.getRoleId() ==1&& depId!=null){
             list =  currencyMapper.findUserIdByDepId(depId);
         }
-        if (!list.isEmpty()){
+        if (list!=null){
             map.put("list",list);
         }
 
@@ -268,10 +268,10 @@ public class ReportBookServiceImpl implements ReportBookService {
         if (u.getRoleId()==2){
             list =  currencyMapper.findUserIdByDepId(u.getDepId());
         }
-        if (u.getRoleId() ==1){
+        if (u.getRoleId() ==1&& depId!=null){
             list =  currencyMapper.findUserIdByDepId(depId);
         }
-        if (!list.isEmpty()){
+        if ( list!=null){
             map.put("list",list);
         }
 
@@ -311,6 +311,9 @@ public class ReportBookServiceImpl implements ReportBookService {
             e.printStackTrace();
         }
         taskBook.setStatus(1);
+        WorkExample workExample = new WorkExample();
+        workExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
+        taskBook.setWorkId(workMapper.selectByExample(workExample).get(0).getWorkId());
         int val =  taskBookMapper.insert(taskBook);
         if (val!=0){
             return ResultRespose.rsult(200,"成功",null);
@@ -324,6 +327,8 @@ public class ReportBookServiceImpl implements ReportBookService {
         workExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
         List<Work> works = workMapper.selectByExample(workExample);
         taskBook.setWorkId(works.get(0).getWorkId());
+        //FIXME 在此处对各种状态进行判断和处理
+
         int val =  taskBookMapper.updateByPrimaryKeySelective(taskBook);
         if (val!=0){
             return ResultRespose.rsult(200,"成功",null);

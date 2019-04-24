@@ -151,7 +151,13 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping("/dep")
-    public Object getDep(){
-        return departmentService.findAllDepartment();
+    public Object getDep(Department department){
+        return departmentService.findAllDepartment(department);
+    }
+
+    @ResponseBody
+    @RequestMapping("/findUsers")
+    public Object findUsers(User user){
+        return userService.findUsers(user);
     }
 }

@@ -147,4 +147,12 @@ public class UserServiceImpl implements UserService {
     public Object userInfo(User user) {
         User u = userMapper.selectByPrimaryKey(user.getUserId());
         return ResultRespose.rsult(200, "成功", u);    }
+
+    @Override
+    public Object findUsers(User user) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andDepIdEqualTo(user.getDepId()).andRoleIdEqualTo(3);
+        List<User> userList = userMapper.selectByExample(userExample);
+        return ResultRespose.rsult(200,"成功",userList);
+    }
 }

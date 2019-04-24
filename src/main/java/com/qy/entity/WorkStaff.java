@@ -21,6 +21,14 @@ public class WorkStaff {
 
     private Integer status;
 
+    private String reportNote;
+
+    private String review;
+
+    private String smallTask;
+
+    private Integer depId;
+
     public Integer getWorkStaffId() {
         return workStaffId;
     }
@@ -91,5 +99,37 @@ public class WorkStaff {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getReportNote() {
+        return reportNote;
+    }
+
+    public void setReportNote(String reportNote) {
+        this.reportNote = reportNote == null ? null : reportNote.trim();
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review == null ? null : review.trim();
+    }
+
+    public String getSmallTask() {
+        return smallTask;
+    }
+
+    public void setSmallTask(String smallTask) {
+        this.smallTask = smallTask == null ? null : smallTask.trim();
+    }
+
+    public Integer getDepId() {
+        return depId;
+    }
+
+    public void setDepId(Integer depId) {
+        this.depId = depId;
     }
 }

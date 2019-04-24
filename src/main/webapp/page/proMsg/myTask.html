@@ -37,8 +37,8 @@
                         <div class="layui-inline">
                             <button class="layui-btn layui-btn-normal" id="find">查询</button>
                         </div>
-                        <div class="layui-inline" id="pro" >
-                            <button class="layui-btn" id="addTask">提交任务书</button>
+                        <div class="layui-inline" id="pro">
+                            <button class="layui-btn" id="addPeople">提交计划</button>
                         </div>
                     </div>
                 </div>
@@ -51,64 +51,61 @@
 </body>
 </html>
 <script type="text/html" id="barDemo">
-    {{#  if(d.status == 1 && d.roleId == 2){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}',2);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
-    {{#  } else if(d.status == 2 && d.roleId == 1){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}',3);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
-    {{#  } else if(d.status == 3 && d.roleId == 3){ }}
-    <a href="javascript:addWork('{{d.reportCode}}');" class="layui-btn layui-btn-mini layui-btn-danger">添加项目人员</a>
-    {{#  } }}
-</script>
-<script type="text/html" id="status">
-    {{#  if(d.status == 1){ }}
-    部门经理审批中
-    {{#  } else if(d.status == 2){ }}
-    总经理审批中
-    {{#  } else if(d.status == 3){ }}
-    审批完成
+    {{#  if(d.status == 3){ }}
+    <a href="javascript:edit('{{d.workStaffId}}','yes');" class="layui-btn layui-btn-mini layui-btn-danger">编辑</a>
+    <a href="javascript:del('{{d.workStaffId}}');" class="layui-btn layui-btn-mini layui-btn-danger">删除</a>
     {{#  } }}
 </script>
 <script>
 
     var dataRowJson;
 
-    function editUser(userId){
-        layui.use('layer',function () {
-            layer.open({
-                type: 2,
-                title: '信息修改',
-                shadeClose: true,
-                shade: 0.8,
-                area: ['420px', '520px'],
-                content: 'editUser.html?userId='+userId
-            });
-        });
+    function del(workStaffId){
+
+
     }
 
-    function proStatus(planBookId,status){
-        $.ajax({
-            type: "POST",
-            url: directory+"report/updatePlan",
-            async:false,
-            data: {
-                planBookId:planBookId,
-                status:status
-            },
-            success: function(res) {
-                layer.msg(res.msg)
-                reload();
-            }
-        })
+    function edit(workStaffId){
+
+
     }
+    // function editUser(userId){
+    //     layui.use('layer',function () {
+    //         layer.open({
+    //             type: 2,
+    //             title: '信息修改',
+    //             shadeClose: true,
+    //             shade: 0.8,
+    //             area: ['420px', '520px'],
+    //             content: 'editUser.html?userId='+userId
+    //         });
+    //     });
+    // }
+
+    // function proStatus(planBookId,status){
+    //     $.ajax({
+    //         type: "POST",
+    //         url: directory+"report/updatePlan",
+    //         async:false,
+    //         data: {
+    //             planBookId:planBookId,
+    //             status:status
+    //         },
+    //         success: function(res) {
+    //             layer.msg(res.msg)
+    //             reload();
+    //         }
+    //     })
+    // }
 
 
     function reload(){
-        var depId = $('#dep').val();
-        var proSource = $('#proSource').val();
+        //var depId = $('#dep').val();
+        //var proSource = $('#proSource').val();
         layui.table.reload('info',{
             where: {
-                depId:depId,
-                proSource:proSource
+                //depId:depId,
+                //proSource:proSource
             }});
     }
 
@@ -134,33 +131,32 @@
         })
     })
 
-
-    function addWork(reportCode) {
+    function edit(workStaffId,isUpdate){
         layui.use('layer',function () {
             layer.open({
                 type: 2,
-                title: '项目人员',
+                title: '修改项目人员',
                 shadeClose: true,
                 shade: false,
                 maxmin: false, //开启最大化最小化按钮
                 area: ['100%','100%'],
                 anim: 2,
-                content: 'myTask.html?reportCode='+reportCode
+                content: 'addWorkPeople.html?workStaffId='+workStaffId+'&isUpdate='+isUpdate
             });
         })
     }
 
-    $('#addTask').click(function () {
+    $('#addPeople').click(function () {
         layui.use('layer',function () {
             layer.open({
                 type: 2,
-                title: '申请计划',
+                title: '添加项目人员',
                 shadeClose: true,
                 shade: false,
                 maxmin: false, //开启最大化最小化按钮
                 area: ['100%','100%'],
                 anim: 2,
-                content: 'addTask.html'
+                content: 'addWorkPeople.html'
             });
         })
     })
@@ -172,7 +168,7 @@
         table.render({
             id:'info',
             elem: '#info'
-            ,url:directory + 'report/taskList'
+            ,url:directory + 'pro/findWorkTaskList'
             ,request: {
                 pageName: 'currentPage'
                 ,limitName: 'pageSize'
@@ -185,12 +181,10 @@
                 ,dataName: 'data'
             }
             ,cols: [[
-                {field:'proName',  width: tableWidth*0.2, title: '项目名称'}
-                ,{field:'proTimeStart',  width: tableWidth*0.1, title: '项目开始时间'}
-                ,{field:'proTimeEnd',  width: tableWidth*0.1, title: '项目结束时间'}
-                ,{field:'proMoney', width:tableWidth*0.1, title: '项目资金'}
-                ,{field:'status', width:tableWidth*0.1, title: '项目状态'}
-                ,{field:'reportCode', title: '项目编号',width: tableWidth*0.15}
+                {field:'smallTask',  width: tableWidth*0.2, title: '任务名称'}
+                ,{field:'userName',  width: tableWidth*0.2, title: '用户名'}
+                ,{field:'depName', width:tableWidth*0.1, title: '所在部门'}
+                ,{field:'realMoney', width:tableWidth*0.1, title: '任务费用'}
                 ,{field:'createTime', title: '创建时间', width: tableWidth*0.15}
                 ,{field:'zz',title:'操作',width:tableWidth*0.15,toolbar:'#barDemo'}
             ]]
@@ -204,13 +198,13 @@
             layui.use('layer',function () {
                 layer.open({
                     type: 2,
-                    title: '项目任务',
+                    title: '申请计划',
                     shadeClose: true,
                     shade: false,
                     maxmin: false, //开启最大化最小化按钮
                     area: ['100%','100%'],
                     anim: 2,
-                    content: 'addTask.html'
+                    content: 'addWorkPeople.html'
                 });
             })
 

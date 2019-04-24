@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="../../lib/js/layui/css/layui.css"  media="all">
-    <script src="../../lib/js/layui/layui.js" type="text/javascript"></script>
     <script src="../../lib/js/jquery-3.4.0.min.js" type="text/javascript"></script>
+    <script src="../../lib/js/layui/layui.js" type="text/javascript"></script>
+    <script src="../../lib/js/layui/lay/modules/layer.js" type="text/javascript"></script>
     <script src="../../lib/js/common.js" type="text/javascript"></script>
 </head>
 <body>
@@ -156,12 +157,16 @@
                     parent.reload();
                 }else
                 {
-                    alert(res.msg);
+                    layer.msg(res.msg);
                 }
             }
         });
     });
     $('#confirm').click(function () {
-
+        if (!$(".layui-upload-choose")[0]) {
+            layer.msg("请上传计划书");
+        }else{
+            return true;
+        }
     })
 </script>

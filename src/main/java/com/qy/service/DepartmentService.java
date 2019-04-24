@@ -6,9 +6,9 @@ import com.qy.entity.Department;
 public interface DepartmentService {
 
     /**
-     * 获取所有部门
+     * 获取部门
      */
-    Object findAllDepartment();
+    Object findAllDepartment(Department department);
 
     /**
      * 添加部门

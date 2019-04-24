@@ -7,8 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Service
-@Transactional
 public interface ProMakeService {
 
     /**

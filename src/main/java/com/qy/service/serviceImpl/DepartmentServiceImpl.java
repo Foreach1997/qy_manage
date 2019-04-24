@@ -20,8 +20,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentMapper departmentMapper;
 
     @Override
-    public Object findAllDepartment() {
+    public Object findAllDepartment(Department department) {
         DepartmentExample example = new DepartmentExample();
+        if (department.getDepId() != null){
+            example.createCriteria().andDepIdEqualTo(department.getDepId());
+        }
         List<Department> departments = departmentMapper.selectByExample(example);
         return  ResultRespose.rsult(200,"请求成功",departments);
     }

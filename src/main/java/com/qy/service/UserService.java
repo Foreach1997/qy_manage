@@ -42,4 +42,8 @@ public interface UserService {
      */
     Object userInfo(User user);
 
+    /**
+     * 根据部门获取所有用户
+     */
+    Object findUsers(User user);
 }
