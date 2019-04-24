@@ -102,6 +102,7 @@ public class ReportBookServiceImpl implements ReportBookService {
              work.setWorkRoleName("项目经理");
              work.setProCode(reportBook.getProCode());
              //work.setStatus();
+             work.setUserId(reportBook.getUserId());
              workMapper.insert(work);
          }
          int val =  reportBookMapper.updateByPrimaryKeySelective(reportBook);
@@ -193,12 +194,13 @@ public class ReportBookServiceImpl implements ReportBookService {
         }
         List<JSONObject> planBookExampleList =  currencyMapper.findPlanBookList(map);
         int count = currencyMapper.findPlanBookListCount(map);
-
+        List<JSONObject> res = new ArrayList<JSONObject>();
         for (JSONObject jsonObject : planBookExampleList){
-            jsonObject.put("createTime",format.format(jsonObject.getString("createTime")));
+            jsonObject.put("createTime",format.format(jsonObject.getDate("createTime")));
             jsonObject.put("roleId",u.getRoleId());
+            res.add(jsonObject);
         }
-        return ResultRespose.rsultRespose(200,"请求成功",planBookExampleList,count);
+        return ResultRespose.rsultRespose(200,"请求成功",res,count);
     }
 
     @Override
@@ -279,23 +281,36 @@ public class ReportBookServiceImpl implements ReportBookService {
         }
         List<JSONObject> taskBookExampleList =  currencyMapper.findTaskBookList(map);
         int count = currencyMapper.findTaskBookListCount(map);
+        List<JSONObject> res = new ArrayList<JSONObject>();
 
         for (JSONObject jsonObject : taskBookExampleList){
-            jsonObject.put("createTime",format.format(jsonObject.getString("createTime")));
+            jsonObject.put("createTime",format.format(jsonObject.getDate("createTime")));
+            jsonObject.put("proTimeStart",format.format(jsonObject.getDate("proTimeStart")));
+            jsonObject.put("proTimeEnd",format.format(jsonObject.getDate("proTimeEnd")));
             jsonObject.put("roleId",u.getRoleId());
+            res.add(jsonObject);
         }
-        return ResultRespose.rsultRespose(200,"请求成功",taskBookExampleList,count);
+        return ResultRespose.rsultRespose(200,"请求成功",res,count);
 
     }
 
     @Override
-    public Object insertTaskBook(TaskBook taskBook, HttpServletRequest request) {
+    public Object insertTaskBook(TaskBook taskBook,String start,String end,HttpServletRequest request) {
         TaskBookExample taskBookExample = new TaskBookExample();
         taskBookExample.createCriteria().andReportCodeEqualTo(taskBook.getReportCode());
         long count = taskBookMapper.countByExample(taskBookExample);
         if (count>0){
             return ResultRespose.rsult(200,"该项目已有任务书",null);
         }
+        taskBook.setCreateTime(new Date());
+        taskBook.setUserId((int)request.getSession().getAttribute("userId"));
+        try {
+            taskBook.setProTimeEnd(format.parse(end+" 00:00:00"));
+            taskBook.setProTimeStart(format.parse(start+" 00:00:00"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        taskBook.setStatus(1);
         int val =  taskBookMapper.insert(taskBook);
         if (val!=0){
             return ResultRespose.rsult(200,"成功",null);
@@ -314,6 +329,15 @@ public class ReportBookServiceImpl implements ReportBookService {
             return ResultRespose.rsult(200,"成功",null);
         }
         return ResultRespose.rsult(200,"失败",null);
+    }
+
+    @Override
+    public Object findAllProCode() {
+
+        ReportBookExample reportBookExample = new ReportBookExample();
+        reportBookExample.createCriteria().andStatusEqualTo(3);
+        List<ReportBook> reportBooks = reportBookMapper.selectByExample(reportBookExample);
+        return ResultRespose.rsult(200,"成功",reportBooks);
     }
 
 }

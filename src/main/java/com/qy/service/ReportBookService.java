@@ -50,12 +50,17 @@ public interface ReportBookService {
     /**
      * 提交任务(任务阶段)
      */
-    Object insertTaskBook(TaskBook taskBook, HttpServletRequest request);
+    Object insertTaskBook(TaskBook taskBook,String start,String end, HttpServletRequest request);
 
 
     /**
      * 任务状态(任务阶段)
      */
     Object updateTask(TaskBook taskBook);
+
+    /**
+     * 获取所有项目编码
+     */
+    Object findAllProCode();
 
 }

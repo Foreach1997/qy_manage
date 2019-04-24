@@ -3,8 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../../lib/js/layui/css/layui.css"  media="all">
+    <script src="../../lib/js/layui/layui.js" type="text/javascript"></script>
+    <script src="../../lib/js/jquery-3.4.0.min.js" type="text/javascript"></script>
+    <script src="../../lib/js/common.js" type="text/javascript"></script>
 </head>
 <body>
-
+<form class="layui-form">
+    <div class="layui-form-item" >
+        <label class="layui-form-label" >项目编码:</label>
+        <div  class="layui-input-block" style="width: 300px">
+            <select id="proCode" required>
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">项目名称:</label>
+        <div class="layui-input-inline">
+            <input type="text" id="proName"  required   autocomplete="off"   placeholder="请输入项目名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">项目开始时间:</label>
+        <div class="layui-input-inline">
+            <input type="text" id="proTimeStart" required     autocomplete="off"  placeholder="请输入项目开始时间" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">项目结束时间:</label>
+        <div class="layui-input-inline">
+            <input type="text" id="proTimeEnd" required     autocomplete="off"  placeholder="请输入项目结束时间" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">项目资金:</label>
+        <div class="layui-input-inline">
+            <input type="text" id="proMoney"  required   autocomplete="off"   placeholder="请输入项目资金" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">重点任务描述:</label>
+        <div class="layui-input-block">
+            <textarea name="desc" id="taskNote" required placeholder="请输入重点任务描述" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" >
+        <button id="confirm" type="button"   style="margin-left:100px;padding-left: 80px;padding-right: 80px" class="layui-btn">确认</button>
+    </div>
+</form>
 </body>
 </html>
+<script>
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#proTimeStart'
+            ,calendar: true
+            ,showBottom: false
+        });
+    });
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#proTimeEnd'
+            ,calendar: true
+            ,showBottom: false
+        });
+    });
+    layui.use('form', function() {
+        var form = layui.form;
+        $.ajax({
+            type: "POST",
+            url: directory+"report/findAllProCode",
+            async:false,
+            data: {
+            },
+            success: function(res) {
+                var data = res.data;
+                $.each(data,function(index,item){
+                    $("#proCode")
+                        .append(
+                            "<option value='" + item.proCode+"'>"
+                            + item.proCode + "</option>");
+                })
+                //form.render(null, 'merchant');
+                form.render();
+            }
+        })
+    })
+
+    $(function () {
+        var data= parent.dataRowJson;
+        if (!!data) {
+            $('#proCode').empty();
+            $('#proName').val(data.proName);
+            $('#proTimeStart').val(data.proTimeStart);
+            $('#proMoney').val(data.proMoney);
+            $('#proTimeEnd').val(data.proTimeEnd);
+            $('#taskNote').val(data.taskNote);
+            $('#proCode').val(data.reportCode);
+            $('#confirm').hide();
+            $('#address').hide();
+        }
+    })
+
+    layui.use('form',function () {
+        var form = layui.form;
+        form.render();
+    })
+
+    // layui.use('upload', function(){
+    //     var upload = layui.upload;
+    //     var uploadInst = upload.render({
+    //         elem: '#address' //绑定元素
+    //         ,url: directory + 'report/insertTaskBook' //上传接口
+    //         ,auto:false
+    //         ,accept:'file'
+    //         ,bindAction:'#confirm'
+    //         ,data:{
+    //
+    //         },
+    //         before:function(){
+    //             this.data= {
+    //                 proName:$('#proName').val(),
+    //                 proTimeStart : $('#planOrg').val(),
+    //                 proMoney : $('#planWork').val(),
+    //                 proTimeEnd : $('#planMilepost').val(),
+    //                 taskNote : $('#planRelation').val()
+    //             }
+    //         },
+    //         done: function(res){
+    //             if (res.code == 200){
+    //                 var index=parent.layer.getFrameIndex(window.name);
+    //                 parent.layer.close(index);
+    //                 parent.layer.msg(res.msg);
+    //                 parent.reload();
+    //             }else
+    //             {
+    //                 alert(res.msg);
+    //             }
+    //         }
+    //     });
+    // });
+    $('#confirm').click(function () {
+        debugger
+        alert('1')
+        $.ajax({
+            type: "POST",
+            url: directory+"report/insertTaskBook",
+            async:false,
+            data: {
+                proName:$('#proName').val(),
+                start : $('#proTimeStart').val(),
+                proMoney : $('#proMoney').val(),
+                end : $('#proTimeEnd').val(),
+                taskNote : $('#taskNote').val(),
+                reportCode : $('#proCode').val()
+            },
+            success: function(res) {
+                var data = res.data;
+                if(res.code==200){
+                    layer.msg(res.msg)
+                    var index=parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                    parent.layer.msg(res.msg);
+                    parent.reload();
+                }else{
+                    layer.msg(res.msg)
+                }
+
+            }
+        })
+    })
+</script>

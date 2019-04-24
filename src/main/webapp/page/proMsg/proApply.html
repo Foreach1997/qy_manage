@@ -94,6 +94,7 @@
             },
             success: function(res) {
                 layer.msg(res.msg)
+                reload();
             }
         })
     }
@@ -101,9 +102,11 @@
 
     function reload(){
         var depId = $('#dep').val();
+        var proSource = $('#proSource').val();
         layui.table.reload('info',{
             where: {
-                depId:depId
+                depId:depId,
+                proSource:proSource
             }});
     }
 

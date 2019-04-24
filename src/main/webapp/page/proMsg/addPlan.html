@@ -3,8 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../../lib/js/layui/css/layui.css"  media="all">
+    <script src="../../lib/js/layui/layui.js" type="text/javascript"></script>
+    <script src="../../lib/js/jquery-3.4.0.min.js" type="text/javascript"></script>
+    <script src="../../lib/js/common.js" type="text/javascript"></script>
 </head>
 <body>
-
+<form class="layui-form">
+    <div class="layui-form-item" >
+        <label class="layui-form-label" >项目编码:</label>
+        <div  class="layui-input-block" style="width: 300px">
+            <select id="proCode" required>
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">项目目标:</label>
+        <div class="layui-input-inline">
+            <input type="text" id="planTarget"  required   autocomplete="off"   placeholder="请输入项目目标" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">项目组织结构:</label>
+        <div class="layui-input-inline">
+            <input type="text" id="planOrg" required     autocomplete="off"  placeholder="请输入项目组织结构" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">项目工作分解内容:</label>
+        <div class="layui-input-block">
+            <textarea name="desc" id="planWork" required placeholder="请输入项目工作分解内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">工作关系分析:</label>
+        <div class="layui-input-block">
+            <textarea name="desc" id="planRelation" required placeholder="请输入工作关系分析" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">里程碑计划制定:</label>
+        <div class="layui-input-block">
+            <textarea name="desc" id="planMilepost" required placeholder="请输入里程碑计划制定" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">风险评估:</label>
+        <div class="layui-input-block">
+            <textarea name="desc" id="risk" required placeholder="请输入风险评估" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">应对措施:</label>
+        <div class="layui-input-block">
+            <textarea name="desc" id="measures" required placeholder="请输入应对措施" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <button type="button" name="file" style="margin-left: 100px" class="layui-btn" id="address">
+            <i class="layui-icon">&#xe67c;</i>上传甘特图project文件
+        </button>
+    </div>
+    <div class="layui-form-item" >
+        <button id="confirm"   style="margin-left:100px;padding-left: 80px;padding-right: 80px" class="layui-btn">确认</button>
+    </div>
+</form>
 </body>
 </html>
+<script>
+    layui.use('form', function() {
+        var form = layui.form;
+        $.ajax({
+            type: "POST",
+            url: directory+"report/findAllProCode",
+            async:false,
+            data: {
+            },
+            success: function(res) {
+                var data = res.data;
+                $.each(data,function(index,item){
+                    $("#proCode")
+                        .append(
+                            "<option value='" + item.proCode+"'>"
+                            + item.proCode + "</option>");
+                })
+                //form.render(null, 'merchant');
+                form.render();
+            }
+        })
+    })
+
+    $(function () {
+        var data= parent.dataRowJson;
+        console.log(data)
+        if (!!data) {
+            $('#proCode').empty();
+            $('#planTarget').val(data.planTarget);
+            $('#planOrg').val(data.planOrg);
+            $('#planWork').val(data.planWork);
+            $('#planMilepost').val(data.planMilepost);
+            $('#planRelation').val(data.planRelation);
+            $('#proCode').val(data.reportCode);
+            $('#risk').val(data.risk);
+            $('#measures').val(data.measures);
+            $('#confirm').hide();
+            $('#address').hide();
+        }
+    })
+
+    layui.use('form',function () {
+        var form = layui.form;
+        form.render();
+    })
+
+    function ref(){
+        layui.use('form',function () {
+            var form = layui.form;
+            form.render();
+        })
+    }
+    layui.use('upload', function(){
+        debugger
+        var upload = layui.upload;
+        var uploadInst = upload.render({
+            elem: '#address' //绑定元素
+            ,url: directory + 'report/insertPlanBook' //上传接口
+            ,auto:false
+            ,accept:'file'
+            ,size:0
+            ,bindAction:'#confirm'
+            ,data:{
+
+            },
+            before:function(){
+                this.data= {
+                    planTarget:$('#planTarget').val(),
+                    planOrg : $('#planOrg').val(),
+                    planWork : $('#planWork').val(),
+                    planMilepost : $('#planMilepost').val(),
+                    planRelation : $('#planRelation').val(),
+                    reportCode : $('#proCode').val(),
+                    risk : $('#risk').val(),
+                    measures : $('#measures').val()
+                }
+            },
+            done: function(res){
+                if (res.code == 200){
+                    var index=parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                    parent.layer.msg(res.msg);
+                    parent.reload();
+                }else
+                {
+                    alert(res.msg);
+                }
+            }
+        });
+    });
+    $('#confirm').click(function () {
+
+    })
+</script>

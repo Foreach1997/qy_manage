@@ -77,16 +77,25 @@ public class ReportController {
      * 申请任务(任务阶段)
      */
     @ResponseBody
-    @RequestMapping("/insertReportBook")
-    public Object insertTaskBook(TaskBook taskBook, HttpServletRequest request){
-        return  reportBookService.insertTaskBook(taskBook,request);
+    @RequestMapping("/insertTaskBook")
+    public Object insertTaskBook(TaskBook taskBook,String start,String end , HttpServletRequest request){
+        return  reportBookService.insertTaskBook(taskBook,start,end,request);
     }
     /**
      * 任务状态(阶段)
      */
     @ResponseBody
-    @RequestMapping("/updatePro")
+    @RequestMapping("/updateTask")
     public Object updateTask(TaskBook taskBook){
         return  reportBookService.updateTask(taskBook);
+    }
+
+    /**
+     * 获取所有的项目编码
+     */
+    @ResponseBody
+    @RequestMapping("/findAllProCode")
+    public Object findAllProCode(){
+        return reportBookService.findAllProCode();
     }
 }

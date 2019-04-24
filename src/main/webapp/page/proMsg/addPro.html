@@ -58,8 +58,7 @@
 </body>
 </html>
 <script>
-    
-    
+
     $(function () {
             var data= parent.dataRowJson;
             if (!!data) {
@@ -83,6 +82,7 @@
             ,auto:false
             ,accept:'file'
             ,bindAction:'#confirm'
+            ,size:0
             ,data:{
 
             },
@@ -102,13 +102,16 @@
                     parent.layer.close(index);
                     parent.layer.msg(res.msg);
                     parent.reload();
+                }else
+                {
+                    alert(res.msg);
                 }
             }
         });
     });
     $('#confirm').click(function () {
         if (!$(".layui-upload-choose")[0]) {
-            layer.msg("请上传报告书");
+            alert("请上传报告书");
         }else{
             return true;
         }

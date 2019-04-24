@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 @Transactional
 public interface ProMakeService {
 
+    /**
+     * 提交项目进展
+     */
     Object insertProMake(MultipartFile file, ProMake proMake,HttpServletRequest request);
 
 
