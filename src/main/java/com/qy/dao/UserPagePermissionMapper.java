@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-public interface UserPagePermissionMapper {
+public interface  UserPagePermissionMapper {
     long countByExample(UserPagePermissionExample example);
 
     int deleteByExample(UserPagePermissionExample example);
