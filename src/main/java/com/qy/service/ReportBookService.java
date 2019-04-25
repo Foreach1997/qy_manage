@@ -50,7 +50,7 @@ public interface ReportBookService {
     /**
      * 提交任务(任务阶段)
      */
-    Object insertTaskBook(TaskBook taskBook,String start,String end, HttpServletRequest request);
+    Object insertTaskBook(TaskBook taskBook,String start,String end,String isUpdate,HttpServletRequest request);
 
 
     /**

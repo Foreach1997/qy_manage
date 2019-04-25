@@ -42,8 +42,8 @@ public class ReportBookServiceImpl implements ReportBookService {
     private TaskBookMapper taskBookMapper;
     @Resource
     private WorkMapper workMapper;
-   // @Resource
-    //private WorkStaffMapper workStaffMapper;
+    @Resource
+    private WorkStaffMapper workStaffMapper;
 
 
     @Override
@@ -295,30 +295,39 @@ public class ReportBookServiceImpl implements ReportBookService {
     }
 
     @Override
-    public Object insertTaskBook(TaskBook taskBook,String start,String end,HttpServletRequest request) {
-        TaskBookExample taskBookExample = new TaskBookExample();
-        taskBookExample.createCriteria().andReportCodeEqualTo(taskBook.getReportCode());
-        long count = taskBookMapper.countByExample(taskBookExample);
-        if (count>0){
-            return ResultRespose.rsult(200,"该项目已有任务书",null);
+    public Object insertTaskBook(TaskBook taskBook,String start,String end,String isUpdate,HttpServletRequest request) {
+
+        if ("no".equals(isUpdate)) {
+            TaskBookExample taskBookExample = new TaskBookExample();
+            taskBookExample.createCriteria().andReportCodeEqualTo(taskBook.getReportCode());
+            long count = taskBookMapper.countByExample(taskBookExample);
+            if (count > 0) {
+                return ResultRespose.rsult(200, "该项目已有任务书", null);
+            }
+            taskBook.setCreateTime(new Date());
+            taskBook.setUserId((int) request.getSession().getAttribute("userId"));
+            try {
+                taskBook.setProTimeEnd(format.parse(end + " 00:00:00"));
+                taskBook.setProTimeStart(format.parse(start + " 00:00:00"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            taskBook.setStatus(1);
+            WorkExample workExample = new WorkExample();
+            workExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
+            taskBook.setWorkId(workMapper.selectByExample(workExample).get(0).getWorkId());
+            int val = taskBookMapper.insert(taskBook);
+            if (val != 0) {
+                return ResultRespose.rsult(200, "成功", null);
+            }
+            return ResultRespose.rsult(200, "失败", null);
+        }else if ("yes".equals(isUpdate)){
+            TaskBookExample taskBookExample = new TaskBookExample();
+            
+
+            return null;
         }
-        taskBook.setCreateTime(new Date());
-        taskBook.setUserId((int)request.getSession().getAttribute("userId"));
-        try {
-            taskBook.setProTimeEnd(format.parse(end+" 00:00:00"));
-            taskBook.setProTimeStart(format.parse(start+" 00:00:00"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        taskBook.setStatus(1);
-        WorkExample workExample = new WorkExample();
-        workExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
-        taskBook.setWorkId(workMapper.selectByExample(workExample).get(0).getWorkId());
-        int val =  taskBookMapper.insert(taskBook);
-        if (val!=0){
-            return ResultRespose.rsult(200,"成功",null);
-        }
-        return ResultRespose.rsult(200,"失败",null);
+        return null;
     }
 
     @Override
@@ -327,9 +336,22 @@ public class ReportBookServiceImpl implements ReportBookService {
         workExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
         List<Work> works = workMapper.selectByExample(workExample);
         taskBook.setWorkId(works.get(0).getWorkId());
-        //FIXME 在此处对各种状态进行判断和处理
 
-        int val =  taskBookMapper.updateByPrimaryKeySelective(taskBook);
+        WorkStaffExample workStaffExample = new WorkStaffExample();
+        workStaffExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
+        WorkStaff workStaff = new WorkStaff();
+        //FIXME 在此处对各种状态进行判断和处理
+        if (taskBook.getStatus()==6) {
+            workStaff.setStatus(4);
+            workStaffMapper.updateByExample(workStaff,workStaffExample);
+        }else if (taskBook.getStatus()==7){
+            workStaff.setStatus(3);
+            workStaffMapper.updateByExample(workStaff,workStaffExample);
+        }else if (taskBook.getStatus()==10){
+            workStaff.setStatus(2);
+            workStaffMapper.updateByExample(workStaff,workStaffExample);
+        }
+        int val = taskBookMapper.updateByPrimaryKeySelective(taskBook);
         if (val!=0){
             return ResultRespose.rsult(200,"成功",null);
         }
@@ -344,5 +366,6 @@ public class ReportBookServiceImpl implements ReportBookService {
         List<ReportBook> reportBooks = reportBookMapper.selectByExample(reportBookExample);
         return ResultRespose.rsult(200,"成功",reportBooks);
     }
+
 
 }

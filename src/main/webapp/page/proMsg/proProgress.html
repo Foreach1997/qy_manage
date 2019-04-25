@@ -37,9 +37,6 @@
                         <div class="layui-inline">
                             <button class="layui-btn layui-btn-normal" id="find">查询</button>
                         </div>
-                        <div class="layui-inline" id="pro">
-                            <button class="layui-btn" id="addPlan">提交计划</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -50,54 +47,10 @@
 <div id="info" lay-filter="info"></div>
 </body>
 </html>
-<script type="text/html" id="barDemo">
-    {{#  if(d.status == 1 && d.roleId == 2){ }}
-    <a href="javascript:proStatus('{{d.planBookId}}',2);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
-    {{#  } else if(d.status == 2 && d.roleId == 1){ }}
-    <a href="javascript:proStatus('{{d.planBookId}}',3);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
-    {{#  } }}
-</script>
-<script type="text/html" id="status">
-    {{#  if(d.status == 1){ }}
-    部门经理审批中
-    {{#  } else if(d.status == 2){ }}
-    总经理审批中
-    {{#  } else if(d.status == 3){ }}
-    审批完成
-    {{#  } }}
-</script>
 <script>
 
     var dataRowJson;
 
-    function editUser(userId){
-        layui.use('layer',function () {
-            layer.open({
-                type: 2,
-                title: '信息修改',
-                shadeClose: true,
-                shade: 0.8,
-                area: ['420px', '520px'],
-                content: 'editUser.html?userId='+userId
-            });
-        });
-    }
-
-    function proStatus(planBookId,status){
-        $.ajax({
-            type: "POST",
-            url: directory+"report/updatePlan",
-            async:false,
-            data: {
-                planBookId:planBookId,
-                status:status
-            },
-            success: function(res) {
-                layer.msg(res.msg)
-                reload();
-            }
-        })
-    }
 
 
     function reload(){
@@ -133,22 +86,6 @@
     })
 
 
-    $('#addPlan').click(function () {
-        layui.use('layer',function () {
-            layer.open({
-                type: 2,
-                title: '申请计划',
-                shadeClose: true,
-                shade: false,
-                maxmin: false, //开启最大化最小化按钮
-                area: ['100%','100%'],
-                anim: 2,
-                content: 'addPlan.html'
-            });
-        })
-    })
-
-
 
     layui.use('table', function(){
         var tableWidth = $("#info").width() - 28;
@@ -156,7 +93,7 @@
         table.render({
             id:'info',
             elem: '#info'
-            ,url:directory + 'report/planList'
+            ,url:directory + 'pro/findProgress'
             ,request: {
                 pageName: 'currentPage'
                 ,limitName: 'pageSize'
@@ -169,34 +106,13 @@
                 ,dataName: 'data'
             }
             ,cols: [[
-                {field:'planTarget',  width: tableWidth*0.2, title: '项目目标'}
-                ,{field:'planWork',  width: tableWidth*0.2, title: '项目工作分解内容'}
-                ,{field:'risk', width:tableWidth*0.1, title: '项目风险'}
-                ,{field:'status', width:tableWidth*0.1, title: '计划书状态'}
-                ,{field:'reportCode', title: '项目编号',width: tableWidth*0.15}
-                ,{field:'createTime', title: '创建时间', width: tableWidth*0.15}
-                ,{field:'zz',title:'操作',width:tableWidth*0.15,toolbar:'#barDemo'}
+                {field:'proName',  width: tableWidth*0.2, title: '项目名称'}
+                ,{field:'A',  width: tableWidth*0.1, title: '进展报告'}
+                ,{field:'B',  width: tableWidth*0.1, title: '关键点报告'}
+                ,{field:'C', width:tableWidth*0.1, title: '重要事件报告'}
+                ,{field:'S', width:tableWidth*0.1, title: '项目进度'}
             ]]
             ,page: true
         });
     });
-    layui.use('table', function() {
-        var table = layui.table;
-        table.on('rowDouble(info)', function (obj) {
-            dataRowJson = obj.data;
-            layui.use('layer',function () {
-                layer.open({
-                    type: 2,
-                    title: '申请计划',
-                    shadeClose: true,
-                    shade: false,
-                    maxmin: false, //开启最大化最小化按钮
-                    area: ['100%','100%'],
-                    anim: 2,
-                    content: 'addPlan.html'
-                });
-            })
-
-        });
-    })
 </script>

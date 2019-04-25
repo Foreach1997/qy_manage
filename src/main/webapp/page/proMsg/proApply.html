@@ -28,7 +28,7 @@
                             <div class="layui-inline" style="margin-top: 5px;" >
                             <label class="layui-form-label">项目编码:</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="proSource"  required   autocomplete="off"   placeholder="请输入项目编码" class="layui-input">
+                                <input type="text" id="proCode"  required   autocomplete="off"   placeholder="请输入项目编码" class="layui-input">
                             </div>
                             </div>
                         </div>
@@ -102,11 +102,11 @@
 
     function reload(){
         var depId = $('#dep').val();
-        var proSource = $('#proSource').val();
+        var proCode = $('#proCode').val();
         layui.table.reload('info',{
             where: {
                 depId:depId,
-                proSource:proSource
+                proCode:proCode
             }});
     }
 

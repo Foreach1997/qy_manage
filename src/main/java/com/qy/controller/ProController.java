@@ -34,4 +34,22 @@ public class ProController {
         return taskBookService.findWorkTaskList(workStaff,request,supportPage);
     }
 
+    /**
+     * 查看项目进行时提交的文件
+     */
+    @ResponseBody
+    @RequestMapping("/findProgress")
+    public Object findProgress(WorkStaff workStaff, HttpServletRequest request, SupportPage supportPage){
+        return taskBookService.findWorkTaskList(workStaff,request,supportPage);
+    }
+
+    /**
+     *
+     */
+//    @ResponseBody
+//    @RequestMapping(value = "/insertWorkStaff")
+//    public Object insertWorkStaff(WorkStaff workStaff, HttpServletRequest request){
+//        return taskBookService.insertWorkStaff(workStaff,request);
+//    }
+
 }

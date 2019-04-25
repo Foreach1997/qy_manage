@@ -28,7 +28,7 @@
                             <div class="layui-inline" style="margin-top: 5px;" >
                                 <label class="layui-form-label">项目编码:</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" id="proSource"  required   autocomplete="off"   placeholder="请输入项目编码" class="layui-input">
+                                    <input type="text" id="proCode"  required   autocomplete="off"   placeholder="请输入项目编码" class="layui-input">
                                 </div>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                             <button class="layui-btn layui-btn-normal" id="find">查询</button>
                         </div>
                         <div class="layui-inline" id="pro">
-                            <button class="layui-btn" id="addPeople">提交计划</button>
+                            <button class="layui-btn" id="addPeople">添加人员</button>
                         </div>
                     </div>
                 </div>
@@ -100,12 +100,12 @@
 
 
     function reload(){
-        //var depId = $('#dep').val();
-        //var proSource = $('#proSource').val();
+        var depId = $('#dep').val();
+        var proCode = $('#proCode').val();
         layui.table.reload('info',{
             where: {
-                //depId:depId,
-                //proSource:proSource
+                depId:depId,
+                proCode:proCode
             }});
     }
 
@@ -185,29 +185,11 @@
                 ,{field:'userName',  width: tableWidth*0.2, title: '用户名'}
                 ,{field:'depName', width:tableWidth*0.1, title: '所在部门'}
                 ,{field:'realMoney', width:tableWidth*0.1, title: '任务费用'}
-                ,{field:'createTime', title: '创建时间', width: tableWidth*0.15}
+                ,{field:'status', width:tableWidth*0.1, title: '状态'}
+                ,{field:'createTiem', title: '创建时间', width: tableWidth*0.15}
                 ,{field:'zz',title:'操作',width:tableWidth*0.15,toolbar:'#barDemo'}
             ]]
             ,page: true
         });
     });
-    layui.use('table', function() {
-        var table = layui.table;
-        table.on('rowDouble(info)', function (obj) {
-            dataRowJson = obj.data;
-            layui.use('layer',function () {
-                layer.open({
-                    type: 2,
-                    title: '申请计划',
-                    shadeClose: true,
-                    shade: false,
-                    maxmin: false, //开启最大化最小化按钮
-                    area: ['100%','100%'],
-                    anim: 2,
-                    content: 'addWorkPeople.html'
-                });
-            })
-
-        });
-    })
 </script>

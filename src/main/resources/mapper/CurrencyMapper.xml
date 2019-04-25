@@ -215,7 +215,7 @@
         select  work_staff_id as "workStaffId", user_id as "userId", work_lead_id as "workLeadId",
         work_id as "workId", create_tiem as "createTiem", pro_code as "proCode",
         plan_money as "planMoney", real_money as "realMoney", status,
-        report_note as "reportNote", review, small_task,
+        report_note as "reportNote", review, small_task as "smallTask",
         dep_id  as  "depId" from work_staff
         <where>
             <trim prefix="and" prefixOverrides="and">
@@ -273,4 +273,5 @@
             </trim>
         </where>
     </select>
+
 </mapper>

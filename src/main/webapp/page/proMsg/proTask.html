@@ -28,7 +28,7 @@
                             <div class="layui-inline" style="margin-top: 5px;" >
                                 <label class="layui-form-label">项目编码:</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" id="proSource"  required   autocomplete="off"   placeholder="请输入项目编码" class="layui-input">
+                                    <input type="text" id="proCode"  required   autocomplete="off"   placeholder="请输入项目编码" class="layui-input">
                                 </div>
                             </div>
                         </div>
@@ -58,6 +58,35 @@
     {{#  } else if(d.status == 3 && d.roleId == 3){ }}
     <a href="javascript:addWork('{{d.reportCode}}');" class="layui-btn layui-btn-mini layui-btn-danger">添加项目人员</a>
     {{#  } }}
+
+    {{#  if(d.status == 3 && d.roleId == 3){ }}
+    <a href="javascript:proStatus('{{d.taskBookId}}',4);" class="layui-btn layui-btn-mini layui-btn-danger">申请中止</a>
+    {{#  } else if(d.status == 4 && d.roleId == 2){ }}
+    <a href="javascript:proStatus('{{d.taskBookId}}',5);" class="layui-btn layui-btn-mini layui-btn-danger">允许中止</a>
+    {{#  } else if(d.status == 5 && d.roleId == 1){ }}
+    <a href="javascript:proStatus('{{d.reportCode}}',6);" class="layui-btn layui-btn-mini layui-btn-danger">允许中止</a>
+    {{#  } }}
+
+    {{#  if(d.status == 7 && d.roleId == 3){ }}
+    <a href="javascript:edit('{{d.taskBookId}}','yes');" class="layui-btn layui-btn-mini layui-btn-danger">编辑</a>
+    {{#  } }}
+
+    {{#  if(d.status == 3 && d.roleId == 3){ }}
+    <a href="javascript:proStatus('{{d.taskBookId}}',8);" class="layui-btn layui-btn-mini layui-btn-danger">完成</a>
+    {{#  } else if(d.status == 8 && d.roleId == 2){ }}
+    <a href="javascript:proStatus('{{d.taskBookId}}',9);" class="layui-btn layui-btn-mini layui-btn-danger">项目完成中</a>
+    {{#  } else if(d.status == 9 && d.roleId == 1){ }}
+    <a href="javascript:proStatus('{{d.reportCode}}',10);" class="layui-btn layui-btn-mini layui-btn-danger">项目完成</a>
+    {{#  } }}
+
+    {{#  if(d.status == 3 && d.roleId == 3){ }}
+    <a href="javascript:proStatus('{{d.taskBookId}}',11);" class="layui-btn layui-btn-mini layui-btn-danger">申请变更</a>
+    {{#  } else if(d.status == 11 && d.roleId == 2){ }}
+    <a href="javascript:proStatus('{{d.taskBookId}}',12);" class="layui-btn layui-btn-mini layui-btn-danger">变更中</a>
+    {{#  } else if(d.status == 12 && d.roleId == 1){ }}
+    <a href="javascript:proStatus('{{d.reportCode}}',7);" class="layui-btn layui-btn-mini layui-btn-danger">同意变更</a>
+    {{#  } }}
+
 </script>
 <script type="text/html" id="status">
     {{#  if(d.status == 1){ }}
@@ -66,24 +95,43 @@
     总经理审批中
     {{#  } else if(d.status == 3){ }}
     审批完成
+    {{#  } else if(d.status == 4){ }}
+    部门经理审批中止中
+    {{#  } else if(d.status == 5){ }}
+    总经理审审批中止中
+    {{#  } else if(d.status == 6){ }}
+    项目中止
+    {{#  } else if(d.status == 11){ }}
+    部门经理审批变更中
+    {{#  } else if(d.status == 12){ }}
+    总经理审审批变更中
+    {{#  } else if(d.status == 7){ }}
+    项目变更
+    {{#  } else if(d.status == 8){ }}
+    部门经理审批完成中
+    {{#  } else if(d.status == 9){ }}
+    总经理审审批完成中
+    {{#  } else if(d.status == 10){ }}
+    项目完成
     {{#  } }}
 </script>
 <script>
 
     var dataRowJson;
 
-    function editUser(userId){
+    function edit(taskBookId,isUpdate){
         layui.use('layer',function () {
             layer.open({
                 type: 2,
-                title: '信息修改',
+                title: '任务修改',
                 shadeClose: true,
                 shade: 0.8,
                 area: ['420px', '520px'],
-                content: 'editUser.html?userId='+userId
+                content: 'addTask.html?taskBookId='+taskBookId+'&isUpdate='+isUpdate
             });
         });
     }
+
 
     function proStatus(planBookId,status){
         $.ajax({
@@ -104,11 +152,11 @@
 
     function reload(){
         var depId = $('#dep').val();
-        var proSource = $('#proSource').val();
+        var proCode = $('#proCode').val();
         layui.table.reload('info',{
             where: {
                 depId:depId,
-                proSource:proSource
+                proCode:proCode
             }});
     }
 
@@ -189,7 +237,7 @@
                 ,{field:'proTimeStart',  width: tableWidth*0.1, title: '项目开始时间'}
                 ,{field:'proTimeEnd',  width: tableWidth*0.1, title: '项目结束时间'}
                 ,{field:'proMoney', width:tableWidth*0.1, title: '项目资金'}
-                ,{field:'status', width:tableWidth*0.1, title: '项目状态'}
+                ,{field:'status', width:tableWidth*0.1, title: '项目状态',toolbar:'#status'}
                 ,{field:'reportCode', title: '项目编号',width: tableWidth*0.15}
                 ,{field:'createTime', title: '创建时间', width: tableWidth*0.15}
                 ,{field:'zz',title:'操作',width:tableWidth*0.15,toolbar:'#barDemo'}

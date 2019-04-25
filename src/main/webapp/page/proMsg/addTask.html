@@ -11,6 +11,7 @@
 </head>
 <body>
 <form class="layui-form">
+    <input type="hidden" id="isUpdate" />
     <div class="layui-form-item" >
         <label class="layui-form-label" >项目编码:</label>
         <div  class="layui-input-block" style="width: 300px">
@@ -150,8 +151,6 @@
     //     });
     // });
     $('#confirm').click(function () {
-        debugger
-        alert('1')
         $.ajax({
             type: "POST",
             url: directory+"report/insertTaskBook",
@@ -162,7 +161,8 @@
                 proMoney : $('#proMoney').val(),
                 end : $('#proTimeEnd').val(),
                 taskNote : $('#taskNote').val(),
-                reportCode : $('#proCode').val()
+                reportCode : $('#proCode').val(),
+                isUpdate: $('#isUpdate').val()
             },
             success: function(res) {
                 var data = res.data;
