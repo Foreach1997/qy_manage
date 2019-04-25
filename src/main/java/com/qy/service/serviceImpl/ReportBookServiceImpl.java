@@ -323,11 +323,29 @@ public class ReportBookServiceImpl implements ReportBookService {
             return ResultRespose.rsult(200, "失败", null);
         }else if ("yes".equals(isUpdate)){
             TaskBookExample taskBookExample = new TaskBookExample();
-            
+            taskBookExample.createCriteria().andReportCodeEqualTo(taskBook.getReportCode());
+            taskBook.setCreateTime(new Date());
+            taskBook.setUserId((int) request.getSession().getAttribute("userId"));
+            try {
+                taskBook.setProTimeEnd(format.parse(end + " 00:00:00"));
+                taskBook.setProTimeStart(format.parse(start + " 00:00:00"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            taskBook.setStatus(1);
+            int val = taskBookMapper.updateByExample(taskBook,taskBookExample);
+            if (val != 0) {
+                WorkStaffExample workStaffExample = new WorkStaffExample();
+                workStaffExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
+                WorkStaff workStaff = new WorkStaff();
+                workStaff.setStatus(1);
+                workStaffMapper.updateByExample(workStaff,workStaffExample);
 
-            return null;
+                return ResultRespose.rsult(200, "成功", null);
+            }
+            return ResultRespose.rsult(200, "失败", null);
         }
-        return null;
+        return ResultRespose.rsult(200, "失败", null);
     }
 
     @Override
