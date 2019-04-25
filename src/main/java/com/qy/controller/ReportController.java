@@ -78,8 +78,8 @@ public class ReportController {
      */
     @ResponseBody
     @RequestMapping("/insertTaskBook")
-    public Object insertTaskBook(TaskBook taskBook,String start,String end , HttpServletRequest request){
-        return  reportBookService.insertTaskBook(taskBook,start,end,request);
+    public Object insertTaskBook(TaskBook taskBook,String start,String end ,String isUpdate, HttpServletRequest request){
+        return  reportBookService.insertTaskBook(taskBook,start,end,isUpdate,request);
     }
     /**
      * 任务状态(阶段)

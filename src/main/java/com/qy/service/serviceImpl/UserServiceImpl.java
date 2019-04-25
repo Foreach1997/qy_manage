@@ -23,7 +23,9 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -102,16 +104,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object findUserList(User user,HttpServletRequest request, SupportPage supportPage) throws ParseException {
         List<User> userList = null;
+        Map<String,Object> map = new HashMap<String,Object>();
         User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
         if (u.getRoleId()==2) {
-            user.setDepId(u.getDepId());
+            map.put("depId",u.getDepId());
         }
-        user.setRoleId(u.getRoleId());
-
+        map.put("roleId",u.getRoleId());
+        if (supportPage.getCurrentPage()!=null&&supportPage.getPageSize()!=null) {
+            map.put("currentPage", (supportPage.getCurrentPage() - 1) * supportPage.getPageSize());
+            map.put("pageSize", supportPage.getPageSize());
+        }
         //分页查询
-        PageHelper.startPage(supportPage.getCurrentPage(),supportPage.getPageSize());
-        userList =  currencyMapper.findUserList(user);
-        PageInfo pageInfo = new PageInfo(userList);
+        userList =  currencyMapper.findUserList(map);
+         int count = currencyMapper.findUserListCount(map);
         List<JSONObject> res = new ArrayList<JSONObject>();
         //在此处对员工信息做出封装
         for (User e: userList) {
@@ -130,7 +135,7 @@ public class UserServiceImpl implements UserService {
             jsonObject.put("createTime",format.format(new Timestamp(e.getCreateTime().getTime())));
             res.add(jsonObject);
         }
-        return ResultRespose.rsultRespose(200,"查询成功",res,pageInfo.getTotal());
+        return ResultRespose.rsultRespose(200,"查询成功",res,count);
     }
 
     @Override

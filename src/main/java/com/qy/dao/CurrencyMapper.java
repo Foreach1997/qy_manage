@@ -24,7 +24,9 @@ public interface CurrencyMapper {
     /**
      * 员工信息查询
      */
-    public List<User> findUserList(User user);
+    public List<User> findUserList(Map<String,Object> map);
+    
+    public  int  findUserListCount(Map<String,Object> map);
     /**
      * 查出当前部门下面所有立项的计划
      */

@@ -176,40 +176,78 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     </resultMap>-->
 
-    <select id="findUserList" parameterType="com.qy.entity.User" resultType="com.qy.entity.User">
+    <select id="findUserList" parameterType="java.util.Map" resultType="com.qy.entity.User">
         SELECT * FROM  user
         <where>
             <trim prefix="and" prefixOverrides="and">
             <if test="userId != '' and userId != null">
-                user_id = #{userId}
+                and  user_id = #{userId}
             </if>
             <if test="email != '' and email != null">
-                email = #{email}
+                and  email = #{email}
             </if>
             <if test="password != '' and password != null">
-                  password = #{password}
+                and    password = #{password}
             </if>
             <if test="roleId != '' and roleId != null">
              <if test="roleId == 1">
-                   role_id != #{roleId}
+                 and    role_id != #{roleId}
               </if>
               <if test="roleId == 2">
-                   role_id = 3
+                  and   role_id = 3
               </if>
             </if>
             <if test="phone != '' and phone != null">
-                  phone = #{phone}
+                and  phone = #{phone}
             </if>
             <if test="depId != '' and depId != null">
-                      dep_id = #{depId}
+                and     dep_id = #{depId}
             </if>
             <if test="sex != '' and sex != null">
-                  sex = #{sex}
+                and    sex = #{sex}
             </if>
             </trim>
         </where>
         ORDER BY create_time DESC
+        <if test="currentPage != null and currentPage !='' or
+                        pageSize != null and pageSize !=''">
+            LIMIT #{pageSize} OFFSET #{currentPage}
+        </if>
     </select>
+    <select id="findUserListCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(*) FROM  user
+        <where>
+            <trim prefix="and" prefixOverrides="and">
+                <if test="userId != '' and userId != null">
+                    and user_id = #{userId}
+                </if>
+                <if test="email != '' and email != null">
+                    and email = #{email}
+                </if>
+                <if test="password != '' and password != null">
+                    and password = #{password}
+                </if>
+                <if test="roleId != '' and roleId != null">
+                    <if test="roleId == 1">
+                        and     role_id != #{roleId}
+                    </if>
+                    <if test="roleId == 2">
+                        and   role_id = 3
+                    </if>
+                </if>
+                <if test="phone != '' and phone != null">
+                    and    phone = #{phone}
+                </if>
+                <if test="depId != '' and depId != null">
+                    and  dep_id = #{depId}
+                </if>
+                <if test="sex != '' and sex != null">
+                    and  sex = #{sex}
+                </if>
+            </trim>
+        </where>
+    </select>
+
 
     <select id="findWorkStaffList" resultType="com.alibaba.fastjson.JSONObject" parameterType="java.util.Map">
         select  work_staff_id as "workStaffId", user_id as "userId", work_lead_id as "workLeadId",
