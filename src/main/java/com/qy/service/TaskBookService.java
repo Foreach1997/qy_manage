@@ -34,4 +34,20 @@ public interface TaskBookService {
      * 当前项目状态
      */
     int taskStatus(String proCode);
+
+    /**
+     * 项目进度管理
+     */
+    Object proSpeedManage(TaskBook tBook,Integer depId,HttpServletRequest request, SupportPage supportPage);
+
+
+   /**
+    * 项目费用管理
+    */
+    Object proFeeManage(TaskBook tBook,Integer depId,HttpServletRequest request, SupportPage supportPage);
+
+   /**
+    * 项目(中止,完成,变更)
+    */
+
 }

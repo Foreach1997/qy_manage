@@ -10,7 +10,6 @@
     <script src="../../lib/js/authc.js" type="text/javascript"></script>
 </head>
 <body class="global-body-mp">
-<input type="hidden" id="reportCode"/>
 <div class="layui-tab-item layui-show" style="margin-top: 80px">
     <div class="layui-row">
         <div class="layui-col-xs12">
@@ -41,39 +40,49 @@
 </body>
 </html>
 <script type="text/html" id="barDemo">
-    {{#  if(d.status == 1){ }}
-    <a href="javascript:reportTask('{{d.workStaffId}}',2);" class="layui-btn layui-btn-mini layui-btn-danger">汇报内容</a>
+    {{#  if(d.status == 1 && d.roleId == 2){ }}
+    <a href="javascript:proStatus('{{d.reportBookId}}',2);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
+    {{#  } else if(d.status == 2 && d.roleId == 1){ }}
+    <a href="javascript:proStatus('{{d.reportBookId}}',3);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
+    {{#  } }}
+</script>
+<script type="text/html" id="status">
+    {{#  if(d.color == 1){ }}
+    部门经理审批中
+    {{#  } else if(d.color == 2){ }}
+    总经理审批中
+    {{#  } else if(d.color == 3){ }}
+    审批完成
     {{#  } }}
 </script>
 <script>
 
-    var dataRowJson;
-
-    function reportTask(workStaffId,status){
-        layui.use('layer',function () {
-                    layer.open({
-                        type: 2,
-                        title: '信息修改',
-                        shadeClose: true,
-                        shade: 0.8,
-                        area: ['420px', '520px'],
-                        content: 'reportNote.html?workStaffId='+workStaffId+'&status='+status
-                    });
-       });
+    function proStatus(reportBookId,status){
+        $.ajax({
+            type: "POST",
+            url: directory+"report/updatePro",
+            async:false,
+            data: {
+                reportBookId:reportBookId,
+                status:status
+            },
+            success: function(res) {
+                layer.msg(res.msg)
+                reload();
+            }
+        })
     }
 
 
     function reload(){
+        var depId = $('#dep').val();
+        var proCode = $('#proCode').val();
         layui.table.reload('info',{
             where: {
-
+                depId:depId,
+                proCode:proCode
             }});
     }
-
-
-    $(function () {
-
-    })
 
 
     layui.use('table', function(){
@@ -82,13 +91,10 @@
         table.render({
             id:'info',
             elem: '#info'
-            ,url:directory + 'pro/findWorkTaskList'
+            ,url:directory + 'pro/proSpeedManage'
             ,request: {
                 pageName: 'currentPage'
                 ,limitName: 'pageSize'
-            },
-            where:{
-                userId:sessionStorage.getItem("userId")
             },
             response: {
                 statusName: 'code'
@@ -98,12 +104,12 @@
                 ,dataName: 'data'
             }
             ,cols: [[
-                {field:'proCode',  width: tableWidth*0.2, title: '项目编码'}
-                ,{field:'smallTask',  width: tableWidth*0.2, title: '任务名称'}
-                ,{field:'userName',  width: tableWidth*0.2, title: '用户名'}
-                ,{field:'status', width:tableWidth*0.1, title: '当前项目状态'}
-                ,{field:'realMoney', width:tableWidth*0.1, title: '任务费用'}
-                ,{field:'createTiem', title: '创建时间', width: tableWidth*0.15}
+                {field:'proName',  width: tableWidth*0.2, title: '项目名称'}
+                ,{field:'proTimeStart',  width: tableWidth*0.1, title: '项目开始时间'}
+                ,{field:'proTimeEnd',  width: tableWidth*0.1, title: '项目结束时间'}
+                ,{field:'color', width:tableWidth*0.1, title: '进度状态',toolbar:'#status'}
+                ,{field:'reportCode', title: '项目编号',width: tableWidth*0.15}
+                ,{field:'createTime', title: '创建时间', width: tableWidth*0.15}
                 ,{field:'zz',title:'操作',width:tableWidth*0.15,toolbar:'#barDemo'}
             ]]
             ,page: true

@@ -67,6 +67,16 @@ public class ProController {
     public Object insertProMake(MultipartFile file, ProMake proMake, HttpServletRequest request){
         return proMakeService.insertProMake(file,proMake,request);
     }
+
+
+    /**
+     * 查看项目进行时提交的文件
+     */
+    @ResponseBody
+    @RequestMapping("/proSpeedManage")
+    public Object proSpeedManage(TaskBook tBook,Integer depId ,HttpServletRequest request, SupportPage supportPage){
+        return taskBookService.proSpeedManage(tBook,depId,request,supportPage);
+    }
     /**
      *
      */

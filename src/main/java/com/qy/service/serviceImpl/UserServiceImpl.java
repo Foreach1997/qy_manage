@@ -90,12 +90,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object userInsert(User user) {
         //用于该部门是否已经拥有部门经理了
-        if (user.getRoleId()==2) {
+        if (user.getRoleId() == 2) {
             UserExample userExample = new UserExample();
-            userExample.createCriteria().andRoleIdEqualTo(2).andDepIdEqualTo(user.getDepId());
+            userExample.createCriteria().andDepIdEqualTo(user.getDepId()).andRoleIdEqualTo(user.getRoleId());
             long count = userMapper.countByExample(userExample);
-            if (count != 0) {
-                return ResultRespose.rsult(200, "该部门已经有部门经理了", null);
+            if (count > 0) {
+                return ResultRespose.rsult(200, "该部门已经有了部门经理", null);
             }
         }
         UserExample userExample = new UserExample();

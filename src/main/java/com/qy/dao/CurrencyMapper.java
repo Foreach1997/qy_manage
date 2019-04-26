@@ -51,4 +51,10 @@ public interface CurrencyMapper {
      *
      */
     public List<String> findTaskProCode(Map<String,Object> map);
+
+
+    /**
+     * 项目实际支出
+     */
+    public float sumPlanMoney(String proCode);
 }

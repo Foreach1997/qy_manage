@@ -316,4 +316,7 @@
         select  distinct  pro_code AS "proCode" from work_staff where  user_id = #{userId}
     </select>
 
+    <select id="sumPlanMoney" resultType="java.lang.Float" parameterType="java.lang.String">
+        select  sum(plan_money) from work_staff where pro_code = #{_parameter}
+    </select>
 </mapper>

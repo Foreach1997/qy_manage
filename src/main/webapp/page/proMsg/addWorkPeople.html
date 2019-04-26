@@ -7,7 +7,6 @@
     <script src="../../lib/js/layui/layui.js" type="text/javascript"></script>
     <script src="../../lib/js/jquery-3.4.0.min.js" type="text/javascript"></script>
     <script src="../../lib/js/common.js" type="text/javascript"></script>
-    <script src="../../lib/js/layui/lay/modules/layer.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="ba">
@@ -134,6 +133,7 @@
         })
 
         form.on('select(dep)', function(data){
+            $("#userName").empty();
             getUser(data.value);
         });
 

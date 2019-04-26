@@ -2,12 +2,15 @@ package com.qy.service.serviceImpl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qy.dao.*;
 import com.qy.entity.*;
 import com.qy.service.DepartmentService;
 import com.qy.service.TaskBookService;
 import com.qy.util.ResultRespose;
 import com.qy.util.SupportPage;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +18,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Period;
 import java.util.*;
 
 @Service
@@ -136,6 +142,14 @@ public class TaskBookServiceImpl implements TaskBookService {
 
     @Override
     public Object reportTask(WorkStaff workStaff, HttpServletRequest request) {
+        TaskBookExample taskBookExample = new TaskBookExample();
+        taskBookExample.createCriteria().andReportCodeEqualTo(workStaff.getProCode());
+        TaskBook taskBook =  taskBookMapper.selectByExample(taskBookExample).get(0);
+
+        if (taskBook.getStatus()==6 || taskBook.getStatus()==7 || taskBook.getStatus()==10){
+            return ResultRespose.rsult(200,"该项目不能进行汇报",null);
+        }
+
         WorkStaffExample workStaffExample = new WorkStaffExample();
         workStaffExample.createCriteria().andWorkStaffIdEqualTo(workStaff.getWorkStaffId());
         workStaffMapper.updateByExampleSelective(workStaff,workStaffExample);
@@ -149,4 +163,94 @@ public class TaskBookServiceImpl implements TaskBookService {
         List<TaskBook> pro = taskBookMapper.selectByExample(taskBookExample);
         return  pro.get(0).getStatus();
     }
+
+    @Override
+    public Object proSpeedManage(TaskBook tBook,Integer depId ,HttpServletRequest request, SupportPage supportPage) {
+        User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
+
+        List<Integer> list = null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("reportCode",tBook.getReportCode());
+        if (u.getRoleId()==3){
+            map.put("userId",u.getUserId());
+        }
+        if (u.getRoleId()==2){
+            list =  currencyMapper.findUserIdByDepId(u.getDepId());
+        }
+        if (u.getRoleId() ==1&& depId!=null){
+            list =  currencyMapper.findUserIdByDepId(depId);
+        }
+        if ( list!=null){
+            map.put("list",list);
+        }
+
+        if (supportPage.getCurrentPage()!=null&&supportPage.getPageSize()!=null) {
+            map.put("currentPage", (supportPage.getCurrentPage() - 1) * supportPage.getPageSize());
+            map.put("pageSize", supportPage.getPageSize());
+        }
+        List<JSONObject> taskBookExampleList =  currencyMapper.findTaskBookList(map);
+        int count = currencyMapper.findTaskBookListCount(map);
+        for (JSONObject taskBook : taskBookExampleList){
+            Date date = taskBook.getDate("proTimeEnd");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            LocalDate localDate =  LocalDate.of(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH));
+            Period resDay = Period.between(localDate,LocalDate.now());
+            int  day = resDay.getDays();
+            if (day > 5){
+                //FIXME warn 插入警告
+                taskBook.put("color",3);
+            }else if (day < 5){
+                taskBook.put("color",2);
+            }else if (day <= 0){
+                taskBook.put("color",1);
+            }
+            taskBook.put("createTime",format.format(taskBook.getDate("createTime")));
+            taskBook.put("proTimeStart",format.format(taskBook.getDate("proTimeStart")));
+            taskBook.put("proTimeEnd",format.format(taskBook.getDate("proTimeEnd")));
+        }
+        return ResultRespose.rsultRespose(200,"请求成功",taskBookExampleList,count);
+    }
+
+    @Override
+    public Object proFeeManage(TaskBook tBook,Integer depId,HttpServletRequest request, SupportPage supportPage) {
+        User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
+
+        List<Integer> list = null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("reportCode",tBook.getReportCode());
+        if (u.getRoleId()==3){
+            map.put("userId",u.getUserId());
+        }
+        if (u.getRoleId()==2){
+            list =  currencyMapper.findUserIdByDepId(u.getDepId());
+        }
+        if (u.getRoleId() ==1&& depId!=null){
+            list =  currencyMapper.findUserIdByDepId(depId);
+        }
+        if ( list!=null){
+            map.put("list",list);
+        }
+
+        if (supportPage.getCurrentPage()!=null&&supportPage.getPageSize()!=null) {
+            map.put("currentPage", (supportPage.getCurrentPage() - 1) * supportPage.getPageSize());
+            map.put("pageSize", supportPage.getPageSize());
+        }
+        List<JSONObject> taskBookExampleList =  currencyMapper.findTaskBookList(map);
+        int count = currencyMapper.findTaskBookListCount(map);
+        for (JSONObject taskBook : taskBookExampleList) {
+            float money = taskBook.getFloat("proMoney");
+            float realMoney = currencyMapper.sumPlanMoney(taskBook.getString("reportCode"));
+            if (money <= realMoney) {
+                taskBook.put("color", 1);
+            } else if (money > realMoney && realMoney - money < money * 0.1) {
+                taskBook.put("color", 2);
+            } else if (money > realMoney && realMoney - money > money * 0.1) {
+                taskBook.put("color", 3);
+            }
+            taskBook.put("createTime", format.format(taskBook.getDate("createTime")));
+        }
+        return ResultRespose.rsultRespose(200,"请求成功",taskBookExampleList,count);
+    }
+
 }
