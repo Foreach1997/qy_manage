@@ -77,7 +77,7 @@ public class ReportController {
      * 申请任务(任务阶段)
      */
     @ResponseBody
-    @RequestMapping("/insertTaskBook")
+    @RequestMapping("/insertOrUpdateTaskBook")
     public Object insertTaskBook(TaskBook taskBook,String start,String end ,String isUpdate, HttpServletRequest request){
         return  reportBookService.insertTaskBook(taskBook,start,end,isUpdate,request);
     }
@@ -91,11 +91,23 @@ public class ReportController {
     }
 
     /**
-     * 获取所有的项目编码
+     * 获取当前用户所有的项目编码
      */
     @ResponseBody
-    @RequestMapping("/findAllProCode")
-    public Object findAllProCode(){
-        return reportBookService.findAllProCode();
+    @RequestMapping("/findUserProCode")
+    public Object findAllProCode(HttpServletRequest request){
+        return reportBookService.findUserProCode(request);
     }
+    /**
+     * 获取当前任务人员所有的项目编码
+     */
+    @ResponseBody
+    @RequestMapping("/findTaskProCode")
+    public Object findTaskProCode(HttpServletRequest request){
+        return reportBookService.findUserProCode(request);
+    }
+
+    /**
+     *
+     */
 }

@@ -312,4 +312,8 @@
         </where>
     </select>
 
+    <select id="findTaskProCode" resultType="java.lang.String" parameterType="java.util.Map">
+        select  distinct  pro_code AS "proCode" from work_staff where  user_id = #{userId}
+    </select>
+
 </mapper>

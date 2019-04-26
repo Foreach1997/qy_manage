@@ -66,6 +66,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object updateUser(User user) {
+        if (user.getRoleId() == 2) {
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andDepIdEqualTo(user.getDepId()).andRoleIdEqualTo(user.getRoleId());
+            long count = userMapper.countByExample(userExample);
+            if (count > 0) {
+                return ResultRespose.rsult(200, "该部门已经有了部门经理", null);
+            }
+        }
         int val = userMapper.updateByPrimaryKeySelective(user);
         if (val != 0){
             return ResultRespose.rsult(200, "修改成功", null);

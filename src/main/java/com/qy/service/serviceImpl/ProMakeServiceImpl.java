@@ -3,6 +3,7 @@ package com.qy.service.serviceImpl;
 import com.qy.dao.ProMakeMapper;
 import com.qy.entity.ProMake;
 import com.qy.service.ProMakeService;
+import com.qy.service.TaskBookService;
 import com.qy.util.ResultRespose;
 import com.qy.util.SystemContent;
 import org.omg.CORBA.Request;
@@ -25,9 +26,16 @@ public class ProMakeServiceImpl implements ProMakeService {
 
     @Resource
     private ProMakeMapper proMakeMapper;
+    @Resource
+    private TaskBookService taskBookService;
 
     @Override
     public Object insertProMake(MultipartFile file, ProMake proMake, HttpServletRequest request) {
+
+        int status = taskBookService.taskStatus(proMake.getProCode());
+        if (status != 3){
+            return ResultRespose.rsult(200, "该项目暂时不能提交文件", null);
+        }
         proMake.setCreateTime(new Date());
         proMake.setUserId((int)request.getSession().getAttribute("userId"));
         String path = SystemContent.path;

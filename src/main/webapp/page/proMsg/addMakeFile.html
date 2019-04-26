@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../lib/js/layui/css/layui.css"  media="all">
+    <script src="../../lib/js/layui/layui.js" type="text/javascript"></script>
+    <script src="../../lib/js/jquery-3.4.0.min.js" type="text/javascript"></script>
+    <script src="../../lib/js/common.js" type="text/javascript"></script>
+    <script src="../../lib/js/layui/lay/modules/layer.js" type="text/javascript"></script>
+</head>
+<body>
+<form class="layui-form">
+    <div class="layui-form-item" >
+        <label class="layui-form-label" >项目编码:</label>
+        <div  class="layui-input-block" style="width: 300px">
+            <select id="proCode" required>
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">文件类型:</label>
+        <div class="layui-input-inline">
+            <select name="interest" id="makeType" lay-filter="makeType">
+                <option value=""></option>
+                <option value="1">进展报告</option>
+                <option value="2">关键点报告</option>
+                <option value="3">重要事件报告</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <button type="button" name="file" style="margin-left: 100px" class="layui-btn" id="address">
+            <i class="layui-icon">&#xe67c;</i>上传报告文件
+        </button>
+    </div>
+    <div class="layui-form-item" >
+        <button id="confirm"  type="button"  style="margin-left:100px;padding-left: 80px;padding-right: 80px" class="layui-btn">确认</button>
+    </div>
+</form>
+</body>
+</html>
+<script>
+
+    layui.use('form', function() {
+        var form = layui.form;
+        $.ajax({
+            type: "POST",
+            url: directory+"report/findTaskProCode",
+            async:false,
+            data: {
+            },
+            success: function(res) {
+                var data = res.data;
+                $.each(data,function(index,item){
+                    $("#proCode")
+                        .append(
+                            "<option value='" + item.proCode+"'>"
+                            + item.proCode + "</option>");
+                })
+                //form.render(null, 'merchant');
+                form.render();
+            }
+        })
+    })
+
+        layui.use('upload', function(){
+            var upload = layui.upload;
+            var uploadInst = upload.render({
+                elem: '#address' //绑定元素
+                ,url: directory + 'pro/insertProMake' //上传接口
+                ,auto:false
+                ,accept:'file'
+                ,bindAction:'#confirm'
+                ,size:0
+                ,data:{
+
+                },
+                before:function(){
+                    this.data= {
+                           proCode : $('#proCode').val(),
+                           makeType :  $('#makeType').val()
+                    }
+                },
+                done: function(res){
+                    if (res.code == 200){
+                        var index=parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layer.msg(res.msg);
+                        parent.reload();
+                    }else
+                    {
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+        });
+
+    $('#confirm').click(function () {
+        var proCode = $('#proCode').val();
+        var makeType =  $('#makeType').val();
+        if(!proCode){
+            layer.msg("请选择项目编码")
+        }else if(!makeType){
+            layer.msg("请选择文件类型")
+        }else if (!$(".layui-upload-choose")[0]) {
+            layer.msg("请上传报告");
+        }else{
+            return true;
+        }
+    })
+
+
+</script>

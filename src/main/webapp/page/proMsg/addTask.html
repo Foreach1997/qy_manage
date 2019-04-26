@@ -79,7 +79,7 @@
         var form = layui.form;
         $.ajax({
             type: "POST",
-            url: directory+"report/findAllProCode",
+            url: directory+"report/findTaskProCode",
             async:false,
             data: {
             },
@@ -98,6 +98,7 @@
     })
 
     $(function () {
+        var isUpdate = getUrlCode("isUpdate");
         var data= parent.dataRowJson;
         if (!!data) {
             $('#proCode').empty();
@@ -153,7 +154,7 @@
     $('#confirm').click(function () {
         $.ajax({
             type: "POST",
-            url: directory+"report/insertTaskBook",
+            url: directory+"report/insertOrUpdateTaskBook",
             async:false,
             data: {
                 proName:$('#proName').val(),

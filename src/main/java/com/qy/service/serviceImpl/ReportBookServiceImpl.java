@@ -361,13 +361,13 @@ public class ReportBookServiceImpl implements ReportBookService {
         //FIXME 在此处对各种状态进行判断和处理
         if (taskBook.getStatus()==6) {
             workStaff.setStatus(4);
-            workStaffMapper.updateByExample(workStaff,workStaffExample);
+            workStaffMapper.updateByExampleSelective(workStaff,workStaffExample);
         }else if (taskBook.getStatus()==7){
             workStaff.setStatus(3);
-            workStaffMapper.updateByExample(workStaff,workStaffExample);
+            workStaffMapper.updateByExampleSelective(workStaff,workStaffExample);
         }else if (taskBook.getStatus()==10){
             workStaff.setStatus(2);
-            workStaffMapper.updateByExample(workStaff,workStaffExample);
+            workStaffMapper.updateByExampleSelective (workStaff,workStaffExample);
         }
         int val = taskBookMapper.updateByPrimaryKeySelective(taskBook);
         if (val!=0){
@@ -377,13 +377,13 @@ public class ReportBookServiceImpl implements ReportBookService {
     }
 
     @Override
-    public Object findAllProCode() {
-
+    public Object findUserProCode(HttpServletRequest request) {
         ReportBookExample reportBookExample = new ReportBookExample();
-        reportBookExample.createCriteria().andStatusEqualTo(3);
+        reportBookExample.createCriteria().andStatusEqualTo(3).andStatusEqualTo((int)request.getSession().getAttribute("userId"));
         List<ReportBook> reportBooks = reportBookMapper.selectByExample(reportBookExample);
         return ResultRespose.rsult(200,"成功",reportBooks);
     }
+
 
 
 }

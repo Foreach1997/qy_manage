@@ -66,10 +66,11 @@
         var  sexVal = '';
         var  reportCode = getUrlCode("reportCode");
         var  userId = '';
-        console.log(userId);
+        var isUpdate = getUrlCode("isUpdate");
         form.on('radio(sex)', function(data){
             sexVal=  data.value
         });
+        debugger
         $("#confirm").click(function () {
                 var depId=$("#dep").val();
                 var   userName=$("#userName").val();
@@ -87,7 +88,7 @@
                 }else {
                     $.ajax({
                         type: "POST",
-                        url: directory+"pro/insertWorkStaff",
+                        url: directory+"pro/insertOrUpdateWorkStaff",
                         async:false,
                         data: {
                             smallTask:smallTask,
@@ -95,7 +96,8 @@
                             realMoney:realMoney,
                             userId:$('#userName').val(),
                             depId:depId,
-                            proCode:reportCode
+                            proCode:reportCode,
+                            isUpdate:isUpdate
                         },
                         success: function(res){
                             if (res.code==200){

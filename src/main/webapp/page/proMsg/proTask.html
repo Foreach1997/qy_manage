@@ -52,39 +52,43 @@
 </html>
 <script type="text/html" id="barDemo">
     {{#  if(d.status == 1 && d.roleId == 2){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}',2);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
+    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',2);" class="layui-btn layui-btn-mini layui-btn-danger  merchant-freeze">审批</a>
     {{#  } else if(d.status == 2 && d.roleId == 1){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}',3);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
+    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',3);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">审批</a>
     {{#  } else if(d.status == 3 && d.roleId == 3){ }}
-    <a href="javascript:addWork('{{d.reportCode}}');" class="layui-btn layui-btn-mini layui-btn-danger">添加项目人员</a>
+    <a href="javascript:addWork('{{d.reportCode}}','f');" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">添加项目人员</a>
     {{#  } }}
 
-    {{#  if(d.status == 3 && d.roleId == 3){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}',4);" class="layui-btn layui-btn-mini layui-btn-danger">申请中止</a>
+    {{#  if(d.status == 13 && d.roleId == 3){ }}
+    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',4);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">申请中止</a>
     {{#  } else if(d.status == 4 && d.roleId == 2){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}',5);" class="layui-btn layui-btn-mini layui-btn-danger">允许中止</a>
+    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',5);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">允许中止</a>
     {{#  } else if(d.status == 5 && d.roleId == 1){ }}
-    <a href="javascript:proStatus('{{d.reportCode}}',6);" class="layui-btn layui-btn-mini layui-btn-danger">允许中止</a>
+    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',6);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">允许中止</a>
     {{#  } }}
 
     {{#  if(d.status == 7 && d.roleId == 3){ }}
-    <a href="javascript:edit('{{d.taskBookId}}','yes');" class="layui-btn layui-btn-mini layui-btn-danger">编辑</a>
+    <a href="javascript:edit('{{d.taskBookId}}','yes');" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">编辑</a>
     {{#  } }}
 
-    {{#  if(d.status == 3 && d.roleId == 3){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}',8);" class="layui-btn layui-btn-mini layui-btn-danger">完成</a>
+    {{#  if(d.status == 13){ }}
+    <a href="javascript:see('{{d.reportCode}}','g');" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">查看项目人员</a>
+    {{#  } }}
+
+    {{#  if(d.status == 13 && d.roleId == 3){ }}
+    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',8);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">完成</a>
     {{#  } else if(d.status == 8 && d.roleId == 2){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}',9);" class="layui-btn layui-btn-mini layui-btn-danger">项目完成中</a>
+    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',9);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">项目完成中</a>
     {{#  } else if(d.status == 9 && d.roleId == 1){ }}
-    <a href="javascript:proStatus('{{d.reportCode}}',10);" class="layui-btn layui-btn-mini layui-btn-danger">项目完成</a>
+    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',10);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">项目完成</a>
     {{#  } }}
 
-    {{#  if(d.status == 3 && d.roleId == 3){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}',11);" class="layui-btn layui-btn-mini layui-btn-danger">申请变更</a>
+    {{#  if(d.status == 13 && d.roleId == 3){ }}
+    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',11);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">申请变更</a>
     {{#  } else if(d.status == 11 && d.roleId == 2){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}',12);" class="layui-btn layui-btn-mini layui-btn-danger">变更中</a>
+    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',12);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">变更中</a>
     {{#  } else if(d.status == 12 && d.roleId == 1){ }}
-    <a href="javascript:proStatus('{{d.reportCode}}',7);" class="layui-btn layui-btn-mini layui-btn-danger">同意变更</a>
+    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',7);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">同意变更</a>
     {{#  } }}
 
 </script>
@@ -113,6 +117,8 @@
     总经理审审批完成中
     {{#  } else if(d.status == 10){ }}
     项目完成
+    {{#  } else if(d.status == 13){ }}
+    项目进行中
     {{#  } }}
 </script>
 <script>
@@ -132,15 +138,31 @@
         });
     }
 
+    function see(reportCode,edit) {
+        layui.use('layer',function () {
+            layer.open({
+                type: 2,
+                title: '项目人员',
+                shadeClose: true,
+                shade: false,
+                maxmin: false, //开启最大化最小化按钮
+                area: ['100%','100%'],
+                anim: 2,
+                content: 'myTask.html?reportCode='+reportCode+'&edit='+edit
+            });
+        })
+    }
 
-    function proStatus(planBookId,status){
+    function proStatus(taskBookId,reportCode,status){
+        debugger
         $.ajax({
             type: "POST",
-            url: directory+"report/updatePlan",
+            url: directory+"report/updateTask",
             async:false,
             data: {
-                planBookId:planBookId,
-                status:status
+                taskBookId:taskBookId,
+                status:status,
+                reportCode:reportCode
             },
             success: function(res) {
                 layer.msg(res.msg)
@@ -151,12 +173,9 @@
 
 
     function reload(){
-        var depId = $('#dep').val();
-        var proCode = $('#proCode').val();
         layui.table.reload('info',{
             where: {
-                depId:depId,
-                proCode:proCode
+
             }});
     }
 
@@ -193,7 +212,7 @@
                 maxmin: false, //开启最大化最小化按钮
                 area: ['100%','100%'],
                 anim: 2,
-                content: 'myTask.html?reportCode='+reportCode
+                content: 'myTask.html?reportCode='+reportCode+'&edit='+edit
             });
         })
     }

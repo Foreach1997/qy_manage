@@ -59,8 +59,9 @@ public interface ReportBookService {
     Object updateTask(TaskBook taskBook);
 
     /**
-     * 获取所有项目编码
+     * 获取当前用户所有项目编码
      */
-    Object findAllProCode();
+    Object findUserProCode(HttpServletRequest request);
+
 
 }

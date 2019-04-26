@@ -46,4 +46,9 @@ public interface CurrencyMapper {
     public List<JSONObject>  findWorkStaffList(Map<String,Object> map);
 
     public int findWorkStaffListCount(Map<String,Object> map);
+
+    /**
+     *
+     */
+    public List<String> findTaskProCode(Map<String,Object> map);
 }

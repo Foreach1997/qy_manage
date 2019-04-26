@@ -34,14 +34,29 @@ public class TaskBookServiceImpl implements TaskBookService {
     private UserMapper userMapper;
     @Resource
     private ProMakeMapper proMakeMapper;
+    @Resource
+    private TaskBookMapper taskBookMapper;
 
     @Override
-    public Object insertWorkStaff(WorkStaff workStaff, HttpServletRequest request) {
-        workStaff.setCreateTiem(new Date());
-        workStaff.setStatus(1);
-        workStaff.setWorkLeadId((int)request.getSession().getAttribute("userId"));
-        workStaffMapper.insert(workStaff);
-        return ResultRespose.rsult(200,"添加成功",null);
+    public Object insertOrUpdateWorkStaff(WorkStaff workStaff,String isUpdate, HttpServletRequest request) {
+        TaskBook taskBook = new TaskBook();
+        taskBook.setStatus(13);
+        TaskBookExample taskBookExample = new TaskBookExample();
+        taskBookExample.createCriteria().andReportCodeEqualTo(workStaff.getProCode());
+        taskBookMapper.updateByExampleSelective(taskBook,taskBookExample);
+
+        if ("no".equals(isUpdate)) {
+            workStaff.setCreateTiem(new Date());
+            workStaff.setStatus(1);
+            workStaff.setWorkLeadId((int) request.getSession().getAttribute("userId"));
+            workStaffMapper.insert(workStaff);
+            return ResultRespose.rsult(200, "添加成功", null);
+        }else {
+            WorkStaffExample workStaffExample = new WorkStaffExample();
+            workStaffExample.createCriteria().andWorkStaffIdEqualTo(workStaff.getWorkStaffId());
+            workStaffMapper.updateByExample(workStaff,workStaffExample);
+            return ResultRespose.rsult(200, "修改成功", null);
+        }
     }
 
     @Override
@@ -92,17 +107,19 @@ public class TaskBookServiceImpl implements TaskBookService {
         List<JSONObject> taskBookExampleList =  currencyMapper.findTaskBookList(map);
         int count = currencyMapper.findTaskBookListCount(map);
         List<JSONObject> res = new ArrayList<JSONObject>();
-        ProMakeExample proMakeExample = new ProMakeExample();
         for (JSONObject jsonObject : taskBookExampleList){
-            proMakeExample.createCriteria().andUserIdEqualTo(jsonObject.getInteger("userId"))
-            .andProCodeEqualTo(jsonObject.getString("proCode")).andMakeTypeEqualTo(1);
-            long A = proMakeMapper.countByExample(proMakeExample);
-            proMakeExample.createCriteria().andUserIdEqualTo(jsonObject.getInteger("userId"))
-                    .andProCodeEqualTo(jsonObject.getString("proCode")).andMakeTypeEqualTo(2);
-            long B = proMakeMapper.countByExample(proMakeExample);
-            proMakeExample.createCriteria().andUserIdEqualTo(jsonObject.getInteger("userId"))
-                    .andProCodeEqualTo(jsonObject.getString("proCode")).andMakeTypeEqualTo(3);
-            long C = proMakeMapper.countByExample(proMakeExample);
+            ProMakeExample proMakeExampleA = new ProMakeExample();
+            proMakeExampleA.createCriteria().andUserIdEqualTo(jsonObject.getInteger("userId"))
+            .andProCodeEqualTo(jsonObject.getString("reportCode")).andMakeTypeEqualTo(1);
+            long A = proMakeMapper.countByExample(proMakeExampleA);
+            ProMakeExample proMakeExampleB = new ProMakeExample();
+            proMakeExampleB.createCriteria().andUserIdEqualTo(jsonObject.getInteger("userId"))
+                    .andProCodeEqualTo(jsonObject.getString("reportCode")).andMakeTypeEqualTo(2);
+            long B = proMakeMapper.countByExample(proMakeExampleB);
+            ProMakeExample proMakeExampleC = new ProMakeExample();
+            proMakeExampleC.createCriteria().andUserIdEqualTo(jsonObject.getInteger("userId"))
+                    .andProCodeEqualTo(jsonObject.getString("reportCode")).andMakeTypeEqualTo(3);
+            long C = proMakeMapper.countByExample(proMakeExampleC);
             jsonObject.put("createTime",format.format(jsonObject.getDate("createTime")));
             jsonObject.put("proTimeStart",format.format(jsonObject.getDate("proTimeStart")));
             jsonObject.put("proTimeEnd",format.format(jsonObject.getDate("proTimeEnd")));
@@ -115,5 +132,21 @@ public class TaskBookServiceImpl implements TaskBookService {
             res.add(jsonObject);
         }
         return ResultRespose.rsultRespose(200,"请求成功",res,count);
+    }
+
+    @Override
+    public Object reportTask(WorkStaff workStaff, HttpServletRequest request) {
+        WorkStaffExample workStaffExample = new WorkStaffExample();
+        workStaffExample.createCriteria().andWorkStaffIdEqualTo(workStaff.getWorkStaffId());
+        workStaffMapper.updateByExampleSelective(workStaff,workStaffExample);
+        return ResultRespose.rsult(200,"修改成功",null);
+    }
+
+    @Override
+    public int taskStatus(String proCode){
+        TaskBookExample taskBookExample = new TaskBookExample();
+        taskBookExample.createCriteria().andReportCodeEqualTo(proCode);
+        List<TaskBook> pro = taskBookMapper.selectByExample(taskBookExample);
+        return  pro.get(0).getStatus();
     }
 }

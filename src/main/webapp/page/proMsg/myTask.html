@@ -10,6 +10,7 @@
     <script src="../../lib/js/authc.js" type="text/javascript"></script>
 </head>
 <body class="global-body-mp">
+<input type="hidden" id="reportCode"/>
 <div class="layui-tab-item layui-show" style="margin-top: 80px">
     <div class="layui-row">
         <div class="layui-col-xs12">
@@ -100,12 +101,9 @@
 
 
     function reload(){
-        var depId = $('#dep').val();
-        var proCode = $('#proCode').val();
         layui.table.reload('info',{
             where: {
-                depId:depId,
-                proCode:proCode
+
             }});
     }
 
@@ -146,7 +144,16 @@
         })
     }
 
+    $(function () {
+        debugger
+       var reportCode = getUrlCode("reportCode");
+       $("#reportCode").val(reportCode);
+    })
+
+
     $('#addPeople').click(function () {
+        debugger
+        var reportCode = $("#reportCode").val();
         layui.use('layer',function () {
             layer.open({
                 type: 2,
@@ -156,11 +163,10 @@
                 maxmin: false, //开启最大化最小化按钮
                 area: ['100%','100%'],
                 anim: 2,
-                content: 'addWorkPeople.html'
+                content: 'addWorkPeople.html?isUpdate='+'no'+'&reportCode='+reportCode
             });
         })
     })
-
 
     layui.use('table', function(){
         var tableWidth = $("#info").width() - 28;
@@ -185,7 +191,6 @@
                 ,{field:'userName',  width: tableWidth*0.2, title: '用户名'}
                 ,{field:'depName', width:tableWidth*0.1, title: '所在部门'}
                 ,{field:'realMoney', width:tableWidth*0.1, title: '任务费用'}
-                ,{field:'status', width:tableWidth*0.1, title: '状态'}
                 ,{field:'createTiem', title: '创建时间', width: tableWidth*0.15}
                 ,{field:'zz',title:'操作',width:tableWidth*0.15,toolbar:'#barDemo'}
             ]]
