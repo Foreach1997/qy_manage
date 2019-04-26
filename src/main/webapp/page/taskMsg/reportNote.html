@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="../../lib/js/layui/css/layui.css"  media="all">
+<script src="../../lib/js/layui/layui.js" type="text/javascript"></script>
+<script src="../../lib/js/jquery-3.4.0.min.js" type="text/javascript"></script>
+<script src="../../lib/js/common.js" type="text/javascript"></script>
+<script src="../../lib/js/layui/lay/modules/layer.js" type="text/javascript"></script>
+<body>
+<form class="layui-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">汇报内容:</label>
+        <div class="layui-input-block">
+            <textarea name="desc" id="reportNote" required placeholder="请输入汇报内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" >
+        <button id="confirm" type="button"   style="margin-left:100px;padding-left: 80px;padding-right: 80px" class="layui-btn">确认</button>
+    </div>
+</form>
+</body>
+</html>
+<script>
+    $('#confirm').click(function () {
+        var reportNote = $('#reportNote').val();
+        var  status =  getUrlCode("status");
+        var  workStaffId = getUrlCode("workStaffId");
+        if (!reportNote) {
+            layer.msg("请填写汇报内容")
+        }else {
+            $.ajax({
+                type: "POST",
+                url: directory + "report/reportTask",
+                async: false,
+                data: {
+                    workStaffId: workStaffId,
+                    status: status,
+                    reportNote: $('reportNote').val()
+                },
+                success: function (res) {
+                    layer.msg(res.msg)
+                    reload();
+                }
+            })
+        }
+       })
+
+</script>
