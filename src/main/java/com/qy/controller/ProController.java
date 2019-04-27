@@ -1,9 +1,7 @@
 package com.qy.controller;
 
 import com.qy.dao.ProMakeMapper;
-import com.qy.entity.ProMake;
-import com.qy.entity.TaskBook;
-import com.qy.entity.WorkStaff;
+import com.qy.entity.*;
 import com.qy.service.ProMakeService;
 import com.qy.service.TaskBookService;
 import com.qy.util.SupportPage;
@@ -70,13 +68,56 @@ public class ProController {
 
 
     /**
-     * 查看项目进行时提交的文件
+     * 查看项目进度
      */
     @ResponseBody
     @RequestMapping("/proSpeedManage")
     public Object proSpeedManage(TaskBook tBook,Integer depId ,HttpServletRequest request, SupportPage supportPage){
         return taskBookService.proSpeedManage(tBook,depId,request,supportPage);
     }
+
+    /**
+     * 查看项目费用
+     */
+    @ResponseBody
+    @RequestMapping("/proFeeManage")
+    public Object proFeeManage(TaskBook tBook,Integer depId ,HttpServletRequest request, SupportPage supportPage){
+        return taskBookService.proFeeManage(tBook,depId,request,supportPage);
+    }
+
+    /**
+     * 查看项目状态原因
+     */
+    @ResponseBody
+    @RequestMapping("/proStatusCause")
+    public Object proFeeManage(TaskBook taskBook){
+        return taskBookService.proStatusCause(taskBook);
+    }
+
+    /**
+     * 按照不同的状态添加申请原因
+     */
+    @ResponseBody
+    @RequestMapping("/insertProStatus")
+    public void insertProStatus(Integer status,ProFinish proFinish, ProChange proChange,ProStop proStop){
+         taskBookService.insertProStatus(status,proFinish,proChange,proStop);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      *
      */

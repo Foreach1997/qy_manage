@@ -99,6 +99,7 @@
 
     $(function () {
         var isUpdate = getUrlCode("isUpdate");
+        $('#isUpdate').val(isUpdate);
         var data= parent.dataRowJson;
         if (!!data) {
             $('#proCode').empty();

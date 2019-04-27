@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../lib/js/layui/css/layui.css"  media="all">
+    <script src="../../lib/js/layui/layui.js" type="text/javascript"></script>
+    <script src="../../lib/js/jquery-3.4.0.min.js" type="text/javascript"></script>
+    <script src="../../lib/js/common.js" type="text/javascript"></script>
+    <script src="../../lib/js/layui/lay/modules/layer.js" type="text/javascript"></script>
+</head>
+<body>
+<form class="layui-form">
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">项目中止原因:</label>
+        <div class="layui-input-block">
+            <textarea name="desc" id="stopNote" required placeholder="请输入项目中止原因" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" >
+        <button id="confirm"   style="margin-left:100px;padding-left: 80px;padding-right: 80px" class="layui-btn">确认</button>
+    </div>
+</form>
+</body>
+</html>
+<script>
+    $(function () {
+        var taskBookId = getUrlCode("taskBookId");
+        var status = getUrlCode("status");
+        var reportCode = getUrlCode("reportCode");
+        $.ajax({
+            type: "POST",
+            url: directory+"pro/proStatusCause",
+            async:false,
+            data: {
+                taskBookId:taskBookId,
+                status:status,
+                reportCode:reportCode
+            },
+            success: function(res) {
+                var data = res.data;
+                $('#stopNote').val(data.stopNote);
+            }
+        })
+    })
+
+    $("#confirm").click(function () {
+        var taskBookId = getUrlCode("taskBookId");
+        var status = getUrlCode("status");
+        var reportCode = getUrlCode("reportCode");
+        $.ajax({
+            type: "POST",
+            url: directory+"pro/proStatusCause",
+            async:false,
+            data: {
+                taskBookId:taskBookId,
+                status:status,
+                reportCode:reportCode
+            },
+            success: function(res) {
+                layer.msg(res.msg)
+                var index=parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+                parent.layer.msg(res.msg);
+                parent.reload();
+            }
+        })
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

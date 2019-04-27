@@ -56,5 +56,5 @@ public interface CurrencyMapper {
     /**
      * 项目实际支出
      */
-    public float sumPlanMoney(String proCode);
+    public Float sumPlanMoney(String proCode);
 }

@@ -118,6 +118,7 @@ public class UserServiceImpl implements UserService {
             map.put("depId",u.getDepId());
         }
         map.put("roleId",u.getRoleId());
+        map.put("userName", user.getUserName());
         if (supportPage.getCurrentPage()!=null&&supportPage.getPageSize()!=null) {
             map.put("currentPage", (supportPage.getCurrentPage() - 1) * supportPage.getPageSize());
             map.put("pageSize", supportPage.getPageSize());

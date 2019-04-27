@@ -47,12 +47,12 @@
     {{#  } }}
 </script>
 <script type="text/html" id="status">
-    {{#  if(d.color == 1){ }}
-    部门经理审批中
+    {{#  if(d.color == 3){ }}
+    <div class="layui-badge" style="width: 200px"></div>
     {{#  } else if(d.color == 2){ }}
-    总经理审批中
-    {{#  } else if(d.color == 3){ }}
-    审批完成
+    <div class="layui-badge layui-bg-orange" style="width: 200px"></div>
+    {{#  } else if(d.color == 1){ }}
+    <div class="layui-badge layui-bg-green" style="width: 200px"></div>
     {{#  } }}
 </script>
 <script>

@@ -60,11 +60,11 @@
     {{#  } }}
 
     {{#  if(d.status == 13 && d.roleId == 3){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',4);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">申请中止</a>
+    <a href="javascript:proStop('{{d.taskBookId}}','{{d.reportCode}}',4);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">申请中止</a>
     {{#  } else if(d.status == 4 && d.roleId == 2){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',5);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">允许中止</a>
+    <a href="javascript:proStop('{{d.taskBookId}}','{{d.reportCode}}',5);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">允许中止</a>
     {{#  } else if(d.status == 5 && d.roleId == 1){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',6);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">允许中止</a>
+    <a href="javascript:proStop('{{d.taskBookId}}','{{d.reportCode}}',6);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">允许中止</a>
     {{#  } }}
 
     {{#  if(d.status == 7 && d.roleId == 3){ }}
@@ -76,19 +76,19 @@
     {{#  } }}
 
     {{#  if(d.status == 13 && d.roleId == 3){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',8);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">完成</a>
+    <a href="javascript:proFinish('{{d.taskBookId}}','{{d.reportCode}}',8);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">申请完成</a>
     {{#  } else if(d.status == 8 && d.roleId == 2){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',9);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">项目完成中</a>
+    <a href="javascript:proFinish('{{d.taskBookId}}','{{d.reportCode}}',9);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">项目完成中</a>
     {{#  } else if(d.status == 9 && d.roleId == 1){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',10);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">项目完成</a>
+    <a href="javascript:proFinish('{{d.taskBookId}}','{{d.reportCode}}',10);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">项目完成</a>
     {{#  } }}
 
     {{#  if(d.status == 13 && d.roleId == 3){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',11);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">申请变更</a>
+    <a href="javascript:proChange('{{d.taskBookId}}','{{d.reportCode}}',11);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">申请变更</a>
     {{#  } else if(d.status == 11 && d.roleId == 2){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',12);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">变更中</a>
+    <a href="javascript:proChange('{{d.taskBookId}}','{{d.reportCode}}',12);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">变更中</a>
     {{#  } else if(d.status == 12 && d.roleId == 1){ }}
-    <a href="javascript:proStatus('{{d.taskBookId}}','{{d.reportCode}}',7);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">同意变更</a>
+    <a href="javascript:proChange('{{d.taskBookId}}','{{d.reportCode}}',7);" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">同意变更</a>
     {{#  } }}
 
 </script>
@@ -132,11 +132,51 @@
                 title: '任务修改',
                 shadeClose: true,
                 shade: 0.8,
-                area: ['420px', '520px'],
+                area: ['100%','100%'],
                 content: 'addTask.html?taskBookId='+taskBookId+'&isUpdate='+isUpdate
             });
         });
     }
+
+    function proStop(taskBookId,reportCode,status) {
+        layui.use('layer',function () {
+            layer.open({
+                type: 2,
+                title: '任务中止',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['320px', '220px'],
+                content: 'proStop.html?taskBookId='+taskBookId+'&reportCode='+reportCode + '&status='+status
+            });
+        });
+    }
+
+    function proFinish(taskBookId,reportCode,status) {
+        layui.use('layer',function () {
+            layer.open({
+                type: 2,
+                title: '任务完成',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['520px', '420px'],
+                content: 'proFinish.html?taskBookId='+taskBookId+'&reportCode='+reportCode + '&status='+status
+            });
+        });
+    }
+
+    function proChange(taskBookId,reportCode,status) {
+        layui.use('layer',function () {
+            layer.open({
+                type: 2,
+                title: '任务变更申请',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['320px', '220px'],
+                content: 'proChange.html?taskBookId='+taskBookId+'&reportCode='+reportCode + '&status='+status
+            });
+        });
+    }
+
 
     function see(reportCode,edit) {
         layui.use('layer',function () {
@@ -221,13 +261,13 @@
         layui.use('layer',function () {
             layer.open({
                 type: 2,
-                title: '申请计划',
+                title: '提交任务书',
                 shadeClose: true,
                 shade: false,
                 maxmin: false, //开启最大化最小化按钮
                 area: ['100%','100%'],
                 anim: 2,
-                content: 'addTask.html'
+                content: 'addTask.html?isUpdate=no'
             });
         })
     })

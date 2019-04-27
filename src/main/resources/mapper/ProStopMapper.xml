@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qy.dao.ProStopMapper">
+
+    <resultMap id="ProStop" type="com.qy.entity.ProStop" >
+        <result column="pro_code" property="proCode" />
+        <result column="stop_note" property="stopNote" />
+        <result column="create_time" property="createTime" />
+        <result column="user_id" property="userId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `pro_code`,
+        `stop_note`,
+        `create_time`,
+        `user_id`
+    </sql>
+
+    <insert id="insert" parameterType="com.qy.entity.ProStop" >
+        INSERT INTO pro_stop (
+            `pro_code`,
+            `stop_note`,
+            `create_time`,
+            `user_id`
+        )
+        VALUES(
+            #{proStop.proCode},
+            #{proStop.stopNote},
+            #{proStop.createTime},
+            #{proStop.userId}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="java.util.Map" >
+        DELETE FROM pro_stop
+        WHERE pro_code = #{proCode}
+    </delete>
+
+
+    <select id="findProStop" resultType="com.qy.entity.ProStop">
+        select * from pro_stop
+        <where>
+            <trim prefix="and" prefixOverrides="and">
+            <if test="proCode != null">
+                pro_code = #{proCode}
+            </if>
+                <if test="userId != null">
+                    user_id = #{userId}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+</mapper>

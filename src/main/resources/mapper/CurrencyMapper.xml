@@ -206,6 +206,9 @@
             <if test="sex != '' and sex != null">
                 and    sex = #{sex}
             </if>
+            <if test="userName != '' and userName != null">
+                    and    user_name LIKE '%'#{userName}'%'
+            </if>
             </trim>
         </where>
         ORDER BY create_time DESC
@@ -243,6 +246,9 @@
                 </if>
                 <if test="sex != '' and sex != null">
                     and  sex = #{sex}
+                </if>
+                <if test="userName != '' and userName != null">
+                    and  user_name LIKE '%'#{userName}'%'
                 </if>
             </trim>
         </where>

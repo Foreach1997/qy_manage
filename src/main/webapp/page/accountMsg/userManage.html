@@ -24,14 +24,20 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="layui-inline" style="margin-top: 5px;" >
+                                        <label class="layui-form-label">用户名:</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" id="userName"  lay-filter="userName" placeholder="请输入用户名" class="layui-input">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="layui-form-item" style="margin-left: 600px">
                                     <div class="layui-inline">
                                         <button class="layui-btn layui-btn-normal" id="find">查询</button>
                                     </div>
-                                    <div class="layui-inline">
+                                    <!--<div class="layui-inline">
                                         <button class="layui-btn" id="reset">重置</button>
-                                    </div>
+                                    </div>-->
                                     <div class="layui-inline">
                                         <button class="layui-btn" id="add">添加员工</button>
                                     </div>
@@ -62,11 +68,46 @@
        });
     }
 
-   function reload(){
+    $('#add').click(function () {
+        layui.use('layer',function () {
+            layer.open({
+                type: 2,
+                title: '员工添加',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['420px', '520px'],
+                content: 'addUser.html'
+            });
+        });
+    })
+
+   $("#find").click(function () {
+       console.log("find");
+       find();
+   })
+
+
+   $("#reset").click(function () {
+       reload();
+   })
+
+
+
+   function find(){
        var depId = $('#dep').val();
+       var userName = $('#userName').val();
        layui.table.reload('info',{
            where: {
-               depId:depId
+               depId:depId,
+               userName:userName
+           }});
+   }
+
+
+   function reload(){
+       layui.table.reload('info',{
+           where: {
+
            }});
    }
 

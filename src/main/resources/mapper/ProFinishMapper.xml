@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qy.dao.ProFinishMapper">
+
+    <resultMap id="ProFinish" type="com.qy.entity.ProFinish" >
+        <result column="pro_code" property="proCode" />
+        <result column="finish_target" property="finishTarget" />
+        <result column="money" property="money" />
+        <result column="contrast" property="contrast" />
+        <result column="pro_experience" property="proExperience" />
+        <result column="create_time" property="createTime" />
+        <result column="user_id" property="userId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `pro_code`,
+        `finish_target`,
+        `money`,
+        `contrast`,
+        `pro_experience`,
+        `create_time`,
+        `user_id`
+    </sql>
+
+    <insert id="insert" parameterType="com.qy.entity.ProFinish" >
+        INSERT INTO pro_finish (
+            `pro_code`,
+            `finish_target`,
+            `money`,
+            `contrast`,
+            `pro_experience`,
+            `create_time`,
+            `user_id`
+        )
+        VALUES(
+            #{proCode},
+            #{finishTarget},
+            #{money},
+            #{contrast},
+            #{proExperience},
+            #{createTime},
+            #{userId}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="com.qy.entity.ProFinish" >
+        DELETE FROM pro_finish
+        WHERE pro_code = #{proCode}
+    </delete>
+
+    <select id="findProFinish" resultType="com.qy.entity.ProFinish">
+        select * from pro_finish
+        <where>
+            <trim prefix="and" prefixOverrides="and">
+                <if test="proCode != null">
+                    pro_code = #{proCode}
+                </if>
+                <if test="userId != null">
+                    user_id = #{userId}
+                </if>
+            </trim>
+        </where>
+    </select>
+</mapper>

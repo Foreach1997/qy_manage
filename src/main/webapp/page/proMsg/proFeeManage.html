@@ -39,20 +39,13 @@
 <div id="info" lay-filter="info"></div>
 </body>
 </html>
-<script type="text/html" id="barDemo">
-    {{#  if(d.status == 1 && d.roleId == 2){ }}
-    <a href="javascript:proStatus('{{d.reportBookId}}',2);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
-    {{#  } else if(d.status == 2 && d.roleId == 1){ }}
-    <a href="javascript:proStatus('{{d.reportBookId}}',3);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
-    {{#  } }}
-</script>
 <script type="text/html" id="status">
-    {{#  if(d.status == 1){ }}
-    部门经理审批中
-    {{#  } else if(d.status == 2){ }}
-    总经理审批中
-    {{#  } else if(d.status == 3){ }}
-    审批完成
+    {{#  if(d.color == 3){ }}
+    <div class="layui-badge" style="width: 200px"></div>
+    {{#  } else if(d.color == 2){ }}
+    <div class="layui-badge layui-bg-orange" style="width: 200px"></div>
+    {{#  } else if(d.color == 1){ }}
+    <div class="layui-badge layui-bg-green" style="width: 200px"></div>
     {{#  } }}
 </script>
 <script>
@@ -91,7 +84,7 @@
         table.render({
             id:'info',
             elem: '#info'
-            ,url:directory + 'report/reportList'
+            ,url:directory + 'pro/proFeeManage'
             ,request: {
                 pageName: 'currentPage'
                 ,limitName: 'pageSize'
@@ -104,13 +97,12 @@
                 ,dataName: 'data'
             }
             ,cols: [[
-                {field:'proSource',  width: tableWidth*0.2, title: '项目来源'}
-                ,{field:'proDescribe',  width: tableWidth*0.2, title: '项目目标描述'}
-                ,{field:'proMoney', width:tableWidth*0.1, title: '项目申请金额'}
-                ,{field:'status', title: '状态', width: tableWidth*0.1,toolbar:'#status'}
-                ,{field:'proCode', title: '项目编号',width: tableWidth*0.15}
+                {field:'proName',  width: tableWidth*0.2, title: '项目名称'}
+                ,{field:'proTimeStart',  width: tableWidth*0.1, title: '项目开始时间'}
+                ,{field:'proTimeEnd',  width: tableWidth*0.1, title: '项目结束时间'}
+                ,{field:'color', width:tableWidth*0.1, title: '费用状态',toolbar:'#status'}
+                ,{field:'reportCode', title: '项目编号',width: tableWidth*0.15}
                 ,{field:'createTime', title: '创建时间', width: tableWidth*0.15}
-                ,{field:'zz',title:'操作',width:tableWidth*0.15,toolbar:'#barDemo'}
             ]]
             ,page: true
         });

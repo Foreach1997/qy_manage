@@ -33,7 +33,7 @@ public class ProMakeServiceImpl implements ProMakeService {
     public Object insertProMake(MultipartFile file, ProMake proMake, HttpServletRequest request) {
 
         int status = taskBookService.taskStatus(proMake.getProCode());
-        if (status != 3){
+        if (status != 13){
             return ResultRespose.rsult(200, "该项目暂时不能提交文件", null);
         }
         proMake.setCreateTime(new Date());

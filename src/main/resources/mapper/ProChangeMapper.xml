@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qy.dao.ProChangeMapper">
+
+    <resultMap id="ProChange" type="com.qy.entity.ProChange" >
+        <result column="pro_code" property="proCode" />
+        <result column="change_note" property="changeNote" />
+        <result column="create_time" property="createTime" />
+        <result column="user_id" property="userId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `pro_code`,
+        `change_note`,
+        `create_time`,
+        `user_id`
+    </sql>
+
+    <insert id="insert" parameterType="com.qy.entity.ProChange" >
+        INSERT INTO pro_change (
+            `pro_code`,
+            `change_note`,
+            `create_time`,
+            `user_id`
+        )
+        VALUES(
+            #{proChange.proCode},
+            #{proChange.changeNote},
+            #{proChange.createTime},
+            #{proChange.userId}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="com.qy.entity.ProChange" >
+        DELETE FROM pro_change
+        WHERE pro_code = #{proCode}
+    </delete>
+
+    <select id="findProChange" resultType="com.qy.entity.ProChange">
+        select * from pro_change
+        <where>
+            <trim prefix="and" prefixOverrides="and">
+                <if test="proCode != null">
+                    pro_code = #{proCode}
+                </if>
+                <if test="userId != null">
+                    user_id = #{userId}
+                </if>
+            </trim>
+        </where>
+    </select>
+</mapper>

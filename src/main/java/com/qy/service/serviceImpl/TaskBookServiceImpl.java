@@ -42,6 +42,12 @@ public class TaskBookServiceImpl implements TaskBookService {
     private ProMakeMapper proMakeMapper;
     @Resource
     private TaskBookMapper taskBookMapper;
+    @Resource
+    private ProChangeMapper proChangeMapper;
+    @Resource
+    private ProStopMapper proStopMapper;
+    @Resource
+    private ProFinishMapper proFinishMapper;
 
     @Override
     public Object insertOrUpdateWorkStaff(WorkStaff workStaff,String isUpdate, HttpServletRequest request) {
@@ -239,18 +245,60 @@ public class TaskBookServiceImpl implements TaskBookService {
         List<JSONObject> taskBookExampleList =  currencyMapper.findTaskBookList(map);
         int count = currencyMapper.findTaskBookListCount(map);
         for (JSONObject taskBook : taskBookExampleList) {
-            float money = taskBook.getFloat("proMoney");
-            float realMoney = currencyMapper.sumPlanMoney(taskBook.getString("reportCode"));
-            if (money <= realMoney) {
+            Float money = taskBook.getFloat("proMoney");
+            Float realMoney = currencyMapper.sumPlanMoney(taskBook.getString("reportCode"));
+            if (realMoney == null){
+                realMoney = 0.0f;
+            }
+            if (money >= realMoney) {
                 taskBook.put("color", 1);
-            } else if (money > realMoney && realMoney - money < money * 0.1) {
+            } else if (money < realMoney && realMoney - money < money * 0.1) {
                 taskBook.put("color", 2);
-            } else if (money > realMoney && realMoney - money > money * 0.1) {
+            } else if (money < realMoney && realMoney - money > money * 0.1) {
                 taskBook.put("color", 3);
             }
             taskBook.put("createTime", format.format(taskBook.getDate("createTime")));
         }
         return ResultRespose.rsultRespose(200,"请求成功",taskBookExampleList,count);
     }
+
+    @Override
+    public Object proStatusCause(TaskBook taskBook) {
+        //项目中止
+        if (taskBook.getStatus() == 5 || taskBook.getStatus() == 6){
+            ProStop proStop = new ProStop();
+            proStop.setProCode(taskBook.getReportCode());
+            proStop =  proStopMapper.findProStop(proStop);
+            return ResultRespose.rsult(200,"请求成功",proStop);
+        }else if (taskBook.getStatus() == 9 || taskBook.getStatus() == 10){
+            ProFinish proFinish = new ProFinish();
+            proFinish.setProCode(taskBook.getReportCode());
+            proFinish = proFinishMapper.findProFinish(proFinish);
+            return ResultRespose.rsult(200,"请求成功",proFinish);
+        }else if (taskBook.getStatus() == 11 || taskBook.getStatus() == 12){
+            ProChange proChange = new ProChange();
+            proChange.setProCode(taskBook.getReportCode());
+            proChange =  proChangeMapper.findProChange(proChange);
+            return ResultRespose.rsult(200,"请求成功",proChange);
+        }
+        return null;
+    }
+
+    @Override
+    public void insertProStatus(Integer status,ProFinish proFinish, ProChange proChange, ProStop proStop) {
+
+        if (status==4) {
+            proStop.setCreateTime(new Date());
+            proStopMapper.insert(proStop);
+        }else if (status==8){
+            proFinish.setCreateTime(new Date());
+            proFinishMapper.insert(proFinish);
+        }else if (status==11){
+            proChange.setCreateTime(new Date());
+            proChangeMapper.insert(proChange);
+        }
+
+    }
+
 
 }

@@ -1,7 +1,6 @@
 package com.qy.service;
 
-import com.qy.entity.TaskBook;
-import com.qy.entity.WorkStaff;
+import com.qy.entity.*;
 import com.qy.util.SupportPage;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,5 +48,10 @@ public interface TaskBookService {
    /**
     * 项目(中止,完成,变更)
     */
+    Object proStatusCause(TaskBook taskBook);
 
+    /**
+     *
+     */
+    void insertProStatus(Integer status,ProFinish proFinish, ProChange proChange, ProStop proStop);
 }

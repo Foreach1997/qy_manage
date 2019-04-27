@@ -16,6 +16,12 @@
             <textarea name="desc" id="reportNote" required placeholder="请输入汇报内容" class="layui-textarea"></textarea>
         </div>
     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">汇报金额:</label>
+        <div class="layui-input-inline">
+            <input type="text" id="planMoney"  required   autocomplete="off"   placeholder="请输入汇报金额" class="layui-input">
+        </div>
+    </div>
     <div class="layui-form-item" >
         <button id="confirm" type="button"   style="margin-left:100px;padding-left: 80px;padding-right: 80px" class="layui-btn">确认</button>
     </div>
@@ -27,9 +33,12 @@
         var reportNote = $('#reportNote').val();
         var  status =  getUrlCode("status");
         var  workStaffId = getUrlCode("workStaffId");
+        var  planMoney = $('#planMoney').val();
         if (!reportNote) {
             layer.msg("请填写汇报内容")
-        }else {
+        }else if(!planMoney){
+            layer.msg("请填写汇报金额")
+        } else {
             $.ajax({
                 type: "POST",
                 url: directory + "report/reportTask",
@@ -37,7 +46,8 @@
                 data: {
                     workStaffId: workStaffId,
                     status: status,
-                    reportNote: $('reportNote').val()
+                    reportNote: $('reportNote').val(),
+                    planMoney:planMoney
                 },
                 success: function (res) {
                     layer.msg(res.msg)
