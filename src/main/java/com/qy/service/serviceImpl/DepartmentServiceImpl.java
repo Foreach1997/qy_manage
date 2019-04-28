@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -32,9 +33,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Object insertDep(Department department) {
 
+        department.setCreateTime(new Date());
+
        int val = departmentMapper.insert(department);
 
-       if (val>0){
+       if (val!=0){
            return ResultRespose.rsult(200, "添加成功", null);
 
        }

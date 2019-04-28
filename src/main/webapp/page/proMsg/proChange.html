@@ -57,7 +57,7 @@
             data: {
                 taskBookId:taskBookId,
                 status:status,
-                reportCode:reportCode
+                proCode:reportCode
             },
             success: function(res) {
                 layer.msg(res.msg)
@@ -67,6 +67,20 @@
                 parent.reload();
             }
         })
+
+        $.ajax({
+            type: "POST",
+            url: directory+"pro/insertProStatus",
+            async:false,
+            data: {
+                status:status,
+                proCode:reportCode,
+                changeNote:$("#changeNote").val()
+            },
+            success: function(res) {
+            }
+        })
+
     })
 
 

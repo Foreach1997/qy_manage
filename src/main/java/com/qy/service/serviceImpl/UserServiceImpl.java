@@ -22,10 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -65,13 +62,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Object updateUser(User user) {
-        if (user.getRoleId() == 2) {
-            UserExample userExample = new UserExample();
-            userExample.createCriteria().andDepIdEqualTo(user.getDepId()).andRoleIdEqualTo(user.getRoleId());
-            long count = userMapper.countByExample(userExample);
-            if (count > 0) {
-                return ResultRespose.rsult(200, "该部门已经有了部门经理", null);
+    public Object updateUser(User user,String isUpdate) {
+        if ("yes".equals(isUpdate)) {
+            if (user.getRoleId() == 2) {
+                UserExample userExample = new UserExample();
+                userExample.createCriteria().andDepIdEqualTo(user.getDepId()).andRoleIdEqualTo(user.getRoleId());
+                long count = userMapper.countByExample(userExample);
+                if (count > 0) {
+                    return ResultRespose.rsult(200, "该部门已经有了部门经理", null);
+                }
             }
         }
         int val = userMapper.updateByPrimaryKeySelective(user);
@@ -84,6 +83,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object quit(HttpServletRequest request) {
         request.getSession().removeAttribute("userId");
+        request.getSession().removeAttribute("roleId");
+        request.getSession().removeAttribute("depId");
         return ResultRespose.rsult(200, "退出登录", null);
     }
 
@@ -104,6 +105,7 @@ public class UserServiceImpl implements UserService {
         if (count!=0){
             return ResultRespose.rsult(200, "该用户已存在", null);
         }else {
+            user.setCreateTime(new Date());
             userMapper.insert(user);
             return ResultRespose.rsult(200, "添加成功", null);
         }

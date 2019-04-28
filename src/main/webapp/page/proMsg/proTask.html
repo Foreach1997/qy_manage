@@ -8,6 +8,8 @@
     <script src="../../lib/js/jquery-3.4.0.min.js" type="text/javascript"></script>
     <script src="../../lib/js/common.js" type="text/javascript"></script>
     <script src="../../lib/js/authc.js" type="text/javascript"></script>
+    <script src="../../lib/js/authc.js" type="text/javascript"></script>
+
 </head>
 <body class="global-body-mp">
 <div class="layui-tab-item layui-show" style="margin-top: 80px">
@@ -18,7 +20,7 @@
                     <div class="layui-row">
                         <div class="layui-col-xs12">
                             <div class="layui-inline" style="margin-top: 5px;" >
-                                <label class="layui-form-label" style="width: 50px">部门：</label>
+                                <label class="layui-form-label" id="department" style="margin-top: 5px;display: none">部门：</label>
                                 <div  class="layui-input-block" style="width: 200px">
                                     <select id="dep"  >
                                         <option value=""></option>
@@ -37,7 +39,7 @@
                         <div class="layui-inline">
                             <button class="layui-btn layui-btn-normal" id="find">查询</button>
                         </div>
-                        <div class="layui-inline" id="pro" >
+                        <div class="layui-inline" id="pro" style="display: none" >
                             <button class="layui-btn" id="addTask">提交任务书</button>
                         </div>
                     </div>
@@ -100,21 +102,21 @@
     {{#  } else if(d.status == 3){ }}
     审批完成
     {{#  } else if(d.status == 4){ }}
-    部门经理审批中止中
+    部门经理(审批项目中止中)
     {{#  } else if(d.status == 5){ }}
-    总经理审审批中止中
+    总经理审(审批项目中止中)
     {{#  } else if(d.status == 6){ }}
     项目中止
     {{#  } else if(d.status == 11){ }}
-    部门经理审批变更中
+    部门经理(审批项目变更中)
     {{#  } else if(d.status == 12){ }}
-    总经理审审批变更中
+    总经理(审批项目变更中)
     {{#  } else if(d.status == 7){ }}
     项目变更
     {{#  } else if(d.status == 8){ }}
-    部门经理审批完成中
+    部门经理(审批项目完成中)
     {{#  } else if(d.status == 9){ }}
-    总经理审审批完成中
+    总经理(审批项目完成中)
     {{#  } else if(d.status == 10){ }}
     项目完成
     {{#  } else if(d.status == 13){ }}
@@ -211,11 +213,17 @@
         })
     }
 
+    $('#find').click(function () {
+        reload();
+    })
 
     function reload(){
+        var depId = $('#dep').val();
+        var proCode = $('#proCode').val();
         layui.table.reload('info',{
             where: {
-
+                depId:depId,
+                reportCode:proCode
             }});
     }
 

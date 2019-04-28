@@ -379,7 +379,7 @@ public class ReportBookServiceImpl implements ReportBookService {
     @Override
     public Object findUserProCode(HttpServletRequest request) {
         ReportBookExample reportBookExample = new ReportBookExample();
-        reportBookExample.createCriteria().andStatusEqualTo(3).andStatusEqualTo((int)request.getSession().getAttribute("userId"));
+        reportBookExample.createCriteria().andStatusEqualTo(3).andUserIdEqualTo((int)request.getSession().getAttribute("userId"));
         List<ReportBook> reportBooks = reportBookMapper.selectByExample(reportBookExample);
         return ResultRespose.rsult(200,"成功",reportBooks);
     }

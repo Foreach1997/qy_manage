@@ -15,7 +15,7 @@ public interface UserService {
     /**
      * 用户信息修改
      */
-    Object updateUser(User user);
+    Object updateUser(User user,String isUpdate);
 
     /**
      * 退出登录

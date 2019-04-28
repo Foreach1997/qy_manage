@@ -53,9 +53,9 @@
             url: directory+"pro/proStatusCause",
             async:false,
             data: {
-                taskBookId:taskBookId,
                 status:status,
-                reportCode:reportCode
+                reportCode:reportCode,
+                taskBookId:taskBookId
             },
             success: function(res) {
                 layer.msg(res.msg)
@@ -63,6 +63,20 @@
                 parent.layer.close(index);
                 parent.layer.msg(res.msg);
                 parent.reload();
+            }
+        })
+
+
+        $.ajax({
+            type: "POST",
+            url: directory+"pro/insertProStatus",
+            async:false,
+            data: {
+                status:status,
+                proCode:reportCode,
+                stopNote:$("#stopNote").val()
+            },
+            success: function(res) {
             }
         })
     })

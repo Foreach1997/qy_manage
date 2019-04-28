@@ -177,6 +177,7 @@ public class TaskBookServiceImpl implements TaskBookService {
         List<Integer> list = null;
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("reportCode",tBook.getReportCode());
+        map.put("status",13);
         if (u.getRoleId()==3){
             map.put("userId",u.getUserId());
         }
@@ -225,6 +226,7 @@ public class TaskBookServiceImpl implements TaskBookService {
         List<Integer> list = null;
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("reportCode",tBook.getReportCode());
+        map.put("status",13);
         if (u.getRoleId()==3){
             map.put("userId",u.getUserId());
         }
@@ -285,19 +287,23 @@ public class TaskBookServiceImpl implements TaskBookService {
     }
 
     @Override
-    public void insertProStatus(Integer status,ProFinish proFinish, ProChange proChange, ProStop proStop) {
-
-        if (status==4) {
-            proStop.setCreateTime(new Date());
-            proStopMapper.insert(proStop);
-        }else if (status==8){
-            proFinish.setCreateTime(new Date());
-            proFinishMapper.insert(proFinish);
-        }else if (status==11){
-            proChange.setCreateTime(new Date());
-            proChangeMapper.insert(proChange);
+    public void insertProStatus(Integer status,ProFinish proFinish, ProChange proChange, ProStop proStop,HttpServletRequest request) {
+        User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
+        if (u.getRoleId()==3) {
+            if (status == 4) {
+                proStop.setUserId(u.getUserId());
+                proStop.setCreateTime(new Date());
+                proStopMapper.insert(proStop);
+            } else if (status == 8) {
+                proFinish.setUserId(u.getUserId());
+                proFinish.setCreateTime(new Date());
+                proFinishMapper.insert(proFinish);
+            } else if (status == 11) {
+                proChange.setUserId(u.getUserId());
+                proChange.setCreateTime(new Date());
+                proChangeMapper.insert(proChange);
+            }
         }
-
     }
 
 

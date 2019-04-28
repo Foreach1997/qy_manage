@@ -99,8 +99,8 @@ public class ProController {
      */
     @ResponseBody
     @RequestMapping("/insertProStatus")
-    public void insertProStatus(Integer status,ProFinish proFinish, ProChange proChange,ProStop proStop){
-         taskBookService.insertProStatus(status,proFinish,proChange,proStop);
+    public void insertProStatus(Integer status,ProFinish proFinish, ProChange proChange,ProStop proStop,HttpServletRequest request){
+         taskBookService.insertProStatus(status,proFinish,proChange,proStop,request);
     }
 
 

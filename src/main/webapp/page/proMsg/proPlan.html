@@ -18,7 +18,7 @@
                     <div class="layui-row">
                         <div class="layui-col-xs12">
                             <div class="layui-inline" style="margin-top: 5px;" >
-                                <label class="layui-form-label" style="width: 50px">部门：</label>
+                                <label class="layui-form-label" id="department" style="margin-top: 5px;display: none">部门：</label>
                                 <div  class="layui-input-block" style="width: 200px">
                                     <select id="dep"  >
                                         <option value=""></option>
@@ -37,7 +37,7 @@
                         <div class="layui-inline">
                             <button class="layui-btn layui-btn-normal" id="find">查询</button>
                         </div>
-                        <div class="layui-inline" id="pro">
+                        <div class="layui-inline" id="pro" style="display: none">
                             <button class="layui-btn" id="addPlan">提交计划</button>
                         </div>
                     </div>
@@ -98,17 +98,20 @@
             }
         })
     }
+    $('#find').click(function () {
+        reload();
 
-
+    })
     function reload(){
         var depId = $('#dep').val();
-        var proCode = $('#proCode').val();
+        var reportCode = $('#proCode').val();
         layui.table.reload('info',{
             where: {
                 depId:depId,
-                proCode:proCode
+                reportCode:reportCode
             }});
     }
+
 
     layui.use('form', function() {
         var form = layui.form;
@@ -172,7 +175,7 @@
                 {field:'planTarget',  width: tableWidth*0.2, title: '项目目标'}
                 ,{field:'planWork',  width: tableWidth*0.2, title: '项目工作分解内容'}
                 ,{field:'risk', width:tableWidth*0.1, title: '项目风险'}
-                ,{field:'status', width:tableWidth*0.1, title: '计划书状态'}
+                ,{field:'status', width:tableWidth*0.1, title: '计划书状态',toolbar:'#status'}
                 ,{field:'reportCode', title: '项目编号',width: tableWidth*0.15}
                 ,{field:'createTime', title: '创建时间', width: tableWidth*0.15}
                 ,{field:'zz',title:'操作',width:tableWidth*0.15,toolbar:'#barDemo'}

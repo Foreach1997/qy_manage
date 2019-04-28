@@ -29,7 +29,7 @@
             user_id = #{userId}
         </if>
         <if test="proCode != null and proCode !=''">
-               pro_code LIKE '%'#{proCode}'%'
+               pro_code LIKE '%${proCode}%'
         </if>
         <if test="list != null">
                 user_id IN
@@ -59,7 +59,7 @@
                user_id = #{userId}
         </if>
         <if test="proCode != null and proCode !=''">
-            pro_code LIKE '%'#{proCode}'%'
+            pro_code LIKE '%${proCode}%'
         </if>
         </trim>
         </where>
@@ -84,7 +84,7 @@
                user_id = #{userId}
         </if>
         <if test="reportCode != null and reportCode !=''">
-               report_code LIKE '%'#{reportCode}'%'
+               report_code LIKE '%${reportCode}%'
         </if>
         </trim>
         </where>
@@ -108,7 +108,7 @@
            user_id = #{userId}
     </if>
     <if test="reportCode != null and reportCode !=''">
-           report_code LIKE '%'#{reportCode}'%'
+           report_code LIKE '%${reportCode}%'
     </if>
         </trim>
         </where>
@@ -132,8 +132,11 @@
                user_id = #{userId}
         </if>
         <if test="reportCode != null and reportCode !=''">
-               report_code LIKE '%'#{reportCode}'%'
+               report_code LIKE '%${reportCode}%'
         </if>
+                <if test="status != null and status !=''">
+                    status = #{status}
+                </if>
             </trim>
         </where>
         <if test="currentPage != null and currentPage !='' or
@@ -156,8 +159,11 @@
                user_id = #{userId}
         </if>
         <if test="reportCode != null and reportCode !=''">
-               report_code LIKE '%'#{reportCode}'%'
+               report_code LIKE '%${reportCode}%'
         </if>
+                <if test="status != null and status !=''">
+                    status = #{status}
+                </if>
             </trim>
         </where>
     </select>
@@ -207,7 +213,7 @@
                 and    sex = #{sex}
             </if>
             <if test="userName != '' and userName != null">
-                    and    user_name LIKE '%'#{userName}'%'
+                    and    user_name LIKE '%${userName}%'
             </if>
             </trim>
         </where>
@@ -248,7 +254,7 @@
                     and  sex = #{sex}
                 </if>
                 <if test="userName != '' and userName != null">
-                    and  user_name LIKE '%'#{userName}'%'
+                    and  user_name LIKE '%${userName}%'
                 </if>
             </trim>
         </where>
@@ -270,7 +276,7 @@
                     </foreach>
                 </if>
             <if test="proCode != null">
-                pro_code like '%'#{proCode}'%'
+                pro_code like '%${proCode}%'
             </if>
             <if test="smallTask != null">
                 small_task = #{smallTask}
@@ -303,7 +309,7 @@
                     </foreach>
                 </if>
                 <if test="proCode != null">
-                    pro_code LIKE #{proCode}
+                    pro_code LIKE '%${proCode}%'
                 </if>
                 <if test="smallTask != null">
                     small_task = #{smallTask}

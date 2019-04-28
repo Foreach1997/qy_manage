@@ -65,13 +65,17 @@
         });
     })
 
+    $('#find').click(function () {
+        reload();
+
+    })
     function reload(){
-        //var depId = $('#dep').val();
-        //var proCode = $('#proCode').val();
+        var depId = $('#dep').val();
+        var proCode = $('#proCode').val();
         layui.table.reload('info',{
             where: {
-          //      depId:depId,
-            //    proCode:proCode
+                depId:depId,
+                proCode:proCode
             }});
     }
 

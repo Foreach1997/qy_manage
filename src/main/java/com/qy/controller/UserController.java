@@ -123,8 +123,8 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping("/updateUser")
-    public Object updateUser(User user,HttpServletRequest request){
-       return  userService.updateUser(user);
+    public Object updateUser(User user,HttpServletRequest request,String isUpdate){
+       return  userService.updateUser(user,isUpdate);
     }
 
 
@@ -135,6 +135,16 @@ public class UserController {
     @RequestMapping("/checkLogin")
     public Object checkLogin(HttpServletRequest request){
         return  userService.checkCode(request);
+    }
+
+
+    /**
+     * 用户登录检查
+     */
+    @ResponseBody
+    @RequestMapping("/quit")
+    public Object quit(HttpServletRequest request){
+        return  userService.quit(request);
     }
 
     /**

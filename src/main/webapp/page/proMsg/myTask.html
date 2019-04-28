@@ -98,12 +98,24 @@
     //         }
     //     })
     // }
-
+    $('#find').click(function () {
+        reload();
+    })
 
     function reload(){
+        var depId = $('#dep').val();
+        var proCode = $('#proCode').val();
         layui.table.reload('info',{
             where: {
+                depId:depId,
+                proCode:proCode
+            }});
+    }
 
+    function rel(proCode){
+        layui.table.reload('info',{
+            where: {
+                proCode:proCode
             }});
     }
 
@@ -169,6 +181,7 @@
     })
 
     layui.use('table', function(){
+        var reportCode = getUrlCode("reportCode");
         var tableWidth = $("#info").width() - 28;
         var table = layui.table;
         table.render({
@@ -178,6 +191,9 @@
             ,request: {
                 pageName: 'currentPage'
                 ,limitName: 'pageSize'
+            },
+            where:{
+                proCode:reportCode
             },
             response: {
                 statusName: 'code'

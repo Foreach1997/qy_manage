@@ -72,7 +72,9 @@
             }
         })
     }
-
+    $('#find').click(function () {
+        reload();
+    })
 
     function reload(){
         var depId = $('#dep').val();
@@ -80,7 +82,7 @@
         layui.table.reload('info',{
             where: {
                 depId:depId,
-                proCode:proCode
+                reportCode:proCode
             }});
     }
 

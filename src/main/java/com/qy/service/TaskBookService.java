@@ -53,5 +53,5 @@ public interface TaskBookService {
     /**
      *
      */
-    void insertProStatus(Integer status,ProFinish proFinish, ProChange proChange, ProStop proStop);
+    void insertProStatus(Integer status,ProFinish proFinish, ProChange proChange, ProStop proStop,HttpServletRequest request);
 }
