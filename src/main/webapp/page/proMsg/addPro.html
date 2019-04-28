@@ -10,6 +10,7 @@
 </head>
 <body>
 <form class="layui-form" enctype="multipart/form-data">
+    <input type="hidden" id="reportBookId"/>
     <div class="layui-form-item">
         <label class="layui-form-label">项目来源:</label>
         <div class="layui-input-inline">
@@ -40,6 +41,9 @@
             <input type="text" id="proMoney" required  placeholder="请输入项目申请金额" class="layui-input">
         </div>
     </div>
+    <div class="layui-form-item" id="down" style="display: none">
+        <button type="button" id="downFile" style="margin-left: 200px" class="layui-btn">文件下载</button>
+    </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">风险分析:</label>
         <div class="layui-input-block">
@@ -68,12 +72,20 @@
                 $('#proFeasibility').val(data.proFeasibility);
                 $('#proMoney').val(data.proMoney);
                 $('#proBenefit').val(data.proBenefit);
+                $('#reportBookId').val(data.reportBookId);
+                $('#down').show();
                 $('#confirm').hide();
                 $('#address').hide();
             }
     })
-    
-    
+
+    $("#downFile").click(function () {
+        down( $('#reportBookId').val());
+    })
+
+    function down(path){
+        window.location.href = directory + "pro/downPlanOrReport?reportBookId="+path+"&per=report"
+    }
     layui.use('upload', function(){
         var upload = layui.upload;
         var uploadInst = upload.render({

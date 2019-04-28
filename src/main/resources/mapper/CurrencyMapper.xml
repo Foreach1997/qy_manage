@@ -39,6 +39,7 @@
         </if>
         </trim>
         </where>
+        ORDER BY create_time DESC
         <if test="currentPage != null and currentPage !='' or
                         pageSize != null and pageSize !=''">
             LIMIT #{pageSize} OFFSET #{currentPage}
@@ -88,6 +89,7 @@
         </if>
         </trim>
         </where>
+        ORDER BY create_time DESC
         <if test="currentPage != null and currentPage !='' or
                         pageSize != null and pageSize !=''">
             LIMIT #{pageSize} OFFSET #{currentPage}
@@ -137,8 +139,12 @@
                 <if test="status != null and status !=''">
                     and     status = #{status}
                 </if>
+                <if test="proName != null and proName !=''">
+                    and   pro_name LIKE '%${proName}%'
+                </if>
             </trim>
         </where>
+        ORDER BY create_time DESC
         <if test="currentPage != null and currentPage !='' or
                         pageSize != null and pageSize !=''">
             LIMIT #{pageSize} OFFSET #{currentPage}
@@ -163,6 +169,9 @@
         </if>
                 <if test="status != null and status !=''">
                     and   status = #{status}
+                </if>
+                <if test="proName != null and proName !=''">
+                    and   pro_name LIKE '%${proName}%'
                 </if>
             </trim>
         </where>
@@ -295,6 +304,7 @@
              </if>
             </trim>
         </where>
+        ORDER BY create_time DESC
         <if test="currentPage != null and currentPage !='' or
                         pageSize != null and pageSize !=''">
             LIMIT #{pageSize} OFFSET #{currentPage}

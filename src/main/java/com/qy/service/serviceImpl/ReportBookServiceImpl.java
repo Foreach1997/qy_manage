@@ -280,6 +280,7 @@ public class ReportBookServiceImpl implements ReportBookService {
         List<Integer> list = null;
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("reportCode",taskBook.getReportCode());
+        map.put("proName",taskBook.getProName());
         if (u.getRoleId()==3){
             map.put("userId",u.getUserId());
         }

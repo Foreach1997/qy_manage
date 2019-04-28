@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/report")
@@ -117,10 +118,6 @@ public class ReportController {
         return reportBookService.delTaskStaff(workStaff);
     }
 
-
-    /**
-     * 文件下载
-     */
 
 
 }

@@ -17,7 +17,7 @@
                 <div class="layui-form-item">
                     <div class="layui-row">
                         <div class="layui-col-xs12">
-                            <div class="layui-inline" style="margin-top: 5px;" >
+                            <div class="layui-inline" id="department" style="margin-top: 5px;display: none" >
                                 <label class="layui-form-label" style="width: 50px">部门：</label>
                                 <div  class="layui-input-block" style="width: 200px">
                                     <select id="dep"  >
@@ -29,6 +29,12 @@
                                 <label class="layui-form-label">项目编码:</label>
                                 <div class="layui-input-inline">
                                     <input type="text" id="proCode"  required   autocomplete="off"   placeholder="请输入项目编码" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline" style="margin-top: 5px;" >
+                                <label class="layui-form-label">项目名字:</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="proName"  required   autocomplete="off"   placeholder="请输入项目名字" class="layui-input">
                                 </div>
                             </div>
                         </div>
@@ -50,9 +56,25 @@
 <div id="info" lay-filter="info"></div>
 </body>
 </html>
+<script type="text/html" id="A">
+    <a href="javascript:down('{{d.reportCode}}','A');" style="color: #1E9FFF">{{d.A}}</a>
+</script>
+<script type="text/html" id="B">
+    <a href="javascript:down('{{d.reportCode}}','B');" style="color: #1E9FFF">{{d.B}}</a>
+</script>
+<script type="text/html" id="C">
+    <a href="javascript:down('{{d.reportCode}}','C');" style="color: #1E9FFF">{{d.C}}</a>
+</script>
 <script>
 
     var dataRowJson;
+
+
+    function down(proCode,per){
+        window.location.href = directory + "pro/downProMake?proCode="+proCode+"&per="+per
+    }
+
+
 
     $('#addMake').click(function () {
         layer.open({
@@ -72,10 +94,12 @@
     function reload(){
         var depId = $('#dep').val();
         var proCode = $('#proCode').val();
+        var proName = $('#proName').val();
         layui.table.reload('info',{
             where: {
                 depId:depId,
-                reportCode:proCode
+                reportCode:proCode,
+                proName:proName
             }});
     }
 
@@ -123,9 +147,9 @@
             }
             ,cols: [[
                 {field:'proName',  width: tableWidth*0.2, title: '项目名称'}
-                ,{field:'A',  width: tableWidth*0.1, title: '进展报告'}
-                ,{field:'B',  width: tableWidth*0.1, title: '关键点报告'}
-                ,{field:'C', width:tableWidth*0.1, title: '重要事件报告'}
+                ,{field:'A',  width: tableWidth*0.1, title: '进展报告',toolbar:"#A"}
+                ,{field:'B',  width: tableWidth*0.1, title: '关键点报告',toolbar:"#B"}
+                ,{field:'C', width:tableWidth*0.1, title: '重要事件报告',toolbar:"#C"}
                 ,{field:'S', width:tableWidth*0.1, title: '项目进度'}
             ]]
             ,page: true

@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -48,6 +50,10 @@ public class TaskBookServiceImpl implements TaskBookService {
     private ProStopMapper proStopMapper;
     @Resource
     private ProFinishMapper proFinishMapper;
+    @Resource
+    private PlanBookMapper planBookMapper;
+    @Resource
+    private ReportBookMapper reportBookMapper;
 
     @Override
     public Object insertOrUpdateWorkStaff(WorkStaff workStaff,String isUpdate, HttpServletRequest request) {
@@ -189,6 +195,7 @@ public class TaskBookServiceImpl implements TaskBookService {
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("reportCode",tBook.getReportCode());
         map.put("status",13);
+        map.put("proName",tBook.getProName());
         if (u.getRoleId()==3){
             map.put("userId",u.getUserId());
         }
@@ -238,6 +245,7 @@ public class TaskBookServiceImpl implements TaskBookService {
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("reportCode",tBook.getReportCode());
         map.put("status",13);
+        map.put("proName",tBook.getProName());
         if (u.getRoleId()==3){
             map.put("userId",u.getUserId());
         }
@@ -334,5 +342,79 @@ public class TaskBookServiceImpl implements TaskBookService {
         return ResultRespose.rsult(200,"成功",workStaff);
     }
 
+    @Override
+    public Object DownFile(String file, HttpServletResponse response) {
+        File path = new File(file);
+        if (path.exists()) {
+            response.setContentType("application/force-download");// 设置强制下载不打开
+            response.addHeader("Content-Disposition", "attachment;filename="+file.replace("\\","&").split("&")[3]);// 设置文件名
+            byte[] buffer = new byte[1024];
+            FileInputStream fis = null;
+            BufferedInputStream bis = null;
+            try {
+                fis = new FileInputStream(file);
+                bis = new BufferedInputStream(fis);
+                OutputStream os = response.getOutputStream();
+                int i = bis.read(buffer);
+                while (i != -1) {
+                    os.write(buffer, 0, i);
+                    i = bis.read(buffer);
+                }
+                return "下载成功";
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (bis != null) {
+                    try {
+                        bis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
+    @Override
+    public void downMakeFile(String proCode, String per, HttpServletResponse response) {
+
+          ProMakeExample proMakeExample = new ProMakeExample();
+          List<ProMake> proMakes = new ArrayList<ProMake>();
+            if ("A".equals(per)){
+                proMakeExample.createCriteria().andProCodeEqualTo(proCode).andMakeTypeEqualTo(1);
+                proMakes =  proMakeMapper.selectByExample(proMakeExample);
+            }else if ("B".equals(per)){
+                proMakeExample.createCriteria().andProCodeEqualTo(proCode).andMakeTypeEqualTo(2);
+                proMakes =  proMakeMapper.selectByExample(proMakeExample);
+            }else if ("C".equals(per)){
+                proMakeExample.createCriteria().andProCodeEqualTo(proCode).andMakeTypeEqualTo(3);
+                proMakes =   proMakeMapper.selectByExample(proMakeExample);
+            }
+            if (!proMakes.isEmpty()){
+                for (ProMake proMake :proMakes){
+                    DownFile(proMake.getMakeFile(),response);
+                }
+            }
+    }
+    @Override
+    public void downPlanOrReport(String proCode,Integer reportBookId, String per, HttpServletResponse response){
+
+
+        if ("report".equals(per)) {
+            DownFile(reportBookMapper.selectByPrimaryKey(reportBookId).getReportBookFile(),response);
+        }else if ("plan".equals(per)) {
+            PlanBookExample planBookExample = new PlanBookExample();
+            planBookExample.createCriteria().andReportCodeEqualTo(proCode);
+            DownFile(planBookMapper.selectByExample(planBookExample).get(0).getGanttChart(),response);
+        }
+
+    }
 }

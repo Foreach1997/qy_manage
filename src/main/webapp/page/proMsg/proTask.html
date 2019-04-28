@@ -17,8 +17,8 @@
                 <div class="layui-form-item">
                     <div class="layui-row">
                         <div class="layui-col-xs12">
-                            <div class="layui-inline" style="margin-top: 5px;" >
-                                <label class="layui-form-label" id="department" style="margin-top: 5px;display: none">部门：</label>
+                            <div class="layui-inline" id="department" style="margin-top: 5px;display: none" >
+                                <label class="layui-form-label"  style="margin-top: 5px;">部门：</label>
                                 <div  class="layui-input-block" style="width: 200px">
                                     <select id="dep"  >
                                         <option value=""></option>
@@ -28,7 +28,13 @@
                             <div class="layui-inline" style="margin-top: 5px;" >
                                 <label class="layui-form-label">项目编码:</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" id="proCode"  required   autocomplete="off"   placeholder="请输入项目编码" class="layui-input">
+                                    <input type="text" id="proCode"     autocomplete="off"   placeholder="请输入项目编码" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline" style="margin-top: 5px;" >
+                                <label class="layui-form-label">项目名字:</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="proName"     autocomplete="off"   placeholder="请输入项目名字" class="layui-input">
                                 </div>
                             </div>
                         </div>
@@ -38,7 +44,7 @@
                             <button class="layui-btn layui-btn-normal" id="find">查询</button>
                         </div>
                         <div class="layui-inline" id="pro" style="display: none" >
-                            <button class="layui-btn"  id="addTask">提交任务书</button>
+                            <button class="layui-btn"  id="addTask">提交任务</button>
                         </div>
                     </div>
                 </div>
@@ -218,10 +224,12 @@
     function reload(){
         var depId = $('#dep').val();
         var proCode = $('#proCode').val();
+        var proName = $('#proName').val();
         layui.table.reload('info',{
             where: {
                 depId:depId,
-                reportCode:proCode
+                reportCode:proCode,
+                proName:proName
             }});
     }
 

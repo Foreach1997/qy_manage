@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/pro")
@@ -125,9 +126,25 @@ public class ProController {
 
 
 
+    /**
+     * 项目进展文件下载
+     */
+    @ResponseBody
+    @RequestMapping("/downProMake")
+    public void downProMake(String proCode, String per, HttpServletResponse response){
+
+          taskBookService.downMakeFile(proCode,per,response);
+    }
 
 
-
+    /**
+     * 提交文件下载
+     */
+    @ResponseBody
+    @RequestMapping("/downPlanOrReport")
+    public void downPlanOrReport(String proCode,Integer reportBookId,String per,HttpServletResponse response){
+        taskBookService.downPlanOrReport(proCode,reportBookId,per,response);
+    }
 
 
 
