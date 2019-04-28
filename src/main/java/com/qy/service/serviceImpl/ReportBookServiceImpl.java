@@ -44,7 +44,12 @@ public class ReportBookServiceImpl implements ReportBookService {
     private WorkMapper workMapper;
     @Resource
     private WorkStaffMapper workStaffMapper;
-
+    @Resource
+    private ProFinishMapper proFinishMapper;
+    @Resource
+    private ProStopMapper proStopMapper;
+    @Resource
+    private ProChangeMapper proChangeMapper;
 
     @Override
     public Object insertReportBook(MultipartFile file, ReportBook reportBook, HttpServletRequest request) {
@@ -217,21 +222,34 @@ public class ReportBookServiceImpl implements ReportBookService {
         planBook.setCreateTime(new Date());
         if (!file.isEmpty()) {
             File newPath = new File(path,name);
+            InputStream in = null;
+            FileOutputStream out = null;
+            try {
+                in = file.getInputStream();
+                out = new FileOutputStream(newPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if (!file.isEmpty()){
                 try {
-                    InputStream in = file.getInputStream();
-                    FileOutputStream out = new FileOutputStream(newPath);
-                    byte buffer[] = new byte[1024];
-                    int len = 0;
-                    while ((len = in.read(buffer)) > 0) {
-
-                        out.write(buffer, 0, len);
+                    byte buffer[] = new byte[2048];
+                    int len;
+                    while ((len = in.read()) != -1) {
+                        out.write(len);
+                        //out.write(buffer, 0, len);
                     }
                     in.close();
                     out.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                     return ResultRespose.rsult(200,"申请失败",null);
+                }finally {
+                    try {
+                        in.close();
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             planBook.setUserId((int)request.getSession().getAttribute("userId"));
@@ -349,7 +367,7 @@ public class ReportBookServiceImpl implements ReportBookService {
     }
 
     @Override
-    public Object updateTask(TaskBook taskBook) {
+    public Object updateTask(TaskBook taskBook,String code) {
         WorkExample workExample = new WorkExample();
         workExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
         List<Work> works = workMapper.selectByExample(workExample);
@@ -368,6 +386,22 @@ public class ReportBookServiceImpl implements ReportBookService {
         }else if (taskBook.getStatus()==10){
             workStaff.setStatus(2);
             workStaffMapper.updateByExampleSelective (workStaff,workStaffExample);
+        }else if (taskBook.getStatus()==13){
+            if ("finish".equals(code)){
+                ProFinish proFinish = new ProFinish();
+                proFinish.setProCode(taskBook.getReportCode());
+                proFinishMapper.delete(proFinish);
+            }else if ("stop".equals(code)){
+                ProStop proStop = new ProStop();
+                proStop.setProCode(taskBook.getReportCode());
+                proStopMapper.delete(proStop);
+            }else if ("change".equals(code)){
+                ProChange proChange = new ProChange();
+                proChange.setProCode(taskBook.getReportCode());
+                proChangeMapper.delete(proChange);
+            }
+            workStaff.setStatus(1);
+            workStaffMapper.updateByExampleSelective (workStaff,workStaffExample);
         }
         int val = taskBookMapper.updateByPrimaryKeySelective(taskBook);
         if (val!=0){
@@ -384,6 +418,11 @@ public class ReportBookServiceImpl implements ReportBookService {
         return ResultRespose.rsult(200,"成功",reportBooks);
     }
 
+    @Override
+    public Object delTaskStaff(WorkStaff workStaff) {
+        workStaffMapper.deleteByPrimaryKey(workStaff.getWorkStaffId());
+        return ResultRespose.rsult(200,"成功",null);
+    }
 
 
 }

@@ -12,9 +12,11 @@ $(function () {
        $('#department').show();
        $('#proAll').show();
        $('#addDep').show();
+       $('#noAgree').show();
    } else if (roleId==2){
        $('#emp').show();
        $('#proAll').show();
+       $('#noAgree').show();
    } else if (roleId==3){
        $('#task').show();
        $('#addPro').show();

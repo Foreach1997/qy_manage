@@ -8,8 +8,6 @@
     <script src="../../lib/js/jquery-3.4.0.min.js" type="text/javascript"></script>
     <script src="../../lib/js/common.js" type="text/javascript"></script>
     <script src="../../lib/js/authc.js" type="text/javascript"></script>
-    <script src="../../lib/js/authc.js" type="text/javascript"></script>
-
 </head>
 <body class="global-body-mp">
 <div class="layui-tab-item layui-show" style="margin-top: 80px">
@@ -40,7 +38,7 @@
                             <button class="layui-btn layui-btn-normal" id="find">查询</button>
                         </div>
                         <div class="layui-inline" id="pro" style="display: none" >
-                            <button class="layui-btn" id="addTask">提交任务书</button>
+                            <button class="layui-btn"  id="addTask">提交任务书</button>
                         </div>
                     </div>
                 </div>
@@ -190,7 +188,7 @@
                 maxmin: false, //开启最大化最小化按钮
                 area: ['100%','100%'],
                 anim: 2,
-                content: 'myTask.html?reportCode='+reportCode+'&edit='+edit
+                content: 'seeTask.html?reportCode='+reportCode+'&edit='+edit
             });
         })
     }

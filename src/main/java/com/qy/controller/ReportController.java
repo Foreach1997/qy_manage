@@ -4,10 +4,12 @@ package com.qy.controller;
 import com.qy.entity.PlanBook;
 import com.qy.entity.ReportBook;
 import com.qy.entity.TaskBook;
+import com.qy.entity.WorkStaff;
 import com.qy.service.ReportBookService;
 import com.qy.util.SupportPage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,7 +56,7 @@ public class ReportController {
      * 申请计划(计划阶段)
      */
     @ResponseBody
-    @RequestMapping("/insertPlanBook")
+    @RequestMapping(value = "/insertPlanBook",method = RequestMethod.POST)
     public Object insertPlanBook(MultipartFile file, PlanBook planBook, HttpServletRequest request){
         return  reportBookService.insertPlanBook(file,planBook,request);
     }
@@ -86,8 +88,8 @@ public class ReportController {
      */
     @ResponseBody
     @RequestMapping("/updateTask")
-    public Object updateTask(TaskBook taskBook){
-        return  reportBookService.updateTask(taskBook);
+    public Object updateTask(TaskBook taskBook,String code){
+        return  reportBookService.updateTask(taskBook,code);
     }
 
     /**
@@ -106,8 +108,19 @@ public class ReportController {
     public Object findTaskProCode(HttpServletRequest request){
         return reportBookService.findUserProCode(request);
     }
+    /**
+     * 删除当前工作人员
+     */
+    @ResponseBody
+    @RequestMapping("/delTaskStaff")
+    public Object delTaskStaff(WorkStaff workStaff){
+        return reportBookService.delTaskStaff(workStaff);
+    }
+
 
     /**
-     *
+     * 文件下载
      */
+
+
 }

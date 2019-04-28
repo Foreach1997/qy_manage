@@ -3,6 +3,7 @@ package com.qy.service;
 import com.qy.entity.PlanBook;
 import com.qy.entity.ReportBook;
 import com.qy.entity.TaskBook;
+import com.qy.entity.WorkStaff;
 import com.qy.util.SupportPage;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,12 +57,16 @@ public interface ReportBookService {
     /**
      * 任务状态(任务阶段)
      */
-    Object updateTask(TaskBook taskBook);
+    Object updateTask(TaskBook taskBook,String code);
 
     /**
      * 获取当前用户所有项目编码
      */
     Object findUserProCode(HttpServletRequest request);
 
+    /**
+     * 删除当前工作人员
+     */
+    Object delTaskStaff(WorkStaff workStaff);
 
 }

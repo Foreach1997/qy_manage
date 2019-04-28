@@ -25,10 +25,10 @@
             `user_id`
         )
         VALUES(
-            #{proStop.proCode},
-            #{proStop.stopNote},
-            #{proStop.createTime},
-            #{proStop.userId}
+            #{proCode},
+            #{stopNote},
+            #{createTime},
+            #{userId}
         )
     </insert>
 

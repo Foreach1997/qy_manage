@@ -104,7 +104,24 @@ public class ProController {
     }
 
 
+    /**
+     * 查看汇报内容
+     */
+    @ResponseBody
+    @RequestMapping("/findReportNote")
+    public Object findReportNote(WorkStaff workStaff){
+       return taskBookService.findReportNote(workStaff);
+    }
 
+
+    /**
+     * 评阅
+     */
+    @ResponseBody
+    @RequestMapping("/workReview")
+    public Object workReview(WorkStaff workStaff){
+         return  taskBookService.workReview(workStaff);
+    }
 
 
 

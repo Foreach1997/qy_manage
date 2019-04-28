@@ -17,7 +17,7 @@
             <div class="layui-form">
                 <div class="layui-form-item">
                     <div class="layui-row">
-                        <div class="layui-col-xs12">
+                       <!-- <div class="layui-col-xs12">
                             <div class="layui-inline" style="margin-top: 5px;" >
                                 <label class="layui-form-label" style="width: 50px">部门：</label>
                                 <div  class="layui-input-block" style="width: 200px">
@@ -33,12 +33,14 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="layui-form-item" style="margin-left: 600px">
                         <div class="layui-inline">
+<!--
                             <button class="layui-btn layui-btn-normal" id="find">查询</button>
+-->
                         </div>
-                        <div class="layui-inline" id="pro">
+                        <div class="layui-inline" id="addProPeople">
                             <button class="layui-btn" id="addPeople">添加人员</button>
                         </div>
                     </div>
@@ -62,42 +64,49 @@
     var dataRowJson;
 
     function del(workStaffId){
-
+        $.ajax({
+                type: "POST",
+                url: directory+"report/delTaskStaff",
+                    async:false,
+                    data: {
+                        workStaffId:workStaffId,
+                    },
+                    success: function(res) {
+                        layer.msg(res.msg)
+                        reload();
+                    }
+                })
 
     }
 
-    function edit(workStaffId){
+    $(function () {
+        debugger
+      var edit = getUrlCode("edit");
+      if (edit == "f"){
+          $('#addProPeople').show();
+      }
+        if (edit == "g"){
+            $('#workDel').hide();
+        }
+    })
 
-
-    }
-    // function editUser(userId){
-    //     layui.use('layer',function () {
-    //         layer.open({
-    //             type: 2,
-    //             title: '信息修改',
-    //             shadeClose: true,
-    //             shade: 0.8,
-    //             area: ['420px', '520px'],
-    //             content: 'editUser.html?userId='+userId
-    //         });
-    //     });
-    // }
-
-    // function proStatus(planBookId,status){
+    // function edit(workStaffId,isUpdate){
     //     $.ajax({
     //         type: "POST",
-    //         url: directory+"report/updatePlan",
+    //         url: directory+"report/delTaskStaff",
     //         async:false,
     //         data: {
-    //             planBookId:planBookId,
-    //             status:status
+    //             workStaffId:workStaffId,
+    //             isUpdate:isUpdate
     //         },
     //         success: function(res) {
     //             layer.msg(res.msg)
     //             reload();
     //         }
     //     })
-    // }
+
+   // }
+
     $('#find').click(function () {
         reload();
     })

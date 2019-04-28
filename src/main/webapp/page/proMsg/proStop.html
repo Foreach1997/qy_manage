@@ -7,7 +7,7 @@
     <script src="../../lib/js/layui/layui.js" type="text/javascript"></script>
     <script src="../../lib/js/jquery-3.4.0.min.js" type="text/javascript"></script>
     <script src="../../lib/js/common.js" type="text/javascript"></script>
-    <script src="../../lib/js/layui/lay/modules/layer.js" type="text/javascript"></script>
+    <script src="../../lib/js/authc.js" type="text/javascript"></script>
 </head>
 <body>
 <form class="layui-form">
@@ -18,7 +18,8 @@
         </div>
     </div>
     <div class="layui-form-item" >
-        <button id="confirm"   style="margin-left:100px;padding-left: 80px;padding-right: 80px" class="layui-btn">确认</button>
+        <button id="confirm" type="button" style="margin-left: 100px"  class="layui-btn">确认</button>
+        <button id="noAgree" style="display: none" type="button"  class="layui-btn">不同意</button>
     </div>
 </form>
 </body>
@@ -44,6 +45,28 @@
         })
     })
 
+    $("#noAgree").click(function () {
+        var taskBookId = getUrlCode("taskBookId");
+        var reportCode = getUrlCode("reportCode");
+        $.ajax({
+            type: "POST",
+            url: directory+"report/updateTask",
+            async:false,
+            data: {
+                taskBookId:taskBookId,
+                status:13,
+                reportCode:reportCode,
+                code:'stop'
+            },
+            success: function(res) {
+                var index=parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+                parent.layer.msg(res.msg);
+                parent.reload();
+            }
+        })
+    })
+
     $("#confirm").click(function () {
         var taskBookId = getUrlCode("taskBookId");
         var status = getUrlCode("status");
@@ -58,7 +81,6 @@
                 taskBookId:taskBookId
             },
             success: function(res) {
-                layer.msg(res.msg)
                 var index=parent.layer.getFrameIndex(window.name);
                 parent.layer.close(index);
                 parent.layer.msg(res.msg);

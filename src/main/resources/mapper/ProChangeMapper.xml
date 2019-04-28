@@ -25,10 +25,10 @@
             `user_id`
         )
         VALUES(
-            #{proChange.proCode},
-            #{proChange.changeNote},
-            #{proChange.createTime},
-            #{proChange.userId}
+            #{proCode},
+            #{changeNote},
+            #{createTime},
+            #{userId}
         )
     </insert>
 

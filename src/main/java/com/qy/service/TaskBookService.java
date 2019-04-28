@@ -54,4 +54,18 @@ public interface TaskBookService {
      *
      */
     void insertProStatus(Integer status,ProFinish proFinish, ProChange proChange, ProStop proStop,HttpServletRequest request);
+
+    /**
+     * 项目汇报内容查看
+     */
+    Object findReportNote(WorkStaff workStaff);
+
+
+    /**
+     * 评阅
+     */
+    Object workReview(WorkStaff workStaff);
+
+
+
 }

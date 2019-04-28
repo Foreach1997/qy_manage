@@ -26,13 +26,13 @@
         <where>
         <trim prefix="and" prefixOverrides="and">
         <if test="userId != null and userId !=''">
-            user_id = #{userId}
+            and    user_id = #{userId}
         </if>
         <if test="proCode != null and proCode !=''">
-               pro_code LIKE '%${proCode}%'
+            and      pro_code LIKE '%${proCode}%'
         </if>
         <if test="list != null">
-                user_id IN
+            and    user_id IN
                 <foreach collection="list" item="item" open="(" close=")" separator=",">
                     #{item}
                 </foreach>
@@ -50,16 +50,16 @@
         <where>
         <trim prefix="and" prefixOverrides="and">
         <if test="list != null">
-            user_id IN
+            and   user_id IN
             <foreach collection="list" item="item" open="(" close=")" separator=",">
                 #{item}
             </foreach>
         </if>
         <if test="userId != null and userId !=''">
-               user_id = #{userId}
+            and     user_id = #{userId}
         </if>
         <if test="proCode != null and proCode !=''">
-            pro_code LIKE '%${proCode}%'
+            and  pro_code LIKE '%${proCode}%'
         </if>
         </trim>
         </where>
@@ -75,16 +75,16 @@
         <where>
         <trim prefix="and" prefixOverrides="and">
         <if test="list != null">
-            user_id IN
+            and  user_id IN
             <foreach collection="list" item="item" open="(" close=")" separator=",">
                 #{item}
             </foreach>
         </if>
         <if test="userId != null and userId !=''">
-               user_id = #{userId}
+            and     user_id = #{userId}
         </if>
         <if test="reportCode != null and reportCode !=''">
-               report_code LIKE '%${reportCode}%'
+            and    report_code LIKE '%${reportCode}%'
         </if>
         </trim>
         </where>
@@ -99,16 +99,16 @@
         <where>
         <trim prefix="and" prefixOverrides="and">
     <if test="list != null">
-        user_id IN
+        and  user_id IN
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
     </if>
     <if test="userId != null and userId !=''">
-           user_id = #{userId}
+        and   user_id = #{userId}
     </if>
     <if test="reportCode != null and reportCode !=''">
-           report_code LIKE '%${reportCode}%'
+        and    report_code LIKE '%${reportCode}%'
     </if>
         </trim>
         </where>
@@ -123,19 +123,19 @@
         <where>
             <trim prefix="and" prefixOverrides="and">
         <if test="list != null">
-            user_id IN
+            and  user_id IN
             <foreach collection="list" item="item" open="(" close=")" separator=",">
                 #{item}
             </foreach>
         </if>
         <if test="userId != null and userId !=''">
-               user_id = #{userId}
+            and   user_id = #{userId}
         </if>
         <if test="reportCode != null and reportCode !=''">
-               report_code LIKE '%${reportCode}%'
+            and  report_code LIKE '%${reportCode}%'
         </if>
                 <if test="status != null and status !=''">
-                    status = #{status}
+                    and     status = #{status}
                 </if>
             </trim>
         </where>
@@ -150,19 +150,19 @@
         <where>
             <trim prefix="and" prefixOverrides="and">
         <if test="list != null">
-            user_id IN
+            and user_id IN
             <foreach collection="list" item="item" open="(" close=")" separator=",">
                 #{item}
             </foreach>
         </if>
         <if test="userId != null and userId !=''">
-               user_id = #{userId}
+            and   user_id = #{userId}
         </if>
         <if test="reportCode != null and reportCode !=''">
-               report_code LIKE '%${reportCode}%'
+            and   report_code LIKE '%${reportCode}%'
         </if>
                 <if test="status != null and status !=''">
-                    status = #{status}
+                    and   status = #{status}
                 </if>
             </trim>
         </where>
@@ -270,25 +270,28 @@
         <where>
             <trim prefix="and" prefixOverrides="and">
                 <if test="list != null">
-                      user_id IN
+                    and      user_id IN
                     <foreach collection="list" item="item" open="(" close=")" separator=",">
                         #{item}
                     </foreach>
                 </if>
             <if test="proCode != null">
-                pro_code like '%${proCode}%'
+                and  pro_code like '%${proCode}%'
             </if>
             <if test="smallTask != null">
-                small_task = #{smallTask}
+                and    small_task = #{smallTask}
             </if>
             <if test="userId != null">
-                    user_id = #{userId}
+                and    user_id = #{userId}
             </if>
             <if test="workLeadId != null">
-                work_lead_id = #{workLeadId}
+                and  work_lead_id = #{workLeadId}
              </if>
              <if test="depId != null">
-                    dep_id = #{depId}
+                 and   dep_id = #{depId}
+             </if>
+             <if test="status != null">
+                 and    status = #{status}
              </if>
             </trim>
         </where>
@@ -309,16 +312,19 @@
                     </foreach>
                 </if>
                 <if test="proCode != null">
-                    pro_code LIKE '%${proCode}%'
+                    and  pro_code LIKE '%${proCode}%'
                 </if>
                 <if test="smallTask != null">
-                    small_task = #{smallTask}
+                    and  small_task = #{smallTask}
                 </if>
                 <if test="userId != null">
-                    user_id = #{userId}
+                    and  user_id = #{userId}
                 </if>
                 <if test="report_book != null">
-                    work_lead_id = #{workLeadId}
+                    and   work_lead_id = #{workLeadId}
+                </if>
+                <if test="status != null">
+                    and  status = #{status}
                 </if>
             </trim>
         </where>

@@ -77,6 +77,7 @@ public class TaskBookServiceImpl implements TaskBookService {
         map.put("userId",workStaff.getUserId());
         map.put("proCode",workStaff.getProCode());
         map.put("workLeadId",workStaff.getWorkLeadId());
+        map.put("status",workStaff.getStatus());
 
         if (supportPage.getCurrentPage()!=null&&supportPage.getPageSize()!=null) {
             map.put("currentPage", (supportPage.getCurrentPage() - 1) * supportPage.getPageSize());
@@ -88,6 +89,16 @@ public class TaskBookServiceImpl implements TaskBookService {
             jsonObject.put("createTiem",format.format(jsonObject.getDate("createTiem")));
             jsonObject.put("depName",departmentMapper.selectByPrimaryKey(jsonObject.getInteger("depId")).getDepName());
             jsonObject.put("userName",userMapper.selectByPrimaryKey(jsonObject.getInteger("userId")).getUserName());
+            int  workLeadId = jsonObject.getInteger("workLeadId");
+            if (workLeadId == jsonObject.getInteger("userId")){
+                jsonObject.put("leadStatus","1");
+            }else {
+                jsonObject.put("leadStatus","2");
+
+            }
+            TaskBookExample taskBookExample = new TaskBookExample();
+            taskBookExample.createCriteria().andReportCodeEqualTo(jsonObject.getString("proCode"));
+            jsonObject.put("proStatus",taskBookMapper.selectByExample(taskBookExample).get(0).getStatus());
         }
         return ResultRespose.rsultRespose(200,"请求成功",workStaffs,count);
     }
@@ -159,7 +170,7 @@ public class TaskBookServiceImpl implements TaskBookService {
         WorkStaffExample workStaffExample = new WorkStaffExample();
         workStaffExample.createCriteria().andWorkStaffIdEqualTo(workStaff.getWorkStaffId());
         workStaffMapper.updateByExampleSelective(workStaff,workStaffExample);
-        return ResultRespose.rsult(200,"修改成功",null);
+        return ResultRespose.rsult(200,"成功",null);
     }
 
     @Override
@@ -259,6 +270,8 @@ public class TaskBookServiceImpl implements TaskBookService {
             } else if (money < realMoney && realMoney - money > money * 0.1) {
                 taskBook.put("color", 3);
             }
+            taskBook.put("money",money);
+            taskBook.put("realMoney",realMoney);
             taskBook.put("createTime", format.format(taskBook.getDate("createTime")));
         }
         return ResultRespose.rsultRespose(200,"请求成功",taskBookExampleList,count);
@@ -304,6 +317,21 @@ public class TaskBookServiceImpl implements TaskBookService {
                 proChangeMapper.insert(proChange);
             }
         }
+    }
+
+    @Override
+    public Object findReportNote(WorkStaff workStaff) {
+        workStaff = workStaffMapper.selectByPrimaryKey(workStaff.getWorkStaffId());
+        return ResultRespose.rsult(200,"成功",workStaff);
+
+    }
+
+    @Override
+    public Object workReview(WorkStaff workStaff) {
+        WorkStaffExample workStaffExample  =new WorkStaffExample();
+        workStaffExample.createCriteria().andWorkStaffIdEqualTo(workStaff.getWorkStaffId());
+        workStaffMapper.updateByExampleSelective(workStaff,workStaffExample);
+        return ResultRespose.rsult(200,"成功",workStaff);
     }
 
 

@@ -25,8 +25,10 @@
 	<!-- 能支持springmvc更高级的一些功能，JSR303校验，快捷的ajax...映射动态请求 -->
 	<mvc:annotation-driven/>
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize"><value>524288000</value></property>
-		<property name="maxInMemorySize"><value>4096</value></property>
-		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="5242880"></property>
+		<!-- 设定文件上传时写入内存的最大值，如果小于这个参数不会生成临时文件，默认为10240 -->
+		<property name="maxInMemorySize" value="40960"></property>
+		<!-- 设定默认编码 -->
+		<property name="defaultEncoding" value="UTF-8"></property>
 	</bean>
 </beans>

@@ -6,10 +6,10 @@ import com.qy.entity.ProWarn;
 public interface ProChangeMapper {
 
 
-    int insert(ProChange proWarn);
+    int insert(ProChange proChange);
 
 
-    int delete(ProWarn proWarn);
+    int delete(ProChange proChange);
 
     ProChange findProChange(ProChange proChange);
 }

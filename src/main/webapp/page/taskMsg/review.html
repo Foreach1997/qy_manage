@@ -23,52 +23,56 @@
             <input type="text" id="planMoney"  required   autocomplete="off"   placeholder="请输入汇报金额" class="layui-input">
         </div>
     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">评阅:</label>
+        <div class="layui-input-block">
+            <textarea name="desc" id="review" required placeholder="评阅" class="layui-textarea"></textarea>
+        </div>
+    </div>
     <div class="layui-form-item" >
-        <button id="confirm" type="button"  style="margin-left: 100px"  class="layui-btn">确认</button>
+        <button id="confirm" type="button" style="margin-left: 100px"   class="layui-btn">确认</button>
     </div>
 </form>
 </body>
 </html>
 <script>
 
-   // $(function () {
-   //     var  workStaffId = getUrlCode("workStaffId");
-   //     $.ajax({
-   //         type: "POST",
-   //         url: directory + "report/reportTask",
-   //         async: false,
-   //         data: {
-   //             workStaffId: workStaffId
-   //         },
-   //         success: function (res) {
-   //            $('#reportNote').val(res.data.reportNote);
-   //            $('#planMoney').val(res.data.planMoney);
-   //
-   //         }
-   //     })
-   // })
+    $(function () {
+        var  workStaffId = getUrlCode("workStaffId");
+        $.ajax({
+            type: "POST",
+            url: directory + "pro/findReportNote",
+            async: false,
+            data: {
+                workStaffId: workStaffId
+            },
+            success: function (res) {
+                $('#reportNote').val(res.data.reportNote);
+                $('#planMoney').val(res.data.planMoney);
+            }
+        })
+    })
+
+
+
+
 
 
     $('#confirm').click(function () {
-        var reportNote = $('#reportNote').val();
-        var  status =  getUrlCode("status");
-        var  workStaffId = getUrlCode("workStaffId");
-        var  planMoney = $('#planMoney').val();
         var proCode = getUrlCode("proCode");
-        if (!reportNote) {
-            layer.msg("请填写汇报内容")
-        }else if(!planMoney){
-            layer.msg("请填写汇报金额")
+        var review = $('#review').val();
+        var  workStaffId = getUrlCode("workStaffId");
+        if (!review) {
+            layer.msg("请填写评阅")
         } else {
             $.ajax({
                 type: "POST",
-                url: directory + "pro/reportTask",
+                url: directory + "pro/workReview",
                 async: false,
                 data: {
                     workStaffId: workStaffId,
-                    status: status,
-                    reportNote: $('reportNote').val(),
-                    planMoney:planMoney,
+                    status: 5,
+                    review: review,
                     proCode:proCode
                 },
                 success: function (res) {
@@ -79,6 +83,6 @@
                 }
             })
         }
-       })
+    })
 
 </script>
