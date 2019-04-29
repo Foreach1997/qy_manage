@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qy.dao.NoticeMapper">
+
+
+    <select id="findNotice" resultType="com.qy.entity.Notice" parameterType="java.util.Map">
+        select * from notice
+        <where>
+            <trim prefix="and" prefixOverrides="and">
+                <if test="roleId != null">
+                 and   role_id =#{roleId}
+                </if>
+                <if test="depId != null">
+                    and   dep_id = #{depId}
+                </if>
+                <if test="userId != null">
+                    and   user_id = #{userId}
+                </if>
+                <if test="noticeId != null">
+                    and   notice_id = #{noticeId}
+                </if>
+            </trim>
+        </where>
+        <if test="currentPage != null and currentPage !='' or
+                        pageSize != null and pageSize !=''">
+            LIMIT #{pageSize} OFFSET #{currentPage}
+        </if>
+    </select>
+
+    <select id="findNoticeMax" resultType="com.qy.entity.Notice" parameterType="com.qy.entity.Notice">
+        select * from notice
+        <where>
+            <trim prefix="and" prefixOverrides="and">
+                <if test="roleId != null">
+                    and   role_id =#{roleId}
+                </if>
+                <if test="depId != null">
+                    and   dep_id = #{depId}
+                </if>
+                <if test="userId != null">
+                    and   user_id = #{userId}
+                </if>
+                <if test="noticeId != null">
+                    and   notice_id = #{noticeId}
+                </if>
+            </trim>
+        </where>
+        HAVING MAX(create_time)
+    </select>
+    <select id="findNoticeCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(*) from notice
+        <where>
+            <trim prefix="and" prefixOverrides="and">
+                <if test="roleId != null">
+                    and   role_id =#{roleId}
+                </if>
+                <if test="depId != null">
+                    and   dep_id = #{depId}
+                </if>
+                <if test="userId != null">
+                    and   user_id = #{userId}
+                </if>
+                <if test="noticeId != null">
+                    and   notice_id = #{noticeId}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.qy.entity.Notice" >
+        INSERT INTO notice (
+            `note`,
+            `create_time`,
+            `role_id`,
+            `dep_id`,
+            `user_id`
+        )
+        VALUES(
+            #{note},
+            #{createTime},
+            #{roleId},
+            #{depId},
+            #{userId}
+        )
+    </insert>
+</mapper>

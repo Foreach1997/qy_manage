@@ -1,5 +1,6 @@
 package com.qy.service;
 
+import com.qy.entity.Notice;
 import com.qy.entity.User;
 import com.qy.util.SupportPage;
 
@@ -46,4 +47,14 @@ public interface UserService {
      * 根据部门获取所有用户
      */
     Object findUsers(User user);
+
+    /**
+     * 添加公告
+     */
+    Object addNotice(Notice notice,HttpServletRequest request);
+
+    /**
+     * 获取公告
+     */
+    Object getNotice(HttpServletRequest request);
 }

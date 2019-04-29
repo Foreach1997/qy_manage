@@ -3,6 +3,7 @@ package com.qy.controller;
 
 import com.qy.dao.UserMapper;
 import com.qy.entity.Department;
+import com.qy.entity.Notice;
 import com.qy.entity.User;
 import com.qy.service.DepartmentService;
 import com.qy.service.UserService;
@@ -169,5 +170,18 @@ public class UserController {
     @RequestMapping("/findUsers")
     public Object findUsers(User user){
         return userService.findUsers(user);
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/addNotice")
+    public Object addNotice(Notice notice,HttpServletRequest request){
+        return userService.addNotice(notice,request);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getNotice")
+    public Object addNotice(HttpServletRequest request){
+        return userService.getNotice(request);
     }
 }

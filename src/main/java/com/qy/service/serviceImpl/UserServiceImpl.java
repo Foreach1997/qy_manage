@@ -3,10 +3,8 @@ package com.qy.service.serviceImpl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.qy.dao.CurrencyMapper;
-import com.qy.dao.DepartmentMapper;
-import com.qy.dao.RoleMapper;
-import com.qy.dao.UserMapper;
+import com.qy.dao.*;
+import com.qy.entity.Notice;
 import com.qy.entity.Role;
 import com.qy.entity.User;
 import com.qy.entity.UserExample;
@@ -40,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private CurrencyMapper currencyMapper;
+
+    @Resource
+    private NoticeMapper noticeMapper;
 
     @Override
     public Object userLogin(User user, HttpServletRequest request) {
@@ -170,5 +171,27 @@ public class UserServiceImpl implements UserService {
         userExample.createCriteria().andDepIdEqualTo(user.getDepId()).andRoleIdEqualTo(3);
         List<User> userList = userMapper.selectByExample(userExample);
         return ResultRespose.rsult(200,"成功",userList);
+    }
+
+    @Override
+    public Object addNotice(Notice notice,HttpServletRequest request) {
+        User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
+        if (notice.getDepId() == null){
+            notice.setDepId(u.getDepId());
+        }
+        notice.setCreateTime(new Date());
+        notice.setUserId(u.getUserId());
+        notice.setRoleId(u.getRoleId());
+        noticeMapper.insert(notice);
+        return ResultRespose.rsult(200,"成功",null);
+    }
+
+    @Override
+    public Object getNotice(HttpServletRequest request) {
+        User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
+        Notice n = new Notice();
+        n.setDepId(u.getDepId());
+        Notice notice = noticeMapper.findNoticeMax(n);
+        return ResultRespose.rsult(200,"成功",notice);
     }
 }

@@ -47,6 +47,7 @@
                 </li>
                 <li class="layui-nav-item"><a id="proSpeedManage" style="display: none" href="page/proMsg/proSpeedManage.html" target="contentFrame">项目进度管理</a></li>
                 <li class="layui-nav-item"><a id="proFeeManage" style="display: none" href="page/proMsg/proFeeManage.html" target="contentFrame">项目费用管理</a></li>
+                <li class="layui-nav-item"><a id="notice" style="display: none" href="page/noticeMsg/addNotice.html" target="contentFrame">发布公告</a></li>
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">系统管理</a>
                     <dl class="layui-nav-child">
@@ -90,6 +91,33 @@
     $(function () {
         $("#userName").text(sessionStorage.getItem("userName"));
     })
+    layui.use('layer',function () {
+        var note = '';
+        $.ajax({
+            type: "POST",
+            url: directory+"user/getNotice",
+            async:false,
+            data: {
+            },
+            success: function(res) {
+                note = res.data.note;
+            }
+        })
+        var layer = layui.layer;
+        layer.open({
+            type: 1
+            ,title: '公告' //不显示标题栏
+            ,closeBtn: false
+            ,area: '300px;'
+            ,shade: 0.8
+            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            ,btn: ['确定']
+            ,btnAlign: 'c'
+            ,moveType: 1 //拖拽模式，0或者1
+            ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">'+note+'</div>'
+        });
+    })
+
 </script>
 </body>
 </html>
