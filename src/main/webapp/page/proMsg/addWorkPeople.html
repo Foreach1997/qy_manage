@@ -34,6 +34,12 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">任务内容:</label>
+            <div class="layui-input-block">
+                <textarea type="text" id="note"   placeholder="请输入任务内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">任务费用:</label>
             <div class="layui-input-inline">
                 <input type="text" id="realMoney"  lay-filter="realMoney" placeholder="请输入任务费用" class="layui-input">
@@ -66,6 +72,7 @@
         var  reportCode = getUrlCode("reportCode");
         var  userId = '';
         var isUpdate = getUrlCode("isUpdate");
+        var workStaffId = getUrlCode("workStaffId");
         form.on('radio(sex)', function(data){
             sexVal=  data.value
         });
@@ -75,6 +82,7 @@
                 var   userName=$("#userName").val();
                 var smallTask = $("#smallTask").val();
                 var realMoney = $("#realMoney").val();
+                 var note=$('#note').val();
                 if(!depId){
                     layer.msg("请选择部门")
                 }else if(!userName){
@@ -84,6 +92,8 @@
                 }
                 else if(!realMoney){
                     layer.msg("请填写任务费用")
+                } else if(!note){
+                    layer.msg("请填写任务内容")
                 }else {
                     $.ajax({
                         type: "POST",
@@ -96,7 +106,9 @@
                             userId:$('#userName').val(),
                             depId:depId,
                             proCode:reportCode,
-                            isUpdate:isUpdate
+                            isUpdate:isUpdate,
+                            note:note,
+                            workStaffId:workStaffId
                         },
                         success: function(res){
                             if (res.code==200){

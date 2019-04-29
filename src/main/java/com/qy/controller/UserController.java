@@ -181,7 +181,18 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping("/getNotice")
-    public Object addNotice(HttpServletRequest request){
-        return userService.getNotice(request);
+    public Object addNotice(Integer depId,HttpServletRequest request){
+        return userService.getNotice(depId,request);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getAllNotice")
+    public Object getAllNotice(Notice notice,SupportPage supportPage,HttpServletRequest request){
+        return userService.getAllNotice(notice,supportPage,request);
+    }
+    @ResponseBody
+    @RequestMapping("/delNotice")
+    public Object delNotice(Integer noticeId,HttpServletRequest request){
+        return userService.delNotice(noticeId,request);
     }
 }

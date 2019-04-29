@@ -72,7 +72,7 @@ public class TaskBookServiceImpl implements TaskBookService {
         }else {
             WorkStaffExample workStaffExample = new WorkStaffExample();
             workStaffExample.createCriteria().andWorkStaffIdEqualTo(workStaff.getWorkStaffId());
-            workStaffMapper.updateByExample(workStaff,workStaffExample);
+            workStaffMapper.updateByExampleSelective(workStaff,workStaffExample);
             return ResultRespose.rsult(200, "修改成功", null);
         }
     }

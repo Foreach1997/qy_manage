@@ -71,7 +71,8 @@
         form.render();
     });
 
-
+    $(function () {
+    })
 
     layui.use(['layer','form'], function(){
         var layer = layui.layer;
@@ -140,6 +141,14 @@
                             + item.depName + "</option>");
                 })
                 //form.render(null, 'merchant');
+                var roleId = sessionStorage.getItem("roleId");
+                var depId =   sessionStorage.getItem("depId");
+                if (roleId==2){
+                    $('#role').val(3);
+                    $('#dep').val(depId);
+                    $('#role').attr("disabled","disabled");
+                    $('#dep').attr("disabled","disabled");
+                }
                 form.render();
             }
         })

@@ -50,6 +50,7 @@
 		<table tableName="work_staff" domainObjectName="WorkStaff">
 			<columnOverride column="report_note" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
 			<columnOverride column="review" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="note" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
 		</table>
 		<!--<table tableName="pro_make" domainObjectName="ProMake"></table>-->
 		<!--<table tableName="user" domainObjectName="User"></table>

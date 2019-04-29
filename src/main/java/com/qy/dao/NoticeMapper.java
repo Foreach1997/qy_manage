@@ -15,4 +15,6 @@ public interface NoticeMapper {
     public int insert(Notice notice);
 
     public Notice findNoticeMax(Notice notice);
+
+    public int delNotice(Notice notice);
 }

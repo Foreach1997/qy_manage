@@ -55,10 +55,10 @@
 </html>
 <script type="text/html" id="barDemo">
     {{#  if(d.status == 3){ }}
-    <a href="javascript:edit('{{d.workStaffId}}','yes');" class="layui-btn layui-btn-mini layui-btn-danger">编辑</a>
+    <a href="javascript:edit('{{d.workStaffId}}','yes','{{d.proCode}}');" class="layui-btn layui-btn-mini layui-btn-danger">编辑</a>
     <a href="javascript:del('{{d.workStaffId}}');" class="layui-btn layui-btn-mini layui-btn-danger">删除</a>
     {{#  } }}
-    {{#  if(d.status == 1){ }}
+    {{#  if(d.status == 1 && d.proStatus==7){ }}
     <a href="javascript:del('{{d.workStaffId}}');" class="layui-btn layui-btn-mini layui-btn-danger">删除</a>
     {{#  } }}
 </script>
@@ -153,7 +153,7 @@
         })
     })
 
-    function edit(workStaffId,isUpdate){
+    function edit(workStaffId,isUpdate,reportCode){
         layui.use('layer',function () {
             layer.open({
                 type: 2,
@@ -163,7 +163,7 @@
                 maxmin: false, //开启最大化最小化按钮
                 area: ['100%','100%'],
                 anim: 2,
-                content: 'addWorkPeople.html?workStaffId='+workStaffId+'&isUpdate='+isUpdate
+                content: 'addWorkPeople.html?workStaffId='+workStaffId+'&isUpdate='+isUpdate+'&reportCode='+reportCode
             });
         })
     }
@@ -219,10 +219,21 @@
                 ,{field:'userName',  width: tableWidth*0.2, title: '用户名'}
                 ,{field:'depName', width:tableWidth*0.1, title: '所在部门'}
                 ,{field:'realMoney', width:tableWidth*0.1, title: '任务费用'}
+                ,{field:'note', width:tableWidth*0.1, title: '任务内容'}
                 ,{field:'createTiem', title: '创建时间', width: tableWidth*0.15}
                 ,{field:'zz',title:'操作',width:tableWidth*0.15,toolbar:'#barDemo'}
             ]]
             ,page: true
         });
     });
+    layui.use('table', function() {
+        var table = layui.table;
+        table.on('rowDouble(info)', function (obj) {
+            dataRowJson = obj.data;
+            layer.alert(obj.data.note, {
+                title: '任务内容'
+            });
+
+        });
+    })
 </script>

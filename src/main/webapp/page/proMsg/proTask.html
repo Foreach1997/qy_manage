@@ -266,6 +266,9 @@
                 maxmin: false, //开启最大化最小化按钮
                 area: ['100%','100%'],
                 anim: 2,
+                cancel: function(){
+                    reload();
+                },
                 content: 'myTask.html?reportCode='+reportCode+'&edit='+edit
             });
         })

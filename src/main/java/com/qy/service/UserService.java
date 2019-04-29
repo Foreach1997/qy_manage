@@ -56,5 +56,9 @@ public interface UserService {
     /**
      * 获取公告
      */
-    Object getNotice(HttpServletRequest request);
+    Object getNotice(Integer depId,HttpServletRequest request);
+
+    Object getAllNotice(Notice notice,SupportPage supportPage,HttpServletRequest request);
+
+    Object delNotice(Integer noticeId,HttpServletRequest request);
 }

@@ -187,11 +187,53 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Object getNotice(HttpServletRequest request) {
+    public Object getNotice(Integer depId,HttpServletRequest request) {
         User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
         Notice n = new Notice();
         n.setDepId(u.getDepId());
+        if (depId!=null){
+            n.setDepId(depId);
+        }
         Notice notice = noticeMapper.findNoticeMax(n);
         return ResultRespose.rsult(200,"成功",notice);
+    }
+
+    @Override
+    public Object getAllNotice(Notice notice, SupportPage supportPage, HttpServletRequest request) {
+        Map<String,Object> map = new HashMap<String, Object>();
+        User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
+        if (u.getRoleId()>1){
+            map.put("userId",u.getUserId());
+        }
+        if (supportPage.getCurrentPage()!=null&&supportPage.getPageSize()!=null) {
+            map.put("currentPage", (supportPage.getCurrentPage() - 1) * supportPage.getPageSize());
+            map.put("pageSize", supportPage.getPageSize());
+        }
+        List<Notice> notices = noticeMapper.findNotice(map);
+
+        int count = noticeMapper.findNoticeCount(map);
+
+        List<JSONObject> jsonObjects = new ArrayList<JSONObject>();
+        for (Notice n:notices){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("depName","");
+            if (n.getDepId()!=0){
+                jsonObject.put("depName",departmentMapper.selectByPrimaryKey(n.getDepId()).getDepName());
+            }
+            jsonObject.put("createTime",format.format(n.getCreateTime()));
+            jsonObject.put("userName",userMapper.selectByPrimaryKey(n.getUserId()).getUserName());
+            jsonObject.put("note",n.getNote());
+            jsonObject.put("noticeId",n.getNoticeId());
+            jsonObjects.add(jsonObject);
+        }
+        return ResultRespose.rsultRespose(200,"成功",jsonObjects,count);
+    }
+
+    @Override
+    public Object delNotice(Integer noticeId, HttpServletRequest request) {
+            Notice n = new Notice();
+            n.setNoticeId(noticeId);
+            noticeMapper.delNotice(n);
+            return ResultRespose.rsult(200,"成功",null);
     }
 }

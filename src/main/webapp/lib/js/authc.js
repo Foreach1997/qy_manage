@@ -4,7 +4,7 @@ $(function () {
     //     $('#pro').show();
     // }
    var roleId = sessionStorage.getItem("roleId");
-   debugger
+
    if (roleId==1){
        $('#emp').show();
        $('#proSpeedManage').show();

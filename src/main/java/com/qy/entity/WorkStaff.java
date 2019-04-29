@@ -29,6 +29,12 @@ public class WorkStaff {
 
     private Integer depId;
 
+    private String note;
+
+    private Date startTime;
+
+    private Date endTime;
+
     public Integer getWorkStaffId() {
         return workStaffId;
     }
@@ -131,5 +137,29 @@ public class WorkStaff {
 
     public void setDepId(Integer depId) {
         this.depId = depId;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note == null ? null : note.trim();
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }

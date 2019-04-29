@@ -46,6 +46,7 @@
             </trim>
         </where>
         HAVING MAX(create_time)
+        ORDER BY create_time DESC
     </select>
     <select id="findNoticeCount" resultType="java.lang.Integer" parameterType="java.util.Map">
         select count(*) from notice
@@ -65,6 +66,7 @@
                 </if>
             </trim>
         </where>
+        ORDER BY create_time DESC
     </select>
 
     <insert id="insert" parameterType="com.qy.entity.Notice" >
@@ -83,4 +85,9 @@
             #{userId}
         )
     </insert>
+
+
+    <delete id="delNotice" parameterType="com.qy.entity.Notice">
+        delete from notice where notice_id = #{noticeId}
+    </delete>
 </mapper>

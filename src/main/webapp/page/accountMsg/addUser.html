@@ -44,7 +44,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">角色:</label>
             <div class="layui-input-block">
-                <select name="interest" id="role" lay-filter="role">
+                <select name="interest"  id="role" lay-filter="role">
                     <option value=""></option>
                     <option value="2">部门经理</option>
                     <option value="3">工作人员</option>
@@ -81,6 +81,11 @@
     $("#B").click(function () {
         sexVal = 0;
     })*/
+
+    $(function () {
+
+    })
+
 
     layui.use('form', function(){
         var form = layui.form;
@@ -188,6 +193,14 @@
                             + item.depName + "</option>");
                 })
                 //form.render(null, 'merchant');
+                var roleId = sessionStorage.getItem("roleId");
+                var depId =   sessionStorage.getItem("depId");
+                if (roleId==2){
+                    $('#role').val(3);
+                    $('#dep').val(depId);
+                    $('#role').attr("disabled","disabled");
+                    $('#dep').attr("disabled","disabled");
+                }
                 form.render();
             }
         })
