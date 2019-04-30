@@ -188,7 +188,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object getNotice(Integer depId,HttpServletRequest request) {
-        User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
+         User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
         Notice n = new Notice();
         n.setDepId(u.getDepId());
         if (depId!=null){
