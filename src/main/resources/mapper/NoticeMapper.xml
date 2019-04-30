@@ -21,6 +21,7 @@
                 </if>
             </trim>
         </where>
+        ORDER BY create_time DESC
         <if test="currentPage != null and currentPage !='' or
                         pageSize != null and pageSize !=''">
             LIMIT #{pageSize} OFFSET #{currentPage}
@@ -28,7 +29,7 @@
     </select>
 
     <select id="findNoticeMax" resultType="com.qy.entity.Notice" parameterType="com.qy.entity.Notice">
-        select * from notice
+        select notice_id,note , create_time as create_time ,role_id AS role_id ,dep_id AS dep_id ,user_id as user_id from notice
         <where>
             <trim prefix="and" prefixOverrides="and">
                 <if test="roleId != null">
@@ -45,7 +46,6 @@
                 </if>
             </trim>
         </where>
-        HAVING MAX(create_time)
         ORDER BY create_time DESC
     </select>
     <select id="findNoticeCount" resultType="java.lang.Integer" parameterType="java.util.Map">

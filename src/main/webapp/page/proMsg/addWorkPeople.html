@@ -27,6 +27,18 @@
                 </select>
             </div>
         </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">任务开始时间:</label>
+            <div class="layui-input-inline">
+                <input type="text" id="startTime" required     autocomplete="off"  placeholder="任务开始时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">任务结束时间:</label>
+            <div class="layui-input-inline">
+                <input type="text" id="endTime"  required   autocomplete="off"   placeholder="任务结束时间" class="layui-input">
+            </div>
+        </div>
         <div class="layui-form-item">
             <label class="layui-form-label">任务名称:</label>
             <div class="layui-input-inline">
@@ -61,6 +73,25 @@
         });
     }
 
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#startTime'
+            ,calendar: true
+            ,showBottom: false
+        });
+    });
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#endTime'
+            ,calendar: true
+            ,showBottom: false
+        });
+    });
+
+
     $(function () {
         ref();
     })
@@ -78,11 +109,14 @@
         });
         debugger
         $("#confirm").click(function () {
+            debugger
                 var depId=$("#dep").val();
                 var   userName=$("#userName").val();
                 var smallTask = $("#smallTask").val();
                 var realMoney = $("#realMoney").val();
                  var note=$('#note').val();
+                 var endTime = $("#endTime").val();
+                 var startTime = $("#startTime").val();
                 if(!depId){
                     layer.msg("请选择部门")
                 }else if(!userName){
@@ -94,6 +128,10 @@
                     layer.msg("请填写任务费用")
                 } else if(!note){
                     layer.msg("请填写任务内容")
+                }else if(!endTime){
+                    layer.msg("请选择结束日期")
+                }else if(!startTime){
+                    layer.msg("请填写开始日期")
                 }else {
                     $.ajax({
                         type: "POST",
@@ -108,7 +146,9 @@
                             proCode:reportCode,
                             isUpdate:isUpdate,
                             note:note,
-                            workStaffId:workStaffId
+                            workStaffId:workStaffId,
+                            end:endTime,
+                            start:startTime
                         },
                         success: function(res){
                             if (res.code==200){

@@ -19,9 +19,11 @@ $(function () {
        $('#proAll').show();
        $('#noAgree').show();
        $('#notice').show();
+       $('#proFeeManage').show();
    } else if (roleId==3){
        $('#task').show();
        $('#addPro').show();
+       $('#proFeeManage').show();
        $('#proAll').show();
        $('#pro').show();
    }

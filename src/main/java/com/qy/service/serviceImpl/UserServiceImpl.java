@@ -176,7 +176,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object addNotice(Notice notice,HttpServletRequest request) {
         User u = userMapper.selectByPrimaryKey((int)request.getSession().getAttribute("userId"));
-        if (notice.getDepId() == null){
+        if (notice.getDepId() == null || "".equals(notice.getDepId())){
             notice.setDepId(u.getDepId());
         }
         notice.setCreateTime(new Date());
@@ -194,8 +194,12 @@ public class UserServiceImpl implements UserService {
         if (depId!=null){
             n.setDepId(depId);
         }
-        Notice notice = noticeMapper.findNoticeMax(n);
-        return ResultRespose.rsult(200,"成功",notice);
+        List<Notice> notice = noticeMapper.findNoticeMax(n);
+        if (!notice.isEmpty()) {
+            return ResultRespose.rsult(200,"成功",notice.get(0));
+        }else {
+            return ResultRespose.rsult(200,"成功",null);
+        }
     }
 
     @Override

@@ -101,7 +101,11 @@
                 async: false,
                 data: {},
                 success: function (res) {
-                    note = res.data.note;
+                    if(res.data!=null) {
+                        note = res.data.note;
+                    }else {
+                        note = "暂无公告"
+                    }
                 }
             })
             $.ajax({
@@ -112,14 +116,18 @@
                     depId:0
                 },
                 success: function (res) {
-                    allNote = res.data.note;
+                    if(!!res.data) {
+                        allNote = res.data.note;
+                    }else {
+                        allNote = "暂无公告"
+                    }
                 }
             })
 
             layer.alert(note, {
                 skin: 'layui-layer-molv' //样式类名
                 ,closeBtn: 0
-                ,title:'公告'
+                ,title:'部门公告'
             }, function(){
                 if (allNote!='') {
                     layer.alert(allNote, {

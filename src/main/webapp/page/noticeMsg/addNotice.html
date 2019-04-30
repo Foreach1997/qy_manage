@@ -76,12 +76,17 @@
     }
 
     $('#confirm').click(function () {
+        var dep = $('#dep').val();
+        var roleId =  sessionStorage.getItem("roleId");
+        if (roleId!=1){
+            dep = '';
+        }
         $.ajax({
             type: "POST",
             url: directory+"user/addNotice",
             async:false,
             data: {
-                depId:$('#dep').val(),
+                depId:dep,
                 note:$('#note').val()
             },
             success: function(res) {

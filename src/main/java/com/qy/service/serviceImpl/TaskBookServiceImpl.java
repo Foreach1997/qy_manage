@@ -56,13 +56,18 @@ public class TaskBookServiceImpl implements TaskBookService {
     private ReportBookMapper reportBookMapper;
 
     @Override
-    public Object insertOrUpdateWorkStaff(WorkStaff workStaff,String isUpdate, HttpServletRequest request) {
+    public Object insertOrUpdateWorkStaff(WorkStaff workStaff,String end,String start,String isUpdate, HttpServletRequest request) {
         TaskBook taskBook = new TaskBook();
         taskBook.setStatus(13);
         TaskBookExample taskBookExample = new TaskBookExample();
         taskBookExample.createCriteria().andReportCodeEqualTo(workStaff.getProCode());
         taskBookMapper.updateByExampleSelective(taskBook,taskBookExample);
-
+        try {
+            workStaff.setEndTime(format.parse(end + " 00:00:00"));
+            workStaff.setStartTime(format.parse(start+ " 00:00:00"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if ("no".equals(isUpdate)) {
             workStaff.setCreateTiem(new Date());
             workStaff.setStatus(1);
@@ -93,6 +98,8 @@ public class TaskBookServiceImpl implements TaskBookService {
         int count = currencyMapper.findWorkStaffListCount(map);
         for (JSONObject jsonObject:workStaffs){
             jsonObject.put("createTiem",format.format(jsonObject.getDate("createTiem")));
+            jsonObject.put("startTime",format.format(jsonObject.getDate("startTime")));
+            jsonObject.put("endTime",format.format(jsonObject.getDate("endTime")));
             jsonObject.put("depName",departmentMapper.selectByPrimaryKey(jsonObject.getInteger("depId")).getDepName());
             jsonObject.put("userName",userMapper.selectByPrimaryKey(jsonObject.getInteger("userId")).getUserName());
             int  workLeadId = jsonObject.getInteger("workLeadId");
@@ -116,6 +123,7 @@ public class TaskBookServiceImpl implements TaskBookService {
         List<Integer> list = null;
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("reportCode",taskBook.getReportCode());
+        map.put("proName",taskBook.getProName());
         if (u.getRoleId()==3){
             map.put("userId",u.getUserId());
         }

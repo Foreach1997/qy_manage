@@ -275,7 +275,7 @@
         work_id as "workId", create_tiem as "createTiem", pro_code as "proCode",
         plan_money as "planMoney", real_money as "realMoney", status,
         report_note as "reportNote", review, small_task as "smallTask",
-        dep_id  as  "depId" ,note from work_staff
+        dep_id  as  "depId" ,note,start_time as "startTime",end_time as "endTime" from work_staff
         <where>
             <trim prefix="and" prefixOverrides="and">
                 <if test="list != null">

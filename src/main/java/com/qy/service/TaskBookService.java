@@ -11,7 +11,7 @@ public interface TaskBookService {
     /**
      * 添加工作人员
      */
-   Object insertOrUpdateWorkStaff(WorkStaff workStaff,String isUpdate, HttpServletRequest request);
+   Object insertOrUpdateWorkStaff(WorkStaff workStaff,String endTime,String startTime,String isUpdate, HttpServletRequest request);
 
 
     /**

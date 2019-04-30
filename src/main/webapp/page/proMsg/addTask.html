@@ -109,10 +109,18 @@
             $('#proTimeEnd').val(data.proTimeEnd);
             $('#taskNote').val(data.taskNote);
             $('#proCode').val(data.reportCode);
+            r();
             $('#confirm').hide();
             $('#address').hide();
         }
     })
+
+    function r(){
+        layui.use('form',function () {
+            var form = layui.form;
+            form.render();
+        })
+    }
 
     layui.use('form',function () {
         var form = layui.form;

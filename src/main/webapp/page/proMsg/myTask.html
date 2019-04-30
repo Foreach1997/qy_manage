@@ -58,7 +58,7 @@
     <a href="javascript:edit('{{d.workStaffId}}','yes','{{d.proCode}}');" class="layui-btn layui-btn-mini layui-btn-danger">编辑</a>
     <a href="javascript:del('{{d.workStaffId}}');" class="layui-btn layui-btn-mini layui-btn-danger">删除</a>
     {{#  } }}
-    {{#  if(d.status == 1 && d.proStatus==7){ }}
+    {{#  if(d.status == 1 && d.proStatus==13){ }}
     <a href="javascript:del('{{d.workStaffId}}');" class="layui-btn layui-btn-mini layui-btn-danger">删除</a>
     {{#  } }}
 </script>
@@ -220,6 +220,8 @@
                 ,{field:'depName', width:tableWidth*0.1, title: '所在部门'}
                 ,{field:'realMoney', width:tableWidth*0.1, title: '任务费用'}
                 ,{field:'note', width:tableWidth*0.1, title: '任务内容'}
+                ,{field:'startTime', width:tableWidth*0.1, title: '任务开始时间'}
+                ,{field:'endTime', width:tableWidth*0.1, title: '任务结束时间'}
                 ,{field:'createTiem', title: '创建时间', width: tableWidth*0.15}
                 ,{field:'zz',title:'操作',width:tableWidth*0.15,toolbar:'#barDemo'}
             ]]

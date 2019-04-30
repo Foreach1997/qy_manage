@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qy.dao.WorkStaffMapper">
+  <resultMap id="BaseResultMap" type="com.qy.entity.WorkStaff">
+    <id column="work_staff_id" jdbcType="INTEGER" property="workStaffId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="work_lead_id" jdbcType="INTEGER" property="workLeadId" />
+    <result column="work_id" jdbcType="INTEGER" property="workId" />
+    <result column="create_tiem" jdbcType="TIMESTAMP" property="createTiem" />
+    <result column="pro_code" jdbcType="VARCHAR" property="proCode" />
+    <result column="plan_money" jdbcType="REAL" property="planMoney" />
+    <result column="real_money" jdbcType="REAL" property="realMoney" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="report_note" jdbcType="VARCHAR" property="reportNote" />
+    <result column="review" jdbcType="VARCHAR" property="review" />
+    <result column="small_task" jdbcType="VARCHAR" property="smallTask" />
+    <result column="dep_id" jdbcType="INTEGER" property="depId" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    work_staff_id, user_id, work_lead_id, work_id, create_tiem, pro_code, plan_money, 
+    real_money, status, report_note, review, small_task, dep_id, note, start_time, end_time
+  </sql>
+  <select id="selectByExample" parameterType="com.qy.entity.WorkStaffExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from work_staff
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from work_staff
+    where work_staff_id = #{workStaffId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from work_staff
+    where work_staff_id = #{workStaffId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qy.entity.WorkStaffExample">
+    delete from work_staff
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qy.entity.WorkStaff">
+    insert into work_staff (work_staff_id, user_id, work_lead_id, 
+      work_id, create_tiem, pro_code, 
+      plan_money, real_money, status, 
+      report_note, review, small_task, 
+      dep_id, note, start_time, 
+      end_time)
+    values (#{workStaffId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{workLeadId,jdbcType=INTEGER}, 
+      #{workId,jdbcType=INTEGER}, #{createTiem,jdbcType=TIMESTAMP}, #{proCode,jdbcType=VARCHAR}, 
+      #{planMoney,jdbcType=REAL}, #{realMoney,jdbcType=REAL}, #{status,jdbcType=INTEGER}, 
+      #{reportNote,jdbcType=VARCHAR}, #{review,jdbcType=VARCHAR}, #{smallTask,jdbcType=VARCHAR}, 
+      #{depId,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qy.entity.WorkStaff">
+    insert into work_staff
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="workStaffId != null">
+        work_staff_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="workLeadId != null">
+        work_lead_id,
+      </if>
+      <if test="workId != null">
+        work_id,
+      </if>
+      <if test="createTiem != null">
+        create_tiem,
+      </if>
+      <if test="proCode != null">
+        pro_code,
+      </if>
+      <if test="planMoney != null">
+        plan_money,
+      </if>
+      <if test="realMoney != null">
+        real_money,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="reportNote != null">
+        report_note,
+      </if>
+      <if test="review != null">
+        review,
+      </if>
+      <if test="smallTask != null">
+        small_task,
+      </if>
+      <if test="depId != null">
+        dep_id,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="workStaffId != null">
+        #{workStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="workLeadId != null">
+        #{workLeadId,jdbcType=INTEGER},
+      </if>
+      <if test="workId != null">
+        #{workId,jdbcType=INTEGER},
+      </if>
+      <if test="createTiem != null">
+        #{createTiem,jdbcType=TIMESTAMP},
+      </if>
+      <if test="proCode != null">
+        #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="planMoney != null">
+        #{planMoney,jdbcType=REAL},
+      </if>
+      <if test="realMoney != null">
+        #{realMoney,jdbcType=REAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="reportNote != null">
+        #{reportNote,jdbcType=VARCHAR},
+      </if>
+      <if test="review != null">
+        #{review,jdbcType=VARCHAR},
+      </if>
+      <if test="smallTask != null">
+        #{smallTask,jdbcType=VARCHAR},
+      </if>
+      <if test="depId != null">
+        #{depId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qy.entity.WorkStaffExample" resultType="java.lang.Long">
+    select count(*) from work_staff
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update work_staff
+    <set>
+      <if test="record.workStaffId != null">
+        work_staff_id = #{record.workStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.workLeadId != null">
+        work_lead_id = #{record.workLeadId,jdbcType=INTEGER},
+      </if>
+      <if test="record.workId != null">
+        work_id = #{record.workId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTiem != null">
+        create_tiem = #{record.createTiem,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.proCode != null">
+        pro_code = #{record.proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planMoney != null">
+        plan_money = #{record.planMoney,jdbcType=REAL},
+      </if>
+      <if test="record.realMoney != null">
+        real_money = #{record.realMoney,jdbcType=REAL},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.reportNote != null">
+        report_note = #{record.reportNote,jdbcType=VARCHAR},
+      </if>
+      <if test="record.review != null">
+        review = #{record.review,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smallTask != null">
+        small_task = #{record.smallTask,jdbcType=VARCHAR},
+      </if>
+      <if test="record.depId != null">
+        dep_id = #{record.depId,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTime != null">
+        start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update work_staff
+    set work_staff_id = #{record.workStaffId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      work_lead_id = #{record.workLeadId,jdbcType=INTEGER},
+      work_id = #{record.workId,jdbcType=INTEGER},
+      create_tiem = #{record.createTiem,jdbcType=TIMESTAMP},
+      pro_code = #{record.proCode,jdbcType=VARCHAR},
+      plan_money = #{record.planMoney,jdbcType=REAL},
+      real_money = #{record.realMoney,jdbcType=REAL},
+      status = #{record.status,jdbcType=INTEGER},
+      report_note = #{record.reportNote,jdbcType=VARCHAR},
+      review = #{record.review,jdbcType=VARCHAR},
+      small_task = #{record.smallTask,jdbcType=VARCHAR},
+      dep_id = #{record.depId,jdbcType=INTEGER},
+      note = #{record.note,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qy.entity.WorkStaff">
+    update work_staff
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="workLeadId != null">
+        work_lead_id = #{workLeadId,jdbcType=INTEGER},
+      </if>
+      <if test="workId != null">
+        work_id = #{workId,jdbcType=INTEGER},
+      </if>
+      <if test="createTiem != null">
+        create_tiem = #{createTiem,jdbcType=TIMESTAMP},
+      </if>
+      <if test="proCode != null">
+        pro_code = #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="planMoney != null">
+        plan_money = #{planMoney,jdbcType=REAL},
+      </if>
+      <if test="realMoney != null">
+        real_money = #{realMoney,jdbcType=REAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="reportNote != null">
+        report_note = #{reportNote,jdbcType=VARCHAR},
+      </if>
+      <if test="review != null">
+        review = #{review,jdbcType=VARCHAR},
+      </if>
+      <if test="smallTask != null">
+        small_task = #{smallTask,jdbcType=VARCHAR},
+      </if>
+      <if test="depId != null">
+        dep_id = #{depId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where work_staff_id = #{workStaffId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qy.entity.WorkStaff">
+    update work_staff
+    set user_id = #{userId,jdbcType=INTEGER},
+      work_lead_id = #{workLeadId,jdbcType=INTEGER},
+      work_id = #{workId,jdbcType=INTEGER},
+      create_tiem = #{createTiem,jdbcType=TIMESTAMP},
+      pro_code = #{proCode,jdbcType=VARCHAR},
+      plan_money = #{planMoney,jdbcType=REAL},
+      real_money = #{realMoney,jdbcType=REAL},
+      status = #{status,jdbcType=INTEGER},
+      report_note = #{reportNote,jdbcType=VARCHAR},
+      review = #{review,jdbcType=VARCHAR},
+      small_task = #{smallTask,jdbcType=VARCHAR},
+      dep_id = #{depId,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP}
+    where work_staff_id = #{workStaffId,jdbcType=INTEGER}
+  </update>
+</mapper>

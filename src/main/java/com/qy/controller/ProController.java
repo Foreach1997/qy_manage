@@ -27,8 +27,8 @@ public class ProController {
      */
     @ResponseBody
     @RequestMapping("/insertOrUpdateWorkStaff")
-    public Object insertWorkStaff(WorkStaff workStaff,String isUpdate, HttpServletRequest request){
-        return taskBookService.insertOrUpdateWorkStaff(workStaff,isUpdate,request);
+    public Object insertWorkStaff(WorkStaff workStaff,String end,String start,String isUpdate, HttpServletRequest request){
+        return taskBookService.insertOrUpdateWorkStaff(workStaff,end,start,isUpdate,request);
     }
 
     /**
