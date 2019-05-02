@@ -45,6 +45,19 @@
     <a href="javascript:review('{{d.workStaffId}}',5,'{{d.proCode}}');" class="layui-btn layui-btn-mini layui-btn-danger">评阅</a>
     {{#  } }}
 </script>
+<script type="text/html" id="status">
+    {{#  if(d.status == 1){ }}
+    进行中
+    {{#  } else if(d.status == 2){ }}
+    汇报完成
+    {{#  } else if(d.status == 3){ }}
+    项目变更中
+    {{#  } else if(d.status == 4){ }}
+    项目中止中
+    {{#  } else if(d.status == 5){ }}
+    评阅完成
+    {{#  } }}
+</script>
 <script>
 
     var dataRowJson;
@@ -52,7 +65,6 @@
     $("#find").click(function () {
         reload();
     })
-
     function reload(){
         var proCode = $('#proCode').val();
         layui.table.reload('info',{
@@ -105,7 +117,7 @@
                 {field:'proCode',  width: tableWidth*0.2, title: '项目编码'}
                 ,{field:'smallTask',  width: tableWidth*0.2, title: '任务名称'}
                 ,{field:'userName',  width: tableWidth*0.2, title: '用户名'}
-                ,{field:'status', width:tableWidth*0.1, title: '当前项目状态'}
+                ,{field:'status', width:tableWidth*0.1, title: '当前项目状态',toolbar:'#status'}
                 ,{field:'realMoney', width:tableWidth*0.1, title: '任务费用'}
                 ,{field:'startTime', width:tableWidth*0.1, title: '任务开始时间'}
                 ,{field:'endTime', width:tableWidth*0.1, title: '任务结束时间'}

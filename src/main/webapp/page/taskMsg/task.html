@@ -47,6 +47,9 @@
    <!-- {{#  if(d.status == 2 && d.leadStatus == 1){ }}
     <a href="javascript:review('{{d.workStaffId}}',5,'{{d.proCode}}');" class="layui-btn layui-btn-mini layui-btn-danger">评阅</a>
     {{#  } }}-->
+    {{#  if(d.status == 5){ }}
+    <a href="javascript:seeReview('{{d.review}}');" class="layui-btn layui-btn-mini layui-btn-danger">查看评阅</a>
+    {{#  } }}
 </script>
 <script type="text/html" id="status">
     {{#  if(d.status == 1){ }}
@@ -55,8 +58,10 @@
     汇报完成
     {{#  } else if(d.status == 3){ }}
     项目变更中
-    {{#  } else if(d.status == 3){ }}
+    {{#  } else if(d.status == 4){ }}
     项目中止中
+    {{#  } else if(d.status == 5){ }}
+    评阅完成
     {{#  } }}
 </script>
 <script>
@@ -104,7 +109,11 @@
     $(function () {
 
     })
-
+    function seeReview(review){
+        layer.alert(review, {
+            title: '评阅结果'
+        });
+    }
 
     layui.use('table', function(){
         var tableWidth = $("#info").width() - 28;
@@ -148,9 +157,8 @@
         table.on('rowDouble(info)', function (obj) {
             dataRowJson = obj.data;
             layer.alert(obj.data.note, {
-                title: '任务内容'
+                 title: '任务内容'
             });
-
         });
     })
 </script>

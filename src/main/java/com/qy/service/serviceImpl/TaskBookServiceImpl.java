@@ -13,10 +13,12 @@ import com.qy.util.SupportPage;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.misc.OSEnvironment;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,6 +26,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
 import java.util.*;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 @Transactional
@@ -229,13 +235,13 @@ public class TaskBookServiceImpl implements TaskBookService {
             calendar.setTime(date);
             LocalDate localDate =  LocalDate.of(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH));
             Period resDay = Period.between(localDate,LocalDate.now());
-            int  day = resDay.getDays();
+            Integer  day = resDay.getDays();
             if (day > 5){
                 //FIXME warn 插入警告
                 taskBook.put("color",3);
-            }else if (day < 5){
+            }else if (day < 5 && day >0){
                 taskBook.put("color",2);
-            }else if (day <= 0){
+            }else if (day < 0){
                 taskBook.put("color",1);
             }
             taskBook.put("createTime",format.format(taskBook.getDate("createTime")));
@@ -288,7 +294,8 @@ public class TaskBookServiceImpl implements TaskBookService {
             }
             taskBook.put("money",money);
             taskBook.put("realMoney",realMoney);
-            taskBook.put("createTime", format.format(taskBook.getDate("createTime")));
+            taskBook.put("proTimeEnd", format.format(taskBook.getDate("proTimeEnd")));
+            taskBook.put("proTimeStart", format.format(taskBook.getDate("proTimeStart")));
         }
         return ResultRespose.rsultRespose(200,"请求成功",taskBookExampleList,count);
     }
@@ -359,15 +366,18 @@ public class TaskBookServiceImpl implements TaskBookService {
             byte[] buffer = new byte[1024];
             FileInputStream fis = null;
             BufferedInputStream bis = null;
+            OutputStream os = null;
             try {
                 fis = new FileInputStream(file);
                 bis = new BufferedInputStream(fis);
-                OutputStream os = response.getOutputStream();
+                 os = response.getOutputStream();
                 int i = bis.read(buffer);
                 while (i != -1) {
                     os.write(buffer, 0, i);
                     i = bis.read(buffer);
                 }
+                os.flush();
+                os.close();
                 return "下载成功";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -391,6 +401,32 @@ public class TaskBookServiceImpl implements TaskBookService {
         return null;
     }
 
+    public Object DownFileA(List<ProMake> file, HttpServletResponse response) {
+        response.setContentType("application/force-download");// 设置强制下载不打开
+        response.addHeader("Content-Disposition", "attachment;filename=" + System.currentTimeMillis()+".zip");// 设置文件名
+        byte[] buffer = new byte[1024];
+        for (int b= 0 ; b < file.size() ;b++) {
+            try {
+                FileInputStream fis = new FileInputStream(file.get(b).getMakeFile());
+                BufferedInputStream bis = new BufferedInputStream(fis);
+                OutputStream os = response.getOutputStream();
+                ZipOutputStream  zipOutputStream = new ZipOutputStream(os);
+                int i = bis.read(buffer);
+                zipOutputStream.putNextEntry(new ZipEntry(file.get(b).getMakeFile().replace("\\", "&").split("&")[3]));
+                while (i != -1) {
+                    //os.write(buffer, 0, i);
+                    zipOutputStream.write(buffer, 0, i);
+                    i = bis.read(buffer);
+                }
+                zipOutputStream.closeEntry();
+                fis.close();
+                bis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
     @Override
     public void downMakeFile(String proCode, String per, HttpServletResponse response) {
 
@@ -406,12 +442,9 @@ public class TaskBookServiceImpl implements TaskBookService {
                 proMakeExample.createCriteria().andProCodeEqualTo(proCode).andMakeTypeEqualTo(3);
                 proMakes =   proMakeMapper.selectByExample(proMakeExample);
             }
-            if (!proMakes.isEmpty()){
-                for (ProMake proMake :proMakes){
-                    DownFile(proMake.getMakeFile(),response);
-                }
-            }
+           DownFileA(proMakes,response);
     }
+
     @Override
     public void downPlanOrReport(String proCode,Integer reportBookId, String per, HttpServletResponse response){
 
