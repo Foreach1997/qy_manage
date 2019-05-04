@@ -1,5 +1,7 @@
 package com.qy.dao;
 
+import java.util.List;
+
 import com.qy.entity.ProFinish;
 
 public interface ProFinishMapper {
@@ -10,6 +12,6 @@ public interface ProFinishMapper {
 
     int delete(ProFinish proFinish);
 
-    ProFinish findProFinish(ProFinish proFinish);
+    List<ProFinish> findProFinish(ProFinish proFinish);
 
 }

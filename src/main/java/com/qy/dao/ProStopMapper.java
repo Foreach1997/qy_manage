@@ -1,6 +1,8 @@
 package com.qy.dao;
 
 
+import java.util.List;
+
 import com.qy.entity.ProStop;
 
 public interface ProStopMapper {
@@ -11,6 +13,6 @@ public interface ProStopMapper {
 
     int delete(ProStop proStop);
 
-    ProStop findProStop(ProStop proStop);
+    List<ProStop> findProStop(ProStop proStop);
 
 }

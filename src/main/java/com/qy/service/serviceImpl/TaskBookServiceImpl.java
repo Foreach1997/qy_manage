@@ -13,8 +13,6 @@ import com.qy.util.SupportPage;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.misc.OSEnvironment;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,6 +79,7 @@ public class TaskBookServiceImpl implements TaskBookService {
             workStaffMapper.insert(workStaff);
             return ResultRespose.rsult(200, "添加成功", null);
         }else {
+        	workStaff.setStatus(1);
             WorkStaffExample workStaffExample = new WorkStaffExample();
             workStaffExample.createCriteria().andWorkStaffIdEqualTo(workStaff.getWorkStaffId());
             workStaffMapper.updateByExampleSelective(workStaff,workStaffExample);
@@ -306,18 +305,18 @@ public class TaskBookServiceImpl implements TaskBookService {
         if (taskBook.getStatus() == 5 || taskBook.getStatus() == 6){
             ProStop proStop = new ProStop();
             proStop.setProCode(taskBook.getReportCode());
-            proStop =  proStopMapper.findProStop(proStop);
-            return ResultRespose.rsult(200,"请求成功",proStop);
+            List<ProStop>  l=  proStopMapper.findProStop(proStop);
+            return ResultRespose.rsult(200,"请求成功",l.get(0));
         }else if (taskBook.getStatus() == 9 || taskBook.getStatus() == 10){
             ProFinish proFinish = new ProFinish();
             proFinish.setProCode(taskBook.getReportCode());
-            proFinish = proFinishMapper.findProFinish(proFinish);
-            return ResultRespose.rsult(200,"请求成功",proFinish);
-        }else if (taskBook.getStatus() == 11 || taskBook.getStatus() == 12){
+            List<ProFinish> l = proFinishMapper.findProFinish(proFinish);
+            return ResultRespose.rsult(200,"请求成功",l.get(0));
+        }else if (taskBook.getStatus() == 7 || taskBook.getStatus() == 12){
             ProChange proChange = new ProChange();
             proChange.setProCode(taskBook.getReportCode());
-            proChange =  proChangeMapper.findProChange(proChange);
-            return ResultRespose.rsult(200,"请求成功",proChange);
+            List<ProChange> l=  proChangeMapper.findProChange(proChange);
+            return ResultRespose.rsult(200,"请求成功",l.get(0));
         }
         return null;
     }

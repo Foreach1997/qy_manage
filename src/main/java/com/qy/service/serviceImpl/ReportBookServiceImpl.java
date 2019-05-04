@@ -352,13 +352,13 @@ public class ReportBookServiceImpl implements ReportBookService {
                 e.printStackTrace();
             }
             taskBook.setStatus(1);
-            int val = taskBookMapper.updateByExample(taskBook,taskBookExample);
+            int val = taskBookMapper.updateByExampleSelective(taskBook,taskBookExample);
             if (val != 0) {
                 WorkStaffExample workStaffExample = new WorkStaffExample();
                 workStaffExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
                 WorkStaff workStaff = new WorkStaff();
-                workStaff.setStatus(1);
-                workStaffMapper.updateByExample(workStaff,workStaffExample);
+                workStaff.setStatus(3);
+                workStaffMapper.updateByExampleSelective(workStaff,workStaffExample);
 
                 return ResultRespose.rsult(200, "成功", null);
             }
