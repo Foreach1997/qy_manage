@@ -42,7 +42,7 @@
 </html>
 <script type="text/html" id="barDemo">
     {{#  if(d.status == 1){ }}
-    <a href="javascript:reportTask('{{d.workStaffId}}',2,'{{d.proCode}}');" class="layui-btn layui-btn-mini layui-btn-danger">汇报内容</a>
+    <a href="javascript:reportTask('{{d.workStaffId}}',2,'{{d.proCode}}','{{d.realMoney}}');" class="layui-btn layui-btn-mini layui-btn-danger">汇报内容</a>
     {{#  } }}
    <!-- {{#  if(d.status == 2 && d.leadStatus == 1){ }}
     <a href="javascript:review('{{d.workStaffId}}',5,'{{d.proCode}}');" class="layui-btn layui-btn-mini layui-btn-danger">评阅</a>
@@ -68,7 +68,7 @@
 
     var dataRowJson;
 
-    function reportTask(workStaffId,status,proCode){
+    function reportTask(workStaffId,status,proCode,realMoney){
         layui.use('layer',function () {
                     layer.open({
                         type: 2,
@@ -76,7 +76,7 @@
                         shadeClose: true,
                         shade: 0.8,
                         area: ['420px', '520px'],
-                        content: 'reportNote.html?workStaffId='+workStaffId+'&status='+status+'&proCode='+proCode
+                        content: 'reportNote.html?workStaffId='+workStaffId+'&status='+status+'&proCode='+proCode+ '&realMoney='+realMoney
                     });
        });
     }
@@ -107,7 +107,19 @@
     }
 
     $(function () {
+        $.ajax({
+            type: "POST",
+            url: directory + "pro/workWarn",
+            async: false,
+            data: {
 
+            },
+            success: function (res) {
+                if (res.code == 200){
+                 layer.alert(res.msg)
+                }
+            }
+        })
     })
     function seeReview(review){
         layer.alert(review, {

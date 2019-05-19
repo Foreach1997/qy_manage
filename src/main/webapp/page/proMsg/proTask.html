@@ -8,6 +8,7 @@
     <script src="../../lib/js/jquery-3.4.0.min.js" type="text/javascript"></script>
     <script src="../../lib/js/common.js" type="text/javascript"></script>
     <script src="../../lib/js/authc.js" type="text/javascript"></script>
+
 </head>
 <body class="global-body-mp">
 <div class="layui-tab-item layui-show" style="margin-top: 80px">
@@ -74,7 +75,7 @@
     {{#  } }}
 
     {{#  if(d.status == 7 && d.roleId == 3){ }}
-    <a href="javascript:edit('{{d.taskBookId}}','yes');" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">编辑</a>
+    <a href="javascript:edit('{{d.taskBookId}}','yes','{{d.reportCode}}');" class="layui-btn layui-btn-mini layui-btn-danger merchant-freeze">编辑</a>
     {{#  } }}
 
     {{#  if(d.status == 13){ }}
@@ -131,7 +132,7 @@
 
     var dataRowJson;
 
-    function edit(taskBookId,isUpdate){
+    function edit(taskBookId,isUpdate,reportCode){
         layui.use('layer',function () {
             layer.open({
                 type: 2,
@@ -139,7 +140,7 @@
                 shadeClose: true,
                 shade: 0.8,
                 area: ['100%','100%'],
-                content: 'addTask.html?taskBookId='+taskBookId+'&isUpdate='+isUpdate
+                content: 'addTask.html?taskBookId='+taskBookId+'&isUpdate='+isUpdate+'&reportCode=' + reportCode
             });
         });
     }
@@ -257,6 +258,7 @@
 
 
     function addWork(reportCode,edit) {
+        debugger
         layui.use('layer',function () {
             layer.open({
                 type: 2,
@@ -267,6 +269,30 @@
                 area: ['100%','100%'],
                 anim: 2,
                 cancel: function(){
+                        $.ajax({
+                            type: "POST",
+                            url: directory+"pro/workStaffStatus",
+                            async:false,
+                            data: {
+                                proCode : reportCode,
+                            },
+                            success: function(res) {
+
+                            }
+                        })
+                        $.ajax({
+                        type: "POST",
+                        url: directory+"report/updateTask",
+                        async:false,
+                        data: {
+                            status:13,
+                            reportCode:reportCode
+                        },
+                        success: function(res) {
+                            layer.msg(res.msg)
+                            reload();
+                        }
+                        })
                     reload();
                 },
                 content: 'myTask.html?reportCode='+reportCode+'&edit='+edit

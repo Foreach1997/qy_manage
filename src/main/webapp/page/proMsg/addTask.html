@@ -12,6 +12,7 @@
 <body>
 <form class="layui-form">
     <input type="hidden" id="isUpdate" />
+    <input type="hidden" id="isUpdate" />
     <div class="layui-form-item" >
         <label class="layui-form-label" >项目编码:</label>
         <div  class="layui-input-block" style="width: 300px">
@@ -38,6 +39,9 @@
             <input type="text" id="proTimeEnd" required     autocomplete="off"  placeholder="请输入项目结束时间" class="layui-input">
         </div>
     </div>
+    <div class="layui-form-item" id="down" style="display: none">
+        <button type="button" id="downFile" style="margin-left: 200px" class="layui-btn">文件下载</button>
+    </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">项目资金:</label>
         <div class="layui-input-inline">
@@ -49,6 +53,11 @@
         <div class="layui-input-block">
             <textarea name="desc" id="taskNote" required placeholder="请输入重点任务描述" class="layui-textarea"></textarea>
         </div>
+    </div>
+    <div class="layui-form-item">
+        <button type="button" name="file" style="margin-left: 100px" class="layui-btn" id="address">
+            <i class="layui-icon">&#xe67c;</i>上传甘特图project文件
+        </button>
     </div>
     <div class="layui-form-item" >
         <button id="confirm" type="button"   style="margin-left:100px;padding-left: 80px;padding-right: 80px" class="layui-btn">确认</button>
@@ -91,14 +100,23 @@
                             "<option value='" + item.proCode+"'>"
                             + item.proCode + "</option>");
                 })
+                var reportCode = getUrlCode("reportCode");
+                var isUpdate = getUrlCode("isUpdate");
                 //form.render(null, 'merchant');
+                if (isUpdate=='yes'){
+                    $('#proCode').val(reportCode);
+                    $('#proCode').attr("disabled","disabled");
+                }
                 form.render();
             }
         })
     })
 
     $(function () {
+        debugger
+        var reportCode = getUrlCode("reportCode");
         var isUpdate = getUrlCode("isUpdate");
+        //form.render(null, 'merchant');
         $('#isUpdate').val(isUpdate);
         var data= parent.dataRowJson;
         if (!!data) {
@@ -110,10 +128,19 @@
             $('#taskNote').val(data.taskNote);
             $('#proCode').val(data.reportCode);
             r();
+            $('#down').show();
             $('#confirm').hide();
             $('#address').hide();
         }
     })
+
+    $("#downFile").click(function () {
+        down($('#proCode').val());
+    })
+
+    function down(path){
+        window.location.href = directory + "pro/downPlanOrReport?proCode="+path+"&per=task"
+    }
 
     function r(){
         layui.use('form',function () {
@@ -127,66 +154,75 @@
         form.render();
     })
 
-    // layui.use('upload', function(){
-    //     var upload = layui.upload;
-    //     var uploadInst = upload.render({
-    //         elem: '#address' //绑定元素
-    //         ,url: directory + 'report/insertTaskBook' //上传接口
-    //         ,auto:false
-    //         ,accept:'file'
-    //         ,bindAction:'#confirm'
-    //         ,data:{
-    //
-    //         },
-    //         before:function(){
-    //             this.data= {
-    //                 proName:$('#proName').val(),
-    //                 proTimeStart : $('#planOrg').val(),
-    //                 proMoney : $('#planWork').val(),
-    //                 proTimeEnd : $('#planMilepost').val(),
-    //                 taskNote : $('#planRelation').val()
-    //             }
-    //         },
-    //         done: function(res){
-    //             if (res.code == 200){
-    //                 var index=parent.layer.getFrameIndex(window.name);
-    //                 parent.layer.close(index);
-    //                 parent.layer.msg(res.msg);
-    //                 parent.reload();
-    //             }else
-    //             {
-    //                 alert(res.msg);
-    //             }
-    //         }
-    //     });
-    // });
-    $('#confirm').click(function () {
-        $.ajax({
-            type: "POST",
-            url: directory+"report/insertOrUpdateTaskBook",
-            async:false,
-            data: {
-                proName:$('#proName').val(),
-                start : $('#proTimeStart').val(),
-                proMoney : $('#proMoney').val(),
-                end : $('#proTimeEnd').val(),
-                taskNote : $('#taskNote').val(),
-                reportCode : $('#proCode').val(),
-                isUpdate: $('#isUpdate').val()
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        var uploadInst = upload.render({
+            elem: '#address' //绑定元素
+            ,url: directory+"report/insertOrUpdateTaskBook" //上传接口
+            ,auto:false
+            ,accept:'file'
+            ,bindAction:'#confirm'
+            ,data:{
+
             },
-            success: function(res) {
-                var data = res.data;
-                if(res.code==200){
-                    layer.msg(res.msg)
+            before:function(){
+                this.data= {
+                    proName:$('#proName').val(),
+                    start : $('#proTimeStart').val(),
+                    proMoney : $('#proMoney').val(),
+                    end : $('#proTimeEnd').val(),
+                    taskNote : $('#taskNote').val(),
+                    reportCode : $('#proCode').val(),
+                    isUpdate: $('#isUpdate').val()
+                }
+            },
+            done: function(res){
+                if (res.code == 200){
                     var index=parent.layer.getFrameIndex(window.name);
                     parent.layer.close(index);
                     parent.layer.msg(res.msg);
                     parent.reload();
-                }else{
-                    layer.msg(res.msg)
+                }else
+                {
+                    alert(res.msg);
                 }
-
             }
-        })
+        });
+    });
+    $('#confirm').click(function () {
+        if (!$(".layui-upload-choose")[0]) {
+            layer.msg("请上传报告书");
+        }else{
+            return true;
+        }
     })
+    // $('#confirm').click(function () {
+    //     $.ajax({
+    //         type: "POST",
+    //         url: directory+"report/insertOrUpdateTaskBook",
+    //         async:false,
+    //         data: {
+    //             proName:$('#proName').val(),
+    //             start : $('#proTimeStart').val(),
+    //             proMoney : $('#proMoney').val(),
+    //             end : $('#proTimeEnd').val(),
+    //             taskNote : $('#taskNote').val(),
+    //             reportCode : $('#proCode').val(),
+    //             isUpdate: $('#isUpdate').val()
+    //         },
+    //         success: function(res) {
+    //             var data = res.data;
+    //             if(res.code==200){
+    //                 layer.msg(res.msg)
+    //                 var index=parent.layer.getFrameIndex(window.name);
+    //                 parent.layer.close(index);
+    //                 parent.layer.msg(res.msg);
+    //                 parent.reload();
+    //             }else{
+    //                 layer.msg(res.msg)
+    //             }
+    //
+    //         }
+    //     })
+    // })
 </script>

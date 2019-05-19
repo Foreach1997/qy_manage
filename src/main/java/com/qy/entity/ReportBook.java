@@ -29,6 +29,8 @@ public class ReportBook {
 
     private String proCode;
 
+    private String reason;
+
     public Integer getReportBookId() {
         return reportBookId;
     }
@@ -131,5 +133,13 @@ public class ReportBook {
 
     public void setProCode(String proCode) {
         this.proCode = proCode == null ? null : proCode.trim();
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason == null ? null : reason.trim();
     }
 }

@@ -4,22 +4,25 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qy.dao.*;
-import com.qy.entity.Notice;
-import com.qy.entity.Role;
-import com.qy.entity.User;
-import com.qy.entity.UserExample;
+import com.qy.entity.*;
 import com.qy.service.UserService;
 import com.qy.util.ResultRespose;
 import com.qy.util.SupportPage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 
 @Service
@@ -42,6 +45,9 @@ public class UserServiceImpl implements UserService {
     @Resource
     private NoticeMapper noticeMapper;
 
+    @Resource
+    private WorkStaffMapper workStaffMapper;
+
     @Override
     public Object userLogin(User user, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -56,6 +62,44 @@ public class UserServiceImpl implements UserService {
             session.setAttribute("depId",u.get(0).getDepId());
             session.setMaxInactiveInterval(30*60);
             System.out.println(session.getAttribute("depId"));
+            new Thread() {
+                @Override
+                public void run() {
+                WorkStaffExample workStaffExample = new WorkStaffExample();
+                    workStaffExample.createCriteria().andUserIdEqualTo(u.get(0).getUserId()).andStatusEqualTo(1);
+                    List<WorkStaff> workStaffs = workStaffMapper.selectByExample(workStaffExample);
+                    for(WorkStaff workStaff :workStaffs) {
+                    Date date = workStaff.getEndTime();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(date);
+                    LocalDate localDate = LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+                    Period resDay = Period.between(LocalDate.now(), localDate);
+                    Integer day = resDay.getDays();
+                    //任务结束三天前
+                    if (day <= 3 && workStaff.getWarnStatus() == 0) {
+                        WorkStaff workStaff1 = new WorkStaff();
+                        workStaff1.setWarnStatus(1);
+                        WorkStaffExample workStaffExample1 = new WorkStaffExample();
+                        workStaffExample1.createCriteria().andWorkStaffIdEqualTo(workStaff.getWorkStaffId());
+                        workStaffMapper.updateByExampleSelective(workStaff1, workStaffExample1);
+                        JavaMailSenderImpl sender = new JavaMailSenderImpl();
+                        sender.setHost("smtp.qq.com");
+                        sender.setUsername("809662076@qq.com");
+                        sender.setPassword("mrpjzurtmjkbbchh");
+                        MimeMessage message = sender.createMimeMessage();
+                        MimeMessageHelper helper = new MimeMessageHelper(message);
+                        try {
+                            helper.setTo(u.get(0).getEmail());
+                            helper.setFrom("809662076@qq.com");
+                            helper.setText(workStaff.getSmallTask() + ":任务时间快到了");
+                            helper.setSubject("任务提醒！");
+                        } catch (MessagingException e) {
+                            e.printStackTrace();
+                        }
+                        sender.send(message);
+                    }
+                }
+            }}.start();
          return ResultRespose.rsult(200,"登陆成功",u.get(0));
         }else {
           return ResultRespose.rsult(300,"账号或者密码错误",null);
@@ -79,6 +123,12 @@ public class UserServiceImpl implements UserService {
             return ResultRespose.rsult(200, "修改成功", null);
         }
         return ResultRespose.rsult(200, "修改失败", null);
+    }
+
+    @Override
+    public Object delUser(User user) {
+        userMapper.deleteByPrimaryKey(user.getUserId());
+        return ResultRespose.rsult(200, "删除成功", null);
     }
 
     @Override

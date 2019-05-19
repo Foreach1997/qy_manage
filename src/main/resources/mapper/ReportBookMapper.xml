@@ -15,6 +15,7 @@
     <result column="pro_risk" jdbcType="VARCHAR" property="proRisk" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="pro_code" jdbcType="VARCHAR" property="proCode" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -76,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List">
     report_book_id, report_book_file, status, user_id, pro_source, pro_background, pro_describe, 
-    pro_feasibility, pro_money, pro_benefit, pro_risk, create_time, pro_code
+    pro_feasibility, pro_money, pro_benefit, pro_risk, create_time, pro_code, reason
   </sql>
   <select id="selectByExample" parameterType="com.qy.entity.ReportBookExample" resultMap="BaseResultMap">
     select
@@ -113,12 +114,12 @@
       user_id, pro_source, pro_background, 
       pro_describe, pro_feasibility, pro_money, 
       pro_benefit, pro_risk, create_time, 
-      pro_code)
+      pro_code, reason)
     values (#{reportBookId,jdbcType=INTEGER}, #{reportBookFile,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{userId,jdbcType=INTEGER}, #{proSource,jdbcType=VARCHAR}, #{proBackground,jdbcType=VARCHAR}, 
       #{proDescribe,jdbcType=VARCHAR}, #{proFeasibility,jdbcType=VARCHAR}, #{proMoney,jdbcType=REAL}, 
       #{proBenefit,jdbcType=VARCHAR}, #{proRisk,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{proCode,jdbcType=VARCHAR})
+      #{proCode,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qy.entity.ReportBook">
     insert into report_book
@@ -162,6 +163,9 @@
       <if test="proCode != null">
         pro_code,
       </if>
+      <if test="reason != null">
+        reason,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="reportBookId != null">
@@ -202,6 +206,9 @@
       </if>
       <if test="proCode != null">
         #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -253,6 +260,9 @@
       <if test="record.proCode != null">
         pro_code = #{record.proCode,jdbcType=VARCHAR},
       </if>
+      <if test="record.reason != null">
+        reason = #{record.reason,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -272,7 +282,8 @@
       pro_benefit = #{record.proBenefit,jdbcType=VARCHAR},
       pro_risk = #{record.proRisk,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      pro_code = #{record.proCode,jdbcType=VARCHAR}
+      pro_code = #{record.proCode,jdbcType=VARCHAR},
+      reason = #{record.reason,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -316,6 +327,9 @@
       <if test="proCode != null">
         pro_code = #{proCode,jdbcType=VARCHAR},
       </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
     </set>
     where report_book_id = #{reportBookId,jdbcType=INTEGER}
   </update>
@@ -332,8 +346,8 @@
       pro_benefit = #{proBenefit,jdbcType=VARCHAR},
       pro_risk = #{proRisk,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      pro_code = #{proCode,jdbcType=VARCHAR}
+      pro_code = #{proCode,jdbcType=VARCHAR},
+      reason = #{reason,jdbcType=VARCHAR}
     where report_book_id = #{reportBookId,jdbcType=INTEGER}
   </update>
-
 </mapper>

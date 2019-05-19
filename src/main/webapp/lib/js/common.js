@@ -3,7 +3,7 @@
  */
 var remoteUrl = "";
 //var directory = "../../../";
-var directory = "http://localhost:8080/qy_manage/";
+var directory = "http://localhost:8080/qy_manage_war_exploded/";
 /**
  * 获取Url
  * @param {Object} name

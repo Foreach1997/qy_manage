@@ -55,11 +55,20 @@
         var  workStaffId = getUrlCode("workStaffId");
         var  planMoney = $('#planMoney').val();
         var proCode = getUrlCode("proCode");
+        var realMoney  = getUrlCode("realMoney");
         if (!reportNote) {
-            layer.msg("请填写汇报内容")
+           layui.use('layer',function () {
+               layer.msg("请填写汇报内容")
+           })
         }else if(!planMoney){
-            layer.msg("请填写汇报金额")
-        } else {
+            layui.use('layer',function () {
+                layer.msg("请填写汇报金额")
+            })
+        }else if (parseInt(planMoney) > parseInt(realMoney)) {
+            layui.use('layer',function () {
+                layer.msg("汇报金额超额，汇报失败")
+            })
+        }else {
             $.ajax({
                 type: "POST",
                 url: directory + "pro/reportTask",

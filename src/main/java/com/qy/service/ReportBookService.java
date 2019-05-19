@@ -13,7 +13,7 @@ public interface ReportBookService {
     /**
      * 申请项目(立项阶段)
      */
-    Object insertReportBook(MultipartFile file, ReportBook reportBook, HttpServletRequest request);
+    Object insertReportBook(MultipartFile file, ReportBook reportBook, HttpServletRequest request,String isUpdate);
 
 
     /**
@@ -35,7 +35,7 @@ public interface ReportBookService {
     /**
      * 提交计划(计划阶段)
      */
-    Object insertPlanBook(MultipartFile file, PlanBook planBook, HttpServletRequest request);
+    Object insertPlanBook(MultipartFile file, PlanBook planBook, HttpServletRequest request,String isUpdate);
 
 
     /**
@@ -51,7 +51,7 @@ public interface ReportBookService {
     /**
      * 提交任务(任务阶段)
      */
-    Object insertTaskBook(TaskBook taskBook,String start,String end,String isUpdate,HttpServletRequest request);
+    Object insertTaskBook(MultipartFile file,TaskBook taskBook,String start,String end,String isUpdate,HttpServletRequest request);
 
 
     /**

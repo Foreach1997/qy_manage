@@ -52,6 +52,24 @@
 			<columnOverride column="review" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
 			<columnOverride column="note" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
 		</table>
+		<table tableName="task_book" domainObjectName="TaskBook">
+			<columnOverride column="task_note" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+		</table>
+		<table tableName="report_book" domainObjectName="ReportBook">
+			<columnOverride column="pro_describe" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="pro_feasibility" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="pro_benefit" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="pro_risk" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+		</table>
+		<table tableName="plan_book" domainObjectName="PlanBook">
+			<columnOverride column="plan_target" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="plan_org" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="plan_work" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="plan_milepost" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="plan_relation" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="measures" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+			<columnOverride column="risk" javaType="java.lang.String" jdbcType="VARCHAR"></columnOverride>
+		</table>
 		<!--<table tableName="pro_make" domainObjectName="ProMake"></table>-->
 		<!--<table tableName="user" domainObjectName="User"></table>
 		<table tableName="user_page_permission" domainObjectName="UserPagePermission"></table>

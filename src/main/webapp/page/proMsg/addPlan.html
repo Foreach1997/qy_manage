@@ -11,6 +11,8 @@
 </head>
 <body>
 <form class="layui-form">
+    <input type="hidden" id="isUpdate">
+    <input type="hidden" id="planBookId">
     <div class="layui-form-item" >
         <label class="layui-form-label" >项目编码:</label>
         <div  class="layui-input-block" style="width: 300px">
@@ -66,7 +68,7 @@
     </div>
     <div class="layui-form-item">
         <button type="button" name="file" style="margin-left: 100px" class="layui-btn" id="address">
-            <i class="layui-icon">&#xe67c;</i>上传甘特图project文件
+            <i class="layui-icon">&#xe67c;</i>上传计划书
         </button>
     </div>
     <div class="layui-form-item" >
@@ -110,6 +112,13 @@
 
 
     $(function () {
+        var isUpdate = getUrlCode("isUpdate");
+        $("#isUpdate").val(isUpdate)
+        if (isUpdate == 'yes'){
+            $("#planBookId").val(getUrlCode("planBookId"));
+        }else if (isUpdate == 'no') {
+            $("#planBookId").val('');
+        }
         var data= parent.dataRowJson;
         console.log(data)
         if (!!data) {
@@ -163,7 +172,9 @@
                     planRelation : $('#planRelation').val(),
                     reportCode : $('#proCode').val(),
                     risk : $('#risk').val(),
-                    measures : $('#measures').val()
+                    measures : $('#measures').val(),
+                    isUpdate: $("#isUpdate").val(),
+                    planBookId: $("#planBookId").val()
                 }
             },
             done: function(res){

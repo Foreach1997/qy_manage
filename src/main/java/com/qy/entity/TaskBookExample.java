@@ -794,6 +794,76 @@ public class TaskBookExample {
             addCriterion("user_id not between", value1, value2, "userId");
             return (Criteria) this;
         }
+
+        public Criteria andTaskFileIsNull() {
+            addCriterion("task_file is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileIsNotNull() {
+            addCriterion("task_file is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileEqualTo(String value) {
+            addCriterion("task_file =", value, "taskFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileNotEqualTo(String value) {
+            addCriterion("task_file <>", value, "taskFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileGreaterThan(String value) {
+            addCriterion("task_file >", value, "taskFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileGreaterThanOrEqualTo(String value) {
+            addCriterion("task_file >=", value, "taskFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileLessThan(String value) {
+            addCriterion("task_file <", value, "taskFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileLessThanOrEqualTo(String value) {
+            addCriterion("task_file <=", value, "taskFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileLike(String value) {
+            addCriterion("task_file like", value, "taskFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileNotLike(String value) {
+            addCriterion("task_file not like", value, "taskFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileIn(List<String> values) {
+            addCriterion("task_file in", values, "taskFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileNotIn(List<String> values) {
+            addCriterion("task_file not in", values, "taskFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileBetween(String value1, String value2) {
+            addCriterion("task_file between", value1, value2, "taskFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskFileNotBetween(String value1, String value2) {
+            addCriterion("task_file not between", value1, value2, "taskFile");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

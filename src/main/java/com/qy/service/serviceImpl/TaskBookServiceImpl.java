@@ -10,10 +10,14 @@ import com.qy.service.DepartmentService;
 import com.qy.service.TaskBookService;
 import com.qy.util.ResultRespose;
 import com.qy.util.SupportPage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
@@ -69,6 +73,8 @@ public class TaskBookServiceImpl implements TaskBookService {
         try {
             workStaff.setEndTime(format.parse(end + " 00:00:00"));
             workStaff.setStartTime(format.parse(start+ " 00:00:00"));
+            workStaff.setWarnStatus(0);
+            workStaff.setWarnPop(0);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -240,7 +246,7 @@ public class TaskBookServiceImpl implements TaskBookService {
                 taskBook.put("color",3);
             }else if (day < 5 && day >0){
                 taskBook.put("color",2);
-            }else if (day < 0){
+            }else if (day <= 0){
                 taskBook.put("color",1);
             }
             taskBook.put("createTime",format.format(taskBook.getDate("createTime")));
@@ -454,7 +460,46 @@ public class TaskBookServiceImpl implements TaskBookService {
             PlanBookExample planBookExample = new PlanBookExample();
             planBookExample.createCriteria().andReportCodeEqualTo(proCode);
             DownFile(planBookMapper.selectByExample(planBookExample).get(0).getGanttChart(),response);
+        }else if ("task".equals(per)){
+            TaskBookExample taskBookExample = new TaskBookExample();
+            taskBookExample.createCriteria().andReportCodeEqualTo(proCode);
+            DownFile(taskBookMapper.selectByExample(taskBookExample).get(0).getTaskFile(),response);
         }
 
+    }
+
+    @Override
+    public Object workWarn(HttpServletRequest request , HttpServletResponse response) {
+        WorkStaffExample workStaffExample = new WorkStaffExample();
+        workStaffExample.createCriteria().andUserIdEqualTo(Integer.valueOf(request.getSession().getAttribute("userId").toString())).andStatusEqualTo(1);
+        List<WorkStaff> workStaffs =  workStaffMapper.selectByExample(workStaffExample);
+        for (WorkStaff workStaff : workStaffs) {
+            Date date = workStaff.getEndTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            LocalDate localDate =  LocalDate.of(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH));
+            Period resDay = Period.between(localDate,LocalDate.now());
+            Integer  day = resDay.getDays();
+            //任务结束三天前
+            if (day > 0 && workStaff.getWarnPop()==0) {
+                WorkStaff workStaff1 = new WorkStaff();
+                workStaff1.setWarnPop(1);
+                WorkStaffExample workStaffExample1 = new WorkStaffExample();
+                workStaffExample1.createCriteria().andWorkStaffIdEqualTo(workStaff.getWorkStaffId());
+                workStaffMapper.updateByExampleSelective(workStaff1,workStaffExample1);
+                return ResultRespose.rsult(200,workStaff.getSmallTask()+" :任务超时",null);
+            }
+        }
+        return  ResultRespose.rsult(300,"",null);
+    }
+
+    @Override
+    public Object workStaffStatus(WorkStaff workStaff) {
+        WorkStaffExample workStaffExample = new WorkStaffExample();
+        workStaffExample.createCriteria().andProCodeEqualTo(workStaff.getProCode());
+        WorkStaff workStaff1 = new WorkStaff();
+        workStaff1.setStatus(1);
+        workStaffMapper.updateByExampleSelective(workStaff1,workStaffExample);
+        return ResultRespose.rsult(200,"",null);
     }
 }

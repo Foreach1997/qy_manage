@@ -35,8 +35,8 @@ public class ReportController {
      */
     @ResponseBody
     @RequestMapping("/insertReportBook")
-    public Object insertReportBook(MultipartFile file, ReportBook reportBook, HttpServletRequest request){
-        return  reportBookService.insertReportBook(file,reportBook,request);
+    public Object insertReportBook(MultipartFile file, ReportBook reportBook, HttpServletRequest request,String isUpdate){
+        return  reportBookService.insertReportBook(file,reportBook,request,isUpdate);
     }
     /**
      * 项目状态(立项阶段)
@@ -58,8 +58,8 @@ public class ReportController {
      */
     @ResponseBody
     @RequestMapping(value = "/insertPlanBook",method = RequestMethod.POST)
-    public Object insertPlanBook(MultipartFile file, PlanBook planBook, HttpServletRequest request){
-        return  reportBookService.insertPlanBook(file,planBook,request);
+    public Object insertPlanBook(MultipartFile file, PlanBook planBook, HttpServletRequest request,String isUpdate){
+        return  reportBookService.insertPlanBook(file,planBook,request,isUpdate);
     }
     /**
      * 计划状态(计划阶段)
@@ -81,8 +81,8 @@ public class ReportController {
      */
     @ResponseBody
     @RequestMapping("/insertOrUpdateTaskBook")
-    public Object insertTaskBook(TaskBook taskBook,String start,String end ,String isUpdate, HttpServletRequest request){
-        return  reportBookService.insertTaskBook(taskBook,start,end,isUpdate,request);
+    public Object insertTaskBook(MultipartFile file,TaskBook taskBook,String start,String end ,String isUpdate, HttpServletRequest request){
+        return  reportBookService.insertTaskBook(file,taskBook,start,end,isUpdate,request);
     }
     /**
      * 任务状态(阶段)
@@ -118,6 +118,22 @@ public class ReportController {
         return reportBookService.delTaskStaff(workStaff);
     }
 
+    /**
+     * 申请书不同意
+     */
+    @ResponseBody
+    @RequestMapping("/reportNoAgree")
+    public Object reportNoAgree(WorkStaff workStaff){
+        return reportBookService.delTaskStaff(workStaff);
+    }
 
+    /**
+     * 计划书不同意
+     */
+    @ResponseBody
+    @RequestMapping("/planNoAgree")
+    public Object planNoAgree(WorkStaff workStaff){
+        return reportBookService.delTaskStaff(workStaff);
+    }
 
 }

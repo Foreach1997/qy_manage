@@ -35,6 +35,10 @@ public class WorkStaff {
 
     private Date endTime;
 
+    private Integer warnStatus;
+
+    private Integer warnPop;
+
     public Integer getWorkStaffId() {
         return workStaffId;
     }
@@ -161,5 +165,21 @@ public class WorkStaff {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Integer getWarnStatus() {
+        return warnStatus;
+    }
+
+    public void setWarnStatus(Integer warnStatus) {
+        this.warnStatus = warnStatus;
+    }
+
+    public Integer getWarnPop() {
+        return warnPop;
+    }
+
+    public void setWarnPop(Integer warnPop) {
+        this.warnPop = warnPop;
     }
 }

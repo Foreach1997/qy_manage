@@ -52,8 +52,11 @@ public class ReportBookServiceImpl implements ReportBookService {
     private ProChangeMapper proChangeMapper;
 
     @Override
-    public Object insertReportBook(MultipartFile file, ReportBook reportBook, HttpServletRequest request) {
+    public Object insertReportBook(MultipartFile file, ReportBook reportBook, HttpServletRequest request,String isUpdate) {
 
+        if ("yes".equals(isUpdate)){
+            reportBookMapper.deleteByPrimaryKey(reportBook.getReportBookId());
+        }
         //String path = SystemContent.getFullAddressOnline(request);
         String path = SystemContent.path;
         String name = UUID.randomUUID().toString() +file.getOriginalFilename();
@@ -209,8 +212,11 @@ public class ReportBookServiceImpl implements ReportBookService {
     }
 
     @Override
-    public Object insertPlanBook(MultipartFile file, PlanBook planBook, HttpServletRequest request) {
+    public Object insertPlanBook(MultipartFile file, PlanBook planBook, HttpServletRequest request,String isUpdate) {
 
+        if ("yes".equals(isUpdate)) {
+            planBookMapper.deleteByPrimaryKey(planBook.getPlanBookId());
+        }
         PlanBookExample planBookExample = new PlanBookExample();
         planBookExample.createCriteria().andReportCodeEqualTo(planBook.getReportCode());
         long count = planBookMapper.countByExample(planBookExample);
@@ -314,59 +320,95 @@ public class ReportBookServiceImpl implements ReportBookService {
     }
 
     @Override
-    public Object insertTaskBook(TaskBook taskBook,String start,String end,String isUpdate,HttpServletRequest request) {
-
-        if ("no".equals(isUpdate)) {
-            TaskBookExample taskBookExample = new TaskBookExample();
-            taskBookExample.createCriteria().andReportCodeEqualTo(taskBook.getReportCode());
-            long count = taskBookMapper.countByExample(taskBookExample);
-            if (count > 0) {
-                return ResultRespose.rsult(200, "该项目已有任务书", null);
-            }
-            taskBook.setCreateTime(new Date());
-            taskBook.setUserId((int) request.getSession().getAttribute("userId"));
+    public Object insertTaskBook(MultipartFile file,TaskBook taskBook,String start,String end,String isUpdate,HttpServletRequest request) {
+        String path = SystemContent.path;
+        String name = UUID.randomUUID().toString() + file.getOriginalFilename();
+        if (!file.isEmpty()) {
+            File newPath = new File(path, name);
+            InputStream in = null;
+            FileOutputStream out = null;
             try {
-                taskBook.setProTimeEnd(format.parse(end + " 00:00:00"));
-                taskBook.setProTimeStart(format.parse(start + " 00:00:00"));
-            } catch (ParseException e) {
+                in = file.getInputStream();
+                out = new FileOutputStream(newPath);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            taskBook.setStatus(1);
-            WorkExample workExample = new WorkExample();
-            workExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
-            taskBook.setWorkId(workMapper.selectByExample(workExample).get(0).getWorkId());
-            int val = taskBookMapper.insert(taskBook);
-            if (val != 0) {
-                return ResultRespose.rsult(200, "成功", null);
+            if (!file.isEmpty()) {
+                try {
+                    byte buffer[] = new byte[2048];
+                    int len;
+                    while ((len = in.read()) != -1) {
+                        out.write(len);
+                        //out.write(buffer, 0, len);
+                    }
+                    in.close();
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return ResultRespose.rsult(200, "申请失败", null);
+                } finally {
+                    try {
+                        in.close();
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-            return ResultRespose.rsult(200, "失败", null);
-        }else if ("yes".equals(isUpdate)){
-            TaskBookExample taskBookExample = new TaskBookExample();
-            taskBookExample.createCriteria().andReportCodeEqualTo(taskBook.getReportCode());
-            taskBook.setCreateTime(new Date());
-            taskBook.setUserId((int) request.getSession().getAttribute("userId"));
-            try {
-                taskBook.setProTimeEnd(format.parse(end + " 00:00:00"));
-                taskBook.setProTimeStart(format.parse(start + " 00:00:00"));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            taskBook.setStatus(1);
-            int val = taskBookMapper.updateByExampleSelective(taskBook,taskBookExample);
-            if (val != 0) {
-                WorkStaffExample workStaffExample = new WorkStaffExample();
-                workStaffExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
-                WorkStaff workStaff = new WorkStaff();
-                workStaff.setStatus(3);
-                workStaffMapper.updateByExampleSelective(workStaff,workStaffExample);
+            if ("no".equals(isUpdate)) {
+                TaskBookExample taskBookExample = new TaskBookExample();
+                taskBookExample.createCriteria().andReportCodeEqualTo(taskBook.getReportCode());
+                long count = taskBookMapper.countByExample(taskBookExample);
+                if (count > 0) {
+                    return ResultRespose.rsult(200, "该项目已有任务书", null);
+                }
+                taskBook.setCreateTime(new Date());
+                taskBook.setUserId((int) request.getSession().getAttribute("userId"));
+                taskBook.setTaskFile(newPath.toString());
+                try {
+                    taskBook.setProTimeEnd(format.parse(end + " 00:00:00"));
+                    taskBook.setProTimeStart(format.parse(start + " 00:00:00"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                taskBook.setStatus(1);
+                WorkExample workExample = new WorkExample();
+                workExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
+                taskBook.setWorkId(workMapper.selectByExample(workExample).get(0).getWorkId());
+                int val = taskBookMapper.insert(taskBook);
+                if (val != 0) {
+                    return ResultRespose.rsult(200, "成功", null);
+                }
+                return ResultRespose.rsult(200, "失败", null);
+            } else if ("yes".equals(isUpdate)) {
+                TaskBookExample taskBookExample = new TaskBookExample();
+                taskBookExample.createCriteria().andReportCodeEqualTo(taskBook.getReportCode());
+                taskBook.setCreateTime(new Date());
+                taskBook.setUserId((int) request.getSession().getAttribute("userId"));
+                taskBook.setTaskFile(newPath.toString());
+                try {
+                    taskBook.setProTimeEnd(format.parse(end + " 00:00:00"));
+                    taskBook.setProTimeStart(format.parse(start + " 00:00:00"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                taskBook.setStatus(1);
+                int val = taskBookMapper.updateByExampleSelective(taskBook, taskBookExample);
+                if (val != 0) {
+                    WorkStaffExample workStaffExample = new WorkStaffExample();
+                    workStaffExample.createCriteria().andProCodeEqualTo(taskBook.getReportCode());
+                    WorkStaff workStaff = new WorkStaff();
+                    workStaff.setStatus(3);
+                    workStaffMapper.updateByExampleSelective(workStaff, workStaffExample);
 
-                return ResultRespose.rsult(200, "成功", null);
+                    return ResultRespose.rsult(200, "成功", null);
+                }
+                return ResultRespose.rsult(200, "失败", null);
             }
             return ResultRespose.rsult(200, "失败", null);
         }
         return ResultRespose.rsult(200, "失败", null);
     }
-
     @Override
     public Object updateTask(TaskBook taskBook,String code) {
         WorkExample workExample = new WorkExample();

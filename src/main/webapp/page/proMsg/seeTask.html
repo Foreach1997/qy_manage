@@ -50,6 +50,19 @@
 </html>
 <script type="text/html" id="barDemo">
 </script>
+<script type="text/html" id="status">
+    {{#  if(d.status == 1){ }}
+    进行中
+    {{#  } else if(d.status == 2){ }}
+    汇报完成
+    {{#  } else if(d.status == 3){ }}
+    项目变更中
+    {{#  } else if(d.status == 4){ }}
+    项目中止中
+    {{#  } else if(d.status == 5){ }}
+    评阅完成
+    {{#  } }}
+</script>
 <script>
 
     var dataRowJson;
@@ -197,6 +210,7 @@
                 ,{field:'userName',  width: tableWidth*0.2, title: '用户名'}
                 ,{field:'depName', width:tableWidth*0.1, title: '所在部门'}
                 ,{field:'realMoney', width:tableWidth*0.1, title: '任务费用'}
+                ,{field:'status', width:tableWidth*0.1, title: '任务状态',toolbar:'#status'}
                 ,{field:'startTime', width:tableWidth*0.1, title: '任务开始时间'}
                 ,{field:'endTime', width:tableWidth*0.1, title: '任务结束时间'}
                 ,{field:'createTiem', title: '创建时间', width: tableWidth*0.15}

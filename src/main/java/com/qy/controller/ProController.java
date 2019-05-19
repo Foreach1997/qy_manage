@@ -40,6 +40,18 @@ public class ProController {
         return taskBookService.findWorkTaskList(workStaff,request,supportPage);
     }
 
+
+    /**
+     * 任务超时提醒
+     */
+    @ResponseBody
+    @RequestMapping("/workWarn")
+    public Object workWarn(HttpServletRequest request , HttpServletResponse response){
+        return taskBookService.workWarn(request,response);
+    }
+
+
+
     /**
      * 项目汇报
      */
@@ -124,7 +136,14 @@ public class ProController {
          return  taskBookService.workReview(workStaff);
     }
 
-
+    /**
+     *
+     */
+    @ResponseBody
+    @RequestMapping("/workStaffStatus")
+    public Object workStaffStatus(WorkStaff workStaff){
+        return  taskBookService.workStaffStatus(workStaff);
+    }
 
     /**
      * 项目进展文件下载

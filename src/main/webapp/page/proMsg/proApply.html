@@ -56,6 +56,14 @@
     {{#  } else if(d.status == 2 && d.roleId == 1){ }}
     <a href="javascript:proStatus('{{d.reportBookId}}',3);" class="layui-btn layui-btn-mini layui-btn-danger">审批</a>
     {{#  } }}
+    {{#  if(d.status == 1 && d.roleId == 2){ }}
+    <a href="javascript:proStatus('{{d.reportBookId}}',4);" class="layui-btn layui-btn-mini layui-btn-danger">不同意</a>
+    {{#  } else if(d.status == 2 && d.roleId == 1){ }}
+    <a href="javascript:proStatus('{{d.reportBookId}}',5);" class="layui-btn layui-btn-mini layui-btn-danger">不同意</a>
+    {{#  } }}
+    {{#  if(d.status == 4||d.status == 5){ }}
+    <a href="javascript:proEdit('{{d.reportBookId}}',1);" class="layui-btn layui-btn-mini layui-btn-danger">重新申请</a>
+    {{#  } }}
 </script>
 <script type="text/html" id="status">
     {{#  if(d.status == 1){ }}
@@ -64,6 +72,10 @@
      总经理审批中
     {{#  } else if(d.status == 3){ }}
      审批完成
+    {{#  } else if(d.status == 4){ }}
+    部门经理审批不通过
+    {{#  } else if(d.status == 5){ }}
+    总经理审批不通过
     {{#  } }}
 </script>
 <script>
@@ -82,6 +94,23 @@
             });
         });
     }
+
+    function proEdit(reportBookId) {
+        layui.use('layer',function () {
+            layer.open({
+                type: 2,
+                title: '重新申请',
+                shadeClose: true,
+                shade: false,
+                maxmin: false, //开启最大化最小化按钮
+                area: ['100%','100%'],
+                anim: 2,
+                content: 'addPro.html?isUpdate=yes&reportBookId='+reportBookId
+            });
+        })
+    }
+
+
 
     function proStatus(reportBookId,status){
         $.ajax({
@@ -146,7 +175,7 @@
                 maxmin: false, //开启最大化最小化按钮
                 area: ['100%','100%'],
                 anim: 2,
-                content: 'addPro.html'
+                content: 'addPro.html?isUpdate=no'
             });
         })
     })

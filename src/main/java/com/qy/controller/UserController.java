@@ -190,6 +190,12 @@ public class UserController {
     public Object getAllNotice(Notice notice,SupportPage supportPage,HttpServletRequest request){
         return userService.getAllNotice(notice,supportPage,request);
     }
+
+    @ResponseBody
+    @RequestMapping("/delUser")
+    public Object delUser(User user){
+        return userService.delUser(user);
+    }
     @ResponseBody
     @RequestMapping("/delNotice")
     public Object delNotice(Integer noticeId,HttpServletRequest request){

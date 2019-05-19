@@ -82,4 +82,14 @@ public interface TaskBookService {
     * 提交文件下载
     */
    void downPlanOrReport(String proCode,Integer reportBookId, String per, HttpServletResponse response);
+
+    /**
+     * 任务超时提醒
+     */
+    Object workWarn(HttpServletRequest request , HttpServletResponse response);
+
+    /**
+     *  任务状态修改
+     */
+    Object workStaffStatus(WorkStaff workStaff);
 }

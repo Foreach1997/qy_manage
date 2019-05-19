@@ -25,6 +25,8 @@ public class TaskBook {
 
     private Integer userId;
 
+    private String taskFile;
+
     public Integer getTaskBookId() {
         return taskBookId;
     }
@@ -111,5 +113,13 @@ public class TaskBook {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getTaskFile() {
+        return taskFile;
+    }
+
+    public void setTaskFile(String taskFile) {
+        this.taskFile = taskFile == null ? null : taskFile.trim();
     }
 }

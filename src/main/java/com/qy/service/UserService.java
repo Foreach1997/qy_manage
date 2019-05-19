@@ -19,6 +19,11 @@ public interface UserService {
     Object updateUser(User user,String isUpdate);
 
     /**
+     * 删除用户
+     */
+    Object delUser(User user);
+
+    /**
      * 退出登录
      */
     Object quit(HttpServletRequest request);

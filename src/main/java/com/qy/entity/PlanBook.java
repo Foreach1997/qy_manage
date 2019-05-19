@@ -29,6 +29,8 @@ public class PlanBook {
 
     private Integer status;
 
+    private String reason;
+
     public Integer getPlanBookId() {
         return planBookId;
     }
@@ -131,5 +133,13 @@ public class PlanBook {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason == null ? null : reason.trim();
     }
 }

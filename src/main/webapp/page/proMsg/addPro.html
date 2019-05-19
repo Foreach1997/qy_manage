@@ -11,6 +11,7 @@
 <body>
 <form class="layui-form" enctype="multipart/form-data">
     <input type="hidden" id="reportBookId"/>
+    <input type="hidden" id="isUpdate">
     <div class="layui-form-item">
         <label class="layui-form-label">项目来源:</label>
         <div class="layui-input-inline">
@@ -64,6 +65,14 @@
 <script>
 
     $(function () {
+        debugger
+        var isUpdate = getUrlCode("isUpdate");
+        $("#isUpdate").val(isUpdate)
+        if (isUpdate == 'yes'){
+            $("#reportBookId").val(getUrlCode("reportBookId"));
+        }else if (isUpdate == 'no') {
+            $("#reportBookId").val('');
+        }
             var data= parent.dataRowJson;
             if (!!data) {
                 $('#proSource').val(data.proSource);
@@ -87,6 +96,7 @@
         window.location.href = directory + "pro/downPlanOrReport?reportBookId="+path+"&per=report"
     }
     layui.use('upload', function(){
+        debugger
         var upload = layui.upload;
         var uploadInst = upload.render({
             elem: '#address' //绑定元素
@@ -105,7 +115,9 @@
                     proDescribe : $('#proDescribe').val(),
                     proFeasibility : $('#proFeasibility').val(),
                     proMoney : $('#proMoney').val(),
-                    proBenefit : $('#proBenefit').val()
+                    proBenefit : $('#proBenefit').val(),
+                    isUpdate: $("#isUpdate").val(),
+                    reportBookId:$("#reportBookId").val()
                 }
             },
             done: function(res){

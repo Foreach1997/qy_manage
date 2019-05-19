@@ -13,6 +13,7 @@
     <result column="report_code" jdbcType="VARCHAR" property="reportCode" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="task_file" jdbcType="VARCHAR" property="taskFile" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List">
     task_book_id, pro_name, pro_time_start, pro_money, pro_time_end, task_note, work_id, 
-    status, report_code, create_time, user_id
+    status, report_code, create_time, user_id, task_file
   </sql>
   <select id="selectByExample" parameterType="com.qy.entity.TaskBookExample" resultMap="BaseResultMap">
     select
@@ -110,11 +111,13 @@
     insert into task_book (task_book_id, pro_name, pro_time_start, 
       pro_money, pro_time_end, task_note, 
       work_id, status, report_code, 
-      create_time, user_id)
+      create_time, user_id, task_file
+      )
     values (#{taskBookId,jdbcType=INTEGER}, #{proName,jdbcType=VARCHAR}, #{proTimeStart,jdbcType=TIMESTAMP}, 
       #{proMoney,jdbcType=REAL}, #{proTimeEnd,jdbcType=TIMESTAMP}, #{taskNote,jdbcType=VARCHAR}, 
       #{workId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{reportCode,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER})
+      #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}, #{taskFile,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.qy.entity.TaskBook">
     insert into task_book
@@ -152,6 +155,9 @@
       <if test="userId != null">
         user_id,
       </if>
+      <if test="taskFile != null">
+        task_file,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="taskBookId != null">
@@ -186,6 +192,9 @@
       </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="taskFile != null">
+        #{taskFile,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -231,6 +240,9 @@
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
+      <if test="record.taskFile != null">
+        task_file = #{record.taskFile,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -248,7 +260,8 @@
       status = #{record.status,jdbcType=INTEGER},
       report_code = #{record.reportCode,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      user_id = #{record.userId,jdbcType=INTEGER}
+      user_id = #{record.userId,jdbcType=INTEGER},
+      task_file = #{record.taskFile,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -286,6 +299,9 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
+      <if test="taskFile != null">
+        task_file = #{taskFile,jdbcType=VARCHAR},
+      </if>
     </set>
     where task_book_id = #{taskBookId,jdbcType=INTEGER}
   </update>
@@ -300,7 +316,8 @@
       status = #{status,jdbcType=INTEGER},
       report_code = #{reportCode,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      user_id = #{userId,jdbcType=INTEGER}
+      user_id = #{userId,jdbcType=INTEGER},
+      task_file = #{taskFile,jdbcType=VARCHAR}
     where task_book_id = #{taskBookId,jdbcType=INTEGER}
   </update>
 </mapper>

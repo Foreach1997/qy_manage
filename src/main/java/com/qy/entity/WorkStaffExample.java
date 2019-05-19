@@ -1114,6 +1114,126 @@ public class WorkStaffExample {
             addCriterion("end_time not between", value1, value2, "endTime");
             return (Criteria) this;
         }
+
+        public Criteria andWarnStatusIsNull() {
+            addCriterion("warn_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnStatusIsNotNull() {
+            addCriterion("warn_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnStatusEqualTo(Integer value) {
+            addCriterion("warn_status =", value, "warnStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnStatusNotEqualTo(Integer value) {
+            addCriterion("warn_status <>", value, "warnStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnStatusGreaterThan(Integer value) {
+            addCriterion("warn_status >", value, "warnStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("warn_status >=", value, "warnStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnStatusLessThan(Integer value) {
+            addCriterion("warn_status <", value, "warnStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("warn_status <=", value, "warnStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnStatusIn(List<Integer> values) {
+            addCriterion("warn_status in", values, "warnStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnStatusNotIn(List<Integer> values) {
+            addCriterion("warn_status not in", values, "warnStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnStatusBetween(Integer value1, Integer value2) {
+            addCriterion("warn_status between", value1, value2, "warnStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("warn_status not between", value1, value2, "warnStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopIsNull() {
+            addCriterion("warn_pop is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopIsNotNull() {
+            addCriterion("warn_pop is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopEqualTo(Integer value) {
+            addCriterion("warn_pop =", value, "warnPop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopNotEqualTo(Integer value) {
+            addCriterion("warn_pop <>", value, "warnPop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopGreaterThan(Integer value) {
+            addCriterion("warn_pop >", value, "warnPop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopGreaterThanOrEqualTo(Integer value) {
+            addCriterion("warn_pop >=", value, "warnPop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopLessThan(Integer value) {
+            addCriterion("warn_pop <", value, "warnPop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopLessThanOrEqualTo(Integer value) {
+            addCriterion("warn_pop <=", value, "warnPop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopIn(List<Integer> values) {
+            addCriterion("warn_pop in", values, "warnPop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopNotIn(List<Integer> values) {
+            addCriterion("warn_pop not in", values, "warnPop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopBetween(Integer value1, Integer value2) {
+            addCriterion("warn_pop between", value1, value2, "warnPop");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarnPopNotBetween(Integer value1, Integer value2) {
+            addCriterion("warn_pop not between", value1, value2, "warnPop");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

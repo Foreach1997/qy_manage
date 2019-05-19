@@ -18,6 +18,8 @@
     <result column="note" jdbcType="VARCHAR" property="note" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="warn_status" jdbcType="INTEGER" property="warnStatus" />
+    <result column="warn_pop" jdbcType="INTEGER" property="warnPop" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -79,7 +81,8 @@
   </sql>
   <sql id="Base_Column_List">
     work_staff_id, user_id, work_lead_id, work_id, create_tiem, pro_code, plan_money, 
-    real_money, status, report_note, review, small_task, dep_id, note, start_time, end_time
+    real_money, status, report_note, review, small_task, dep_id, note, start_time, end_time, 
+    warn_status, warn_pop
   </sql>
   <select id="selectByExample" parameterType="com.qy.entity.WorkStaffExample" resultMap="BaseResultMap">
     select
@@ -117,13 +120,15 @@
       plan_money, real_money, status, 
       report_note, review, small_task, 
       dep_id, note, start_time, 
-      end_time)
+      end_time, warn_status, warn_pop
+      )
     values (#{workStaffId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{workLeadId,jdbcType=INTEGER}, 
       #{workId,jdbcType=INTEGER}, #{createTiem,jdbcType=TIMESTAMP}, #{proCode,jdbcType=VARCHAR}, 
       #{planMoney,jdbcType=REAL}, #{realMoney,jdbcType=REAL}, #{status,jdbcType=INTEGER}, 
       #{reportNote,jdbcType=VARCHAR}, #{review,jdbcType=VARCHAR}, #{smallTask,jdbcType=VARCHAR}, 
       #{depId,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP})
+      #{endTime,jdbcType=TIMESTAMP}, #{warnStatus,jdbcType=INTEGER}, #{warnPop,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.qy.entity.WorkStaff">
     insert into work_staff
@@ -176,6 +181,12 @@
       <if test="endTime != null">
         end_time,
       </if>
+      <if test="warnStatus != null">
+        warn_status,
+      </if>
+      <if test="warnPop != null">
+        warn_pop,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="workStaffId != null">
@@ -225,6 +236,12 @@
       </if>
       <if test="endTime != null">
         #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warnStatus != null">
+        #{warnStatus,jdbcType=INTEGER},
+      </if>
+      <if test="warnPop != null">
+        #{warnPop,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -285,6 +302,12 @@
       <if test="record.endTime != null">
         end_time = #{record.endTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.warnStatus != null">
+        warn_status = #{record.warnStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.warnPop != null">
+        warn_pop = #{record.warnPop,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -307,7 +330,9 @@
       dep_id = #{record.depId,jdbcType=INTEGER},
       note = #{record.note,jdbcType=VARCHAR},
       start_time = #{record.startTime,jdbcType=TIMESTAMP},
-      end_time = #{record.endTime,jdbcType=TIMESTAMP}
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      warn_status = #{record.warnStatus,jdbcType=INTEGER},
+      warn_pop = #{record.warnPop,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -360,6 +385,12 @@
       <if test="endTime != null">
         end_time = #{endTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="warnStatus != null">
+        warn_status = #{warnStatus,jdbcType=INTEGER},
+      </if>
+      <if test="warnPop != null">
+        warn_pop = #{warnPop,jdbcType=INTEGER},
+      </if>
     </set>
     where work_staff_id = #{workStaffId,jdbcType=INTEGER}
   </update>
@@ -379,7 +410,9 @@
       dep_id = #{depId,jdbcType=INTEGER},
       note = #{note,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=TIMESTAMP}
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      warn_status = #{warnStatus,jdbcType=INTEGER},
+      warn_pop = #{warnPop,jdbcType=INTEGER}
     where work_staff_id = #{workStaffId,jdbcType=INTEGER}
   </update>
 </mapper>
