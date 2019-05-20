@@ -113,7 +113,7 @@ public class ReportController {
      * 删除当前工作人员
      */
     @ResponseBody
-    @RequestMapping("/delTaskStaff")
+        @RequestMapping("/delTaskStaff")
     public Object delTaskStaff(WorkStaff workStaff){
         return reportBookService.delTaskStaff(workStaff);
     }

@@ -61,7 +61,7 @@
     {{#  } else if(d.status == 2 && d.roleId == 1){ }}
     <a href="javascript:proStatus('{{d.reportBookId}}',5);" class="layui-btn layui-btn-mini layui-btn-danger">不同意</a>
     {{#  } }}
-    {{#  if(d.status == 4||d.status == 5){ }}
+    {{#  if(d.status == 4 && d.roleId == 2 ||d.status == 5 && d.roleId == 1){ }}
     <a href="javascript:proEdit('{{d.reportBookId}}',1);" class="layui-btn layui-btn-mini layui-btn-danger">重新申请</a>
     {{#  } }}
 </script>

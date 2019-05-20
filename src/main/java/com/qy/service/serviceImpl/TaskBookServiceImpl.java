@@ -481,7 +481,7 @@ public class TaskBookServiceImpl implements TaskBookService {
             Period resDay = Period.between(localDate,LocalDate.now());
             Integer  day = resDay.getDays();
             //任务结束三天前
-            if (day > 0 && workStaff.getWarnPop()==0) {
+            if (day < 0 && workStaff.getWarnPop()==0) {
                 WorkStaff workStaff1 = new WorkStaff();
                 workStaff1.setWarnPop(1);
                 WorkStaffExample workStaffExample1 = new WorkStaffExample();
